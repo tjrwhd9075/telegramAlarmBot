@@ -1,0 +1,48 @@
+/home/ubuntu/.local/lib/python3.9/site-packages/FinanceDataReader/wikipedia/listing.py:13: FutureWarning:
+
+The default value of regex will change from True to False in a future version.
+
+  0%|          | 0/3954 [00:00<?, ?it/s]  5%|▍         | 180/3954 [00:00<00:02, 1781.50it/s]  9%|▉         | 360/3954 [00:00<00:02, 1639.37it/s] 14%|█▎        | 540/3954 [00:00<00:02, 1563.99it/s] 18%|█▊        | 720/3954 [00:00<00:02, 1479.62it/s] 23%|██▎       | 900/3954 [00:00<00:02, 1382.35it/s] 27%|██▋       | 1080/3954 [00:00<00:02, 1316.94it/s] 32%|███▏      | 1260/3954 [00:00<00:02, 1242.70it/s] 36%|███▋      | 1440/3954 [00:01<00:02, 1166.24it/s] 39%|███▉      | 1560/3954 [00:01<00:02, 1130.70it/s] 42%|████▏     | 1680/3954 [00:01<00:02, 1099.26it/s] 46%|████▌     | 1800/3954 [00:01<00:02, 1056.78it/s] 49%|████▊     | 1920/3954 [00:01<00:02, 1014.90it/s] 52%|█████▏    | 2040/3954 [00:01<00:01, 968.76it/s]  55%|█████▍    | 2160/3954 [00:01<00:01, 943.82it/s] 58%|█████▊    | 2280/3954 [00:02<00:01, 914.88it/s] 61%|██████    | 2400/3954 [00:02<00:01, 879.04it/s] 64%|██████▎   | 2520/3954 [00:02<00:01, 850.92it/s] 67%|██████▋   | 2640/3954 [00:02<00:01, 828.12it/s] 70%|██████▉   | 2760/3954 [00:02<00:01, 794.71it/s] 73%|███████▎  | 2880/3954 [00:02<00:01, 720.91it/s] 76%|███████▌  | 3000/3954 [00:02<00:01, 717.86it/s] 79%|███████▉  | 3120/3954 [00:03<00:01, 697.06it/s] 82%|████████▏ | 3240/3954 [00:03<00:01, 685.09it/s] 85%|████████▍ | 3360/3954 [00:03<00:00, 665.81it/s] 88%|████████▊ | 3480/3954 [00:03<00:00, 652.37it/s] 91%|█████████ | 3600/3954 [00:03<00:00, 647.54it/s] 94%|█████████▍| 3720/3954 [00:04<00:00, 627.77it/s] 97%|█████████▋| 3840/3954 [00:04<00:00, 613.41it/s]100%|██████████| 3954/3954 [00:04<00:00, 593.49it/s]100%|██████████| 3954/3954 [00:04<00:00, 849.77it/s]
+  0%|          | 0/3306 [00:00<?, ?it/s]  5%|▌         | 180/3306 [00:00<00:02, 1434.94it/s] 11%|█         | 360/3306 [00:00<00:01, 1510.00it/s] 16%|█▋        | 540/3306 [00:00<00:01, 1505.18it/s] 22%|██▏       | 720/3306 [00:00<00:01, 1448.19it/s] 27%|██▋       | 900/3306 [00:00<00:01, 1395.61it/s] 33%|███▎      | 1080/3306 [00:00<00:01, 1346.01it/s] 38%|███▊      | 1260/3306 [00:00<00:01, 1268.44it/s] 44%|████▎     | 1440/3306 [00:01<00:01, 1193.36it/s] 49%|████▉     | 1620/3306 [00:01<00:01, 1126.23it/s] 53%|█████▎    | 1740/3306 [00:01<00:01, 1078.03it/s] 56%|█████▋    | 1860/3306 [00:01<00:01, 1034.39it/s] 60%|█████▉    | 1980/3306 [00:01<00:01, 995.49it/s]  64%|██████▎   | 2100/3306 [00:01<00:01, 952.35it/s] 67%|██████▋   | 2220/3306 [00:01<00:01, 915.47it/s] 71%|███████   | 2340/3306 [00:02<00:01, 888.58it/s] 74%|███████▍  | 2460/3306 [00:02<00:00, 860.43it/s] 78%|███████▊  | 2580/3306 [00:02<00:00, 824.52it/s] 82%|████████▏ | 2700/3306 [00:02<00:00, 799.77it/s] 85%|████████▌ | 2820/3306 [00:02<00:00, 778.87it/s] 89%|████████▉ | 2940/3306 [00:02<00:00, 751.39it/s] 93%|█████████▎| 3060/3306 [00:03<00:00, 727.63it/s] 96%|█████████▌| 3180/3306 [00:03<00:00, 703.77it/s]100%|█████████▉| 3300/3306 [00:03<00:00, 681.64it/s]100%|██████████| 3306/3306 [00:03<00:00, 912.39it/s]
+No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 555, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/ubuntu/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 198, in handle_update
+    return self.callback(update, context)
+  File "/home/ubuntu/telegramAlarmBot/HA_telBot4.py", line 231, in get_name
+    display_all_signal(df, msg, "1day")
+  File "/home/ubuntu/telegramAlarmBot/HA_telBot4.py", line 763, in display_all_signal
+    fig1.write_image("fig1.png")
+  File "/home/ubuntu/.local/lib/python3.9/site-packages/plotly/basedatatypes.py", line 3821, in write_image
+    return pio.write_image(self, *args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.9/site-packages/plotly/io/_kaleido.py", line 268, in write_image
+    img_data = to_image(
+  File "/home/ubuntu/.local/lib/python3.9/site-packages/plotly/io/_kaleido.py", line 134, in to_image
+    raise ValueError(
+ValueError: 
+Image export using the "kaleido" engine requires the kaleido package,
+which can be installed using pip:
+    $ pip install -U kaleido
+
+No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 555, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/ubuntu/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 198, in handle_update
+    return self.callback(update, context)
+  File "/home/ubuntu/telegramAlarmBot/HA_telBot4.py", line 396, in callback_get
+    display_all_signal(df, coin, interval)
+  File "/home/ubuntu/telegramAlarmBot/HA_telBot4.py", line 763, in display_all_signal
+    fig1.write_image("fig1.png")
+  File "/home/ubuntu/.local/lib/python3.9/site-packages/plotly/basedatatypes.py", line 3821, in write_image
+    return pio.write_image(self, *args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.9/site-packages/plotly/io/_kaleido.py", line 268, in write_image
+    img_data = to_image(
+  File "/home/ubuntu/.local/lib/python3.9/site-packages/plotly/io/_kaleido.py", line 134, in to_image
+    raise ValueError(
+ValueError: 
+Image export using the "kaleido" engine requires the kaleido package,
+which can be installed using pip:
+    $ pip install -U kaleido
+
