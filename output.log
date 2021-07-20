@@ -46,3 +46,442 @@ Image export using the "kaleido" engine requires the kaleido package,
 which can be installed using pip:
     $ pip install -U kaleido
 
+us_ha_check
+SNOW heiken_ashi_jusik
+SNOW buy_signal
+SNOW sell_signal
+AXP heiken_ashi_jusik
+AXP buy_signal
+AXP sell_signal
+SNAP heiken_ashi_jusik
+SNAP buy_signal
+SNAP sell_signal
+DPZ heiken_ashi_jusik
+DPZ buy_signal
+DPZ sell_signal
+DPZ plot candle chart
+DD heiken_ashi_jusik
+DD buy_signal
+DD sell_signal
+BA heiken_ashi_jusik
+BA buy_signal
+BA sell_signal
+PVH heiken_ashi_jusik
+PVH buy_signal
+PVH sell_signal
+MRNA heiken_ashi_jusik
+MRNA buy_signal
+MRNA sell_signal
+MRK heiken_ashi_jusik
+MRK buy_signal
+MRK sell_signal
+MRK plot candle chart
+VIAC heiken_ashi_jusik
+VIAC buy_signal
+VIAC sell_signal
+VFC heiken_ashi_jusik
+VFC buy_signal
+VFC sell_signal
+UBER heiken_ashi_jusik
+UBER buy_signal
+UBER sell_signal
+COIN heiken_ashi_jusik
+COIN buy_signal
+COIN sell_signal
+DISCK heiken_ashi_jusik
+DISCK buy_signal
+DISCK sell_signal
+AMD heiken_ashi_jusik
+AMD buy_signal
+AMD sell_signal
+F heiken_ashi_jusik
+F buy_signal
+F sell_signal
+MSFT heiken_ashi_jusik
+MSFT buy_signal
+MSFT sell_signal
+MSFT plot candle chart
+BLK heiken_ashi_jusik
+BLK buy_signal
+BLK sell_signal
+NET heiken_ashi_jusik
+NET buy_signal
+NET sell_signal
+Z heiken_ashi_jusik
+Z buy_signal
+Z sell_signal
+U heiken_ashi_jusik
+U buy_signal
+U sell_signal
+BRK heiken_ashi_jusik
+BRK buy_signal
+BRK sell_signal
+MU heiken_ashi_jusik
+MU buy_signal
+MU sell_signal
+TSM heiken_ashi_jusik
+TSM buy_signal
+TSM sell_signal
+ASML heiken_ashi_jusik
+ASML buy_signal
+ASML sell_signal
+NFLX heiken_ashi_jusik
+NFLX buy_signal
+NFLX sell_signal
+AMCR heiken_ashi_jusik
+AMCR buy_signal
+AMCR sell_signal
+ADSK heiken_ashi_jusik
+ADSK buy_signal
+ADSK sell_signal
+DIS heiken_ashi_jusik
+DIS buy_signal
+DIS sell_signal
+LEVI heiken_ashi_jusik
+LEVI buy_signal
+LEVI sell_signal
+GLW heiken_ashi_jusik
+GLW buy_signal
+GLW sell_signal
+JPM heiken_ashi_jusik
+JPM buy_signal
+JPM sell_signal
+AAPL heiken_ashi_jusik
+AAPL buy_signal
+AAPL sell_signal
+GS heiken_ashi_jusik
+GS buy_signal
+GS sell_signal
+KO heiken_ashi_jusik
+KO buy_signal
+KO sell_signal
+KO plot candle chart
+GPS heiken_ashi_jusik
+GPS buy_signal
+GPS sell_signal
+INTC heiken_ashi_jusik
+INTC buy_signal
+INTC sell_signal
+PINS heiken_ashi_jusik
+PINS buy_signal
+PINS sell_signal
+QCOM heiken_ashi_jusik
+QCOM buy_signal
+QCOM sell_signal
+FITB heiken_ashi_jusik
+FITB buy_signal
+FITB sell_signal
+SNY heiken_ashi_jusik
+SNY buy_signal
+SNY sell_signal
+ZM heiken_ashi_jusik
+ZM buy_signal
+ZM sell_signal
+BAC heiken_ashi_jusik
+BAC buy_signal
+BAC sell_signal
+DOW heiken_ashi_jusik
+DOW buy_signal
+DOW sell_signal
+SPCE heiken_ashi_jusik
+SPCE buy_signal
+SPCE sell_signal
+PFE heiken_ashi_jusik
+PFE buy_signal
+PFE sell_signal
+CCL heiken_ashi_jusik
+CCL buy_signal
+CCL sell_signal
+JNJ heiken_ashi_jusik
+JNJ buy_signal
+JNJ sell_signal
+REAL heiken_ashi_jusik
+REAL buy_signal
+REAL sell_signal
+PYPL heiken_ashi_jusik
+PYPL buy_signal
+PYPL sell_signal
+TWTR heiken_ashi_jusik
+TWTR buy_signal
+TWTR sell_signal
+ATVI heiken_ashi_jusik
+ATVI buy_signal
+ATVI sell_signal
+AMZN heiken_ashi_jusik
+AMZN buy_signal
+AMZN sell_signal
+ORCL heiken_ashi_jusik
+ORCL buy_signal
+ORCL sell_signal
+ORCL plot candle chart
+RBLX heiken_ashi_jusik
+RBLX buy_signal
+RBLX sell_signal
+UAL heiken_ashi_jusik
+UAL buy_signal
+UAL sell_signal
+KEY heiken_ashi_jusik
+KEY buy_signal
+KEY sell_signal
+CPNG heiken_ashi_jusik
+CPNG buy_signal
+CPNG sell_signal
+LMT heiken_ashi_jusik
+LMT buy_signal
+LMT sell_signal
+LMT plot candle chart
+MET heiken_ashi_jusik
+MET buy_signal
+MET sell_signal
+GOOGL heiken_ashi_jusik
+GOOGL buy_signal
+GOOGL sell_signal
+FB heiken_ashi_jusik
+FB buy_signal
+FB sell_signal
+NEM heiken_ashi_jusik
+NEM buy_signal
+NEM sell_signal
+GM heiken_ashi_jusik
+GM buy_signal
+GM sell_signal
+IRM heiken_ashi_jusik
+IRM buy_signal
+IRM sell_signal
+TSLA heiken_ashi_jusik
+TSLA buy_signal
+TSLA sell_signal
+SHOP heiken_ashi_jusik
+SHOP buy_signal
+SHOP sell_signal
+V heiken_ashi_jusik
+V buy_signal
+V sell_signal
+V plot candle chart
+ADBE heiken_ashi_jusik
+ADBE buy_signal
+ADBE sell_signal
+ADBE plot candle chart
+NKE heiken_ashi_jusik
+NKE buy_signal
+NKE sell_signal
+MO heiken_ashi_jusik
+MO buy_signal
+MO sell_signal
+MO plot candle chart
+RL heiken_ashi_jusik
+RL buy_signal
+RL sell_signal
+ABNB heiken_ashi_jusik
+ABNB buy_signal
+ABNB sell_signal
+PLD heiken_ashi_jusik
+PLD buy_signal
+PLD sell_signal
+NVDA heiken_ashi_jusik
+NVDA buy_signal
+NVDA sell_signal
+쓰레딩이이잉
+coin_ha_check_5min
+upbit KRW-BTC heiken_ashi_coin
+test plot candle chart
+KRW-BTC buy_signal
+get command
+BTC
+KRW-BTC sell_signal
+signal maker start
+signal maker end
+get command
+BTC
+signal maker start
+signal maker end
+get command
+BTC
+get_name
+삼성전자
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+삼성전자 1day display_all_signal start
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+get command
+BTC
+coin_ha_check_5min
+upbit KRW-BTC heiken_ashi_coin
+test plot candle chart
+KRW-BTC buy_signal
+KRW-BTC sell_signal
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+binance_ha_check_60min
+binance BTC/USDT heiken_ashi_coin
+BTC/USDT buy_signal
+BTC/USDT plot candle chart
+BTC/USDT sell_signal
+coin_ha_check_60min
+upbit KRW-BTC heiken_ashi_coin
+KRW-BTC buy_signal
+KRW-BTC plot candle chart
+KRW-BTC sell_signal
+coin_ha_check_5min
+upbit KRW-BTC heiken_ashi_coin
+test plot candle chart
+KRW-BTC buy_signal
+KRW-BTC sell_signal
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+coin_ha_check_5min
+upbit KRW-BTC heiken_ashi_coin
+test plot candle chart
+KRW-BTC buy_signal
+KRW-BTC sell_signal
+KRW-BTC plot candle chart
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+coin_ha_check_5min
+upbit KRW-BTC heiken_ashi_coin
+test plot candle chart
+KRW-BTC buy_signal
+KRW-BTC plot candle chart
+KRW-BTC sell_signal
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+coin_ha_check_5min
+upbit KRW-BTC heiken_ashi_coin
+test plot candle chart
+KRW-BTC buy_signal
+KRW-BTC sell_signal
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+coin_ha_check_5min
+upbit KRW-BTC heiken_ashi_coin
+test plot candle chart
+KRW-BTC buy_signal
+KRW-BTC sell_signal
+KRW-BTC plot candle chart
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+callback :  binance
+callback :  binance,4h
+signal maker start
+signal maker end
+BTC/USDT 4h display_all_signal start
+coin_ha_check_5min
+upbit KRW-BTC heiken_ashi_coin
+test plot candle chart
+KRW-BTC buy_signal
+KRW-BTC sell_signal
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+coin_ha_check_5min
+upbit KRW-BTC heiken_ashi_coin
+test plot candle chart
+KRW-BTC buy_signal
+KRW-BTC sell_signal
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+coin_ha_check_5min
+upbit KRW-BTC heiken_ashi_coin
+test plot candle chart
+KRW-BTC buy_signal
+KRW-BTC sell_signal
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+signal maker start
+signal maker end
+coin_ha_check_5min
+upbit KRW-BTC heiken_ashi_coin
