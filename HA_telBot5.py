@@ -31,7 +31,7 @@ import plotly.graph_objs as pltygo
 plotly.__version__
 
 '''
-version 5.1
+version 5.2
 '''
 
 jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
@@ -183,7 +183,7 @@ def get_name(bot, update):
     print(msg)
 
     if codefind(msg, "krx") != 0: # 한국종목이름 검색 결과
-        df = fetch_jusik(msg, "krx", 100)
+        df = fetch_jusik(msg, "krx", 120)
         df = Macd(df)
         df = BolingerBand(df)
         df = Rsi(df)
@@ -208,7 +208,14 @@ def get_name(bot, update):
         display_all_signal(df, msg, "1day")
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
-        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'))     
+        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'))  
+    else :
+        update.bot.send_message(text="검색결과가 없습니다.\n\
+                \n코인 : /btc /eth\
+                \n한국 : /종목명\
+                \n미국 : /종목명 or /티커\
+                \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.",
+                                chat_id=chat_id)
 # 명령어 응답
 def get_command(bot, update):
     print("get command")
@@ -234,7 +241,7 @@ def get_command(bot, update):
     elif msg == "ETH":
         bot.effective_message.reply_text("ETH 선택됨. 거래소를 선택하세요.", reply_markup=show_markup2)
     elif codefind(msg.lower().capitalize(), "us") != 0: # 미국종목이름 검색 결과
-        df = fetch_jusik(codefind(msg.lower().capitalize(), "us"), "us", 100)
+        df = fetch_jusik(codefind(msg.lower().capitalize(), "us"), "us", 120)
         df = Macd(df)
         df = BolingerBand(df)
         df = Rsi(df)
@@ -262,7 +269,7 @@ def get_command(bot, update):
         telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'))        
     elif namefind(msg) != 0: # 미국티커 검색 결과
         print(namefind(msg))
-        df = fetch_jusik(msg, "us", 100)
+        df = fetch_jusik(msg, "us", 120)
         df = Macd(df)
         df = BolingerBand(df)
         df = Rsi(df)
@@ -677,7 +684,7 @@ def display_all_signal(df, name, interval):
                         increasing={'line': {'color': 'firebrick'}},
                         decreasing={'line': {'color': 'royalblue'}},
                         )
-    ema = pltygo.Scatter(x=df.index, y=df['ema'], name="8ema", mode='lines', line=dict( width=0.8))
+    ema = pltygo.Scatter(x=df.index, y=df['ema'], name="8ema", mode='lines', line=dict(color="green", width=0.8))
 
     macd = pltygo.Scatter( x=df.index, y=df['macd'],  mode='lines',name="MACD") 
     signal = pltygo.Scatter( x=df.index, y=df['macdSignal'], mode='lines', name="Signal") 
@@ -705,19 +712,18 @@ def display_all_signal(df, name, interval):
                         )
     bolUp = pltygo.Scatter(x=df.index, y=df['bolUpper'], name="bolUpper",  mode='lines', line=dict(color='black', width=1))
     bolLow = pltygo.Scatter(x=df.index, y=df['bolLower'], name="bolLower",  mode='lines',line=dict(color='black', width=1))
-    ma20 = pltygo.Scatter(x=df.index, y=df['20ma'], name="20ma",  mode='lines',line=dict(color='purple', width=0.8))
+    ma20 = pltygo.Scatter(x=df.index, y=df['20ma'], name="20ma",  mode='lines',line=dict(color='orange', width=0.8))
 
     # OHLC,볼밴 + RSI + MACD 차트
     fig1 = subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.05,
                                 row_width=[0.4, 0.4,1], shared_xaxes=True, 
                                 subplot_titles=('Candle Chart', 'RSI', 'MACD' ))       # row : 행 , col : 열
-    # OHLC,볼밴 + HA 차트
-    fig2 = subplots.make_subplots(rows=2, cols=1, vertical_spacing=0.05,
-                                row_width=[1, 1], shared_xaxes=True, 
-                                subplot_titles=('Candle Chart','Heiken Ashi'))       # row : 행 , col : 열
+    # HA 차트 + 20ma 8ema
+    fig2 = subplots.make_subplots(rows=1, cols=1, shared_xaxes=True,
+                                subplot_titles=('Heiken Ashi',""))       # row : 행 , col : 열
     # OHLC,일목 차트
     fig3 = subplots.make_subplots(rows=1, cols=1, shared_xaxes=True,
-                                subplot_titles=('Candle + ichimoku Chart'))       # row : 행 , col : 열
+                                subplot_titles=('ichimoku Chart, kijun : '+str(round(df['kijun'].iloc[-1],2)),""))       # row : 행 , col : 열
 
 
     # fig1 
@@ -740,12 +746,9 @@ def display_all_signal(df, name, interval):
     fig1.write_image("fig1.png")
 
     # fig2
-    for ohlc in setOhlc: 
-        fig2.add_trace(ohlc, 1,1) 
-
     setHa = [ha, ma20, ema]
     for ha in setHa: 
-        fig2.add_trace(ha, 2,1)
+        fig2.add_trace(ha, 1,1)
     
     fig2.update_xaxes(rangeslider_thickness = 0)     # 스크롤바 두께
     fig2.update_layout(title_text=name+ " " + interval +" chart")
@@ -989,25 +992,25 @@ def signal_maker(df):
             txt.append("⚠️0. 〰️20ma > 8ema : 역배열 반등↘️↗️")
     
     ## 일목기준표
-    if df['close'].iloc[-2] > df['kijun'].iloc[-2] & df['close'].iloc[-1] < df['kijun'].iloc[-1]:
+    if df['close'].iloc[-2] > df['kijun'].iloc[-2] and df['close'].iloc[-1] < df['kijun'].iloc[-1]:
         txt.append("💙3. 〰️일목 : 기준선 하향돌파⬇️")
         sellCnt -= 3
-    elif df['close'].iloc[-2] < df['kijun'].iloc[-2] & df['close'].iloc[-1] > df['kijun'].iloc[-1]:
+    elif df['close'].iloc[-2] < df['kijun'].iloc[-2] and df['close'].iloc[-1] > df['kijun'].iloc[-1]:
         txt.append("❤️3. 〰️일목 : 기준선 상향돌파⬆️")
         buyCnt += 3 
     elif df['senkouSpanB'].iloc[-1] > df['close'].iloc[-1] : # 선행스팬 아래
         if df['kijun'].iloc[-1] < df['tenkan'].iloc[-1] : # 기준 < 전환
-            txt.append("💙2. 〰️일목 : 선행⬇️ 저항구간")
+            txt.append("💙2. 〰️일목 : 선행B⬇️ 저항구간")
             sellCnt -= 2
         elif df['kijun'].iloc[-1] > df['tenkan'].iloc[-1] : # 기준 > 전환
-            txt.append("💙1. 〰️ 일복 : 선행⬇️ 하락구간↘️")
+            txt.append("💙1. 〰️ 일복 : 선행B⬇️ 하락구간↘️")
             sellCnt -= 1
     elif df['senkouSpanB'].iloc[-1] < df['close'].iloc[-1] : # 선행스팬 위
         if df['kijun'].iloc[-1] < df['tenkan'].iloc[-1] : # 기준 < 전환
-            txt.append("❤️1. 〰️일목 : 선행⬆️ 상승구간↗️")
+            txt.append("❤️1. 〰️일목 : 선행B⬆️ 상승구간↗️")
             buyCnt += 1
         elif df['kijun'].iloc[-1] > df['tenkan'].iloc[-1] : # 기준 > 전환
-            txt.append("❤️2. 〰️일목 : 선행⬇️ 지지구간")
+            txt.append("❤️2. 〰️일목 : 선행B⬆️ 지지구간")
             buyCnt += 2
 
     txt.append(buyCnt + sellCnt)
@@ -1034,6 +1037,7 @@ def signal_maker_time():
         df = Rsi(df)
         df = Ema(df)
         df = Heiken_ashi(df)
+        df = ichimoku(df)
         txt = signal_maker(df)
 
         if txt[-1] > 5: #매수 시그널
@@ -1251,7 +1255,7 @@ def heiken_ashi_jusik(token, region, count):
     df_HA = df_HA.fillna(0) # NA 값을 0으로
     return df_HA       
 
-def buy_signal(token, interval, df_HA, bot=None, channel=None, channel_id=None):
+def buy_signal(token, interval, df_HA, channel_id=None):
     print(token+" buy_signal")
     # ha음봉(ha_open > ha_close) -> ha양봉(ha_open < ha_close)  # 양전
     if df_HA["open"].iloc[-2] > df_HA["close"].iloc[-2] and df_HA["open"].iloc[-1] < df_HA["close"].iloc[-1] :
@@ -1290,7 +1294,7 @@ def buy_signal(token, interval, df_HA, bot=None, channel=None, channel_id=None):
     time.sleep(1)
     return 0
 
-def sell_signal(token, interval, df_HA, bot=None, channel=None, channel_id=None):
+def sell_signal(token, interval, df_HA, channel_id=None):
     print(token+" sell_signal")
     # ha양봉(ha_open < ha_close) -> ha양봉(ha_open < ha_close)  # 양봉연속
     if df_HA["open"].iloc[-2] < df_HA["close"].iloc[-2] and df_HA["open"].iloc[-1] < df_HA["close"].iloc[-1]:
@@ -1355,8 +1359,8 @@ def krx_ha_check():
     #     post_message(tokenKorea,channelKorea, "@@@@@@@@@@ KOREA @@@@@@@@@ ")
     for token in jongmok: # krx
         df_HA = heiken_ashi_jusik(token, "krx", count)
-        buy_signal(token, "day", df_HA, bot=tokenKorea, channel=channelKorea, channel_id=channel_id_korea)
-        sell_signal(token, "day", df_HA, bot=tokenKorea, channel=channelKorea, channel_id=channel_id_korea)
+        buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
+        sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
 # 매일 정해진 시간에
 schedule.every().day.at("08:52").do(lambda:krx_ha_check())
 schedule.every().day.at("15:02").do(lambda:krx_ha_check())
@@ -1367,8 +1371,8 @@ def us_ha_check():
     #     post_message(tokenUsa,channelUsa,"@@@@@@@@@@ USA @@@@@@@@@ ")
     for token in jongmok2: #us
         df_HA = heiken_ashi_jusik(token, "us", count)
-        buy_signal(token, "day", df_HA, bot=tokenUsa, channel=channelUsa, channel_id=channel_id_usa)
-        sell_signal(token, "day", df_HA, bot=tokenUsa, channel=channelUsa, channel_id=channel_id_usa)
+        buy_signal(token, "day", df_HA, channel_id=channel_id_usa)
+        sell_signal(token, "day", df_HA, channel_id=channel_id_usa)
 # 매일 정해진 시간에
 schedule.every().day.at("16:31").do(lambda:us_ha_check()) 
 schedule.every().day.at("22:31").do(lambda:us_ha_check())
@@ -1383,8 +1387,8 @@ def coin_ha_check_5min():
     interval_5 = "minute5"
     df_HA_5 = heiken_ashi_coin("upbit",coin, interval_5, count)
     plot_candle_chart(df_HA_5, "test")
-    buy_signal(coin, interval_5, df_HA_5, bot=tokenCoin, channel=channelUpbit, channel_id=channel_id)
-    sell_signal(coin, interval_5, df_HA_5, bot=tokenCoin, channel=channelUpbit, channel_id=channel_id)
+    buy_signal(coin, interval_5, df_HA_5, channel_id=channel_id)
+    sell_signal(coin, interval_5, df_HA_5, channel_id=channel_id)
 # 5분에 한번씩 실행
 schedule.every().hour.at("04:30").do(lambda:coin_ha_check_5min())
 schedule.every().hour.at("09:30").do(lambda:coin_ha_check_5min())
@@ -1440,8 +1444,9 @@ def binance_ha_check_day():
 schedule.every().day.at("08:52").do(lambda:binance_ha_check_day())
 schedule.every().day.at("23:52").do(lambda:binance_ha_check_day())
 
-if msgOn == 1 :
-    telbot.sendMessage(chat_id=channel_id_feedback, text=("업데이트완료...")) # 메세지 보내기
+
+telbot.sendMessage(chat_id=channel_id_feedback, text=("업데이트완료...")) # 메세지 보내기
+
 # 작동 테스트
 if runtest==1:
     print("runtest")
