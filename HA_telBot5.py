@@ -31,7 +31,7 @@ import plotly.graph_objs as pltygo
 plotly.__version__
 
 '''
-version 5.3
+version 5.4
 '''
 
 jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
@@ -47,7 +47,7 @@ jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원�
 jongmok2 = {"AAPL","ABNB","ADBE","ADSK","ASML","ATVI","AMD","AMZN","AMCR","AXP","BA","BAC","BLK","BRK",
         "CCL","CPNG","COIN", "CRWD","DD","DIS","DISCK","DPZ","DOW","FITB","F","FB","GOOGL","GS","GM", "GLW","GPS",
         "INTC","IRM","JNJ","JPM",
-        "KO","KEY","LMT","LEVI","NFLX","NVDA","NET","NEM","NKE", "MRNA","MET","MO","MU","MSFT", "MRK","ORCL",
+        "KO","KEY","LMT","LEVI","NFLX","NVDA","NET","NEM","NKE", "MRNA","MET","MO","MU","MSFT", "MRK","ORCL", "ODP",
         "PFE", "PINS", "PLD", "PVH","PYPL","QCOM", "RL","REAL","RBLX","SNAP", "SNOW","SNY", "SPCE","SHOP",
         "TSLA", "TSM","TWTR", "U","UBER","UAL","V","VFC","VIAC","ZM","Z"}
 
@@ -295,8 +295,47 @@ def get_command(bot, update):
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'))
+    elif codefind(msg, "krx") != 0: # 한국종목이름 검색 결과
+        df = fetch_jusik(msg, "krx", 120)
+        df = Macd(df)
+        df = BolingerBand(df)
+        df = Rsi(df)
+        df = Ema(df)
+        df = Heiken_ashi(df)
+        df = ichimoku(df)
+        txt = signal_maker(df)
+        temp = ""
+        for t in txt:
+            if str(type(t)) == "<class 'int'>":
+                if t > 0 :
+                    temp = temp + "\n❤️ " + str(t) + ". 〰️매수 우위"
+                elif t < 0 :
+                    temp = temp + "\n💙 " + str(-t) + ". 〰️매도 우위"
+                else :
+                    temp = temp + "\n⚠️ " + str(t) + ". 〰️중립" 
+            else:
+                temp = temp + t + "\n"
+
+        update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
+                                chat_id=chat_id)
+        display_all_signal(df, msg, "1day")
+        telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
+        telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
+        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'))  
+    
     elif msg == "/help":
-        bot.effective_message.reply_text("검색방법 : ")
+        bot.effective_message.reply_text("* 검색방법 *\n\
+                \n코인 : /btc /eth\
+                \n한국 : /종목명\
+                \n미국 : /종목명 or /티커\
+                \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.")
+    else :
+        update.bot.send_message(text="검색결과가 없습니다.\n\
+                \n코인 : /btc /eth\
+                \n한국 : /종목명\
+                \n미국 : /종목명 or /티커\
+                \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.",
+                                chat_id=chat_id)
 
 # 버튼 누르면 다시 호출되는
 def callback_get(bot, update):
