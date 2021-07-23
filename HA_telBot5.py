@@ -31,7 +31,7 @@ import plotly.graph_objs as pltygo
 plotly.__version__
 
 '''
-version 5.1
+version 5.2
 '''
 
 jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
@@ -45,7 +45,7 @@ jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원�
         "KBSTAR Fn수소경제테마", "TIGER KRX2차전지K-뉴딜","TIGER TOP10", "TIGER 금은선물(H)", "KODEX 바이오", 
         "TIGER KRX바이오K-뉴딜", "TIGER 여행레저", "TIGER 우량가치", "TIGER 경기방어"}
 jongmok2 = {"AAPL","ABNB","ADBE","ADSK","ASML","ATVI","AMD","AMZN","AMCR","AXP","BA","BAC","BLK","BRK",
-        "CCL","CPNG","COIN","DD","DIS","DISCK","DPZ","DOW","FITB","F","FB","GOOGL","GS","GM", "GLW","GPS",
+        "CCL","CPNG","COIN", "CRWD","DD","DIS","DISCK","DPZ","DOW","FITB","F","FB","GOOGL","GS","GM", "GLW","GPS",
         "INTC","IRM","JNJ","JPM",
         "KO","KEY","LMT","LEVI","NFLX","NVDA","NET","NEM","NKE", "MRNA","MET","MO","MU","MSFT", "MRK","ORCL",
         "PFE", "PINS", "PLD", "PVH","PYPL","QCOM", "RL","REAL","RBLX","SNAP", "SNOW","SNY", "SPCE","SHOP",
@@ -183,7 +183,7 @@ def get_name(bot, update):
     print(msg)
 
     if codefind(msg, "krx") != 0: # 한국종목이름 검색 결과
-        df = fetch_jusik(msg, "krx", 100)
+        df = fetch_jusik(msg, "krx", 120)
         df = Macd(df)
         df = BolingerBand(df)
         df = Rsi(df)
@@ -208,7 +208,14 @@ def get_name(bot, update):
         display_all_signal(df, msg, "1day")
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
-        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'))     
+        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'))  
+    else :
+        update.bot.send_message(text="검색결과가 없습니다.\n\
+                \n코인 : /btc /eth\
+                \n한국 : /종목명\
+                \n미국 : /종목명 or /티커\
+                \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.",
+                                chat_id=chat_id)
 # 명령어 응답
 def get_command(bot, update):
     print("get command")
@@ -234,7 +241,7 @@ def get_command(bot, update):
     elif msg == "ETH":
         bot.effective_message.reply_text("ETH 선택됨. 거래소를 선택하세요.", reply_markup=show_markup2)
     elif codefind(msg.lower().capitalize(), "us") != 0: # 미국종목이름 검색 결과
-        df = fetch_jusik(codefind(msg.lower().capitalize(), "us"), "us", 100)
+        df = fetch_jusik(codefind(msg.lower().capitalize(), "us"), "us", 120)
         df = Macd(df)
         df = BolingerBand(df)
         df = Rsi(df)
@@ -262,7 +269,7 @@ def get_command(bot, update):
         telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'))        
     elif namefind(msg) != 0: # 미국티커 검색 결과
         print(namefind(msg))
-        df = fetch_jusik(msg, "us", 100)
+        df = fetch_jusik(msg, "us", 120)
         df = Macd(df)
         df = BolingerBand(df)
         df = Rsi(df)
@@ -511,76 +518,20 @@ def fetch_ohlcvs(coin='BTC/USDT', timeframe='1d', limit=30):
                                         # 시간간격 :'1m','3m','5m','15m','30m','1h','2h','4h','6h','8h','12h','1d','3d','1w','1M'
     return dic2df(ohlcv)   # 딕셔너리를 데이터프레임으로 변환
 
-# 현재가 조회
-def fetch_ticker(coin, ohlcvabl):
-    '''
-    ohlcvabl : "open" "high" "close" "volume" "ask"(매도1호가) "bid"(매수1호가) "last"(최근거래가격)
-    '''
-    binance = bnc()
-    ticker = binance.fetch_ticker(coin)
-    return ticker[ohlcvabl]
+def fetch_jusik(name, country, count):
+    ''' country : krx, us'''
+    today = dt.date.today()
+    delta = dt.timedelta(days=count)    # count 봉 전부터
+    past = today-delta
+    if country == "krx":
+        df = fdr.DataReader(codefind(name, "krx"), past, today)
+    elif country == "us":
+        df = fdr.DataReader(name, past, today)
 
-# 잔고조회
-def fetch_balance(coin):
-    '''
-    coin :"USDT" 
-    fut : "free" 사용가능 "used" 주문넣은것 "total" 총합
-    '''
-    binance = bnc()
-    return binance.fetch_balance(params={"type": "future"})[coin]     #선물 잔고 조회
 
-def fetch_balances():
-    '''
-    coin : "BTC", "USDT" 
-    fut : "free" 사용가능 "used" 주문넣은것 "total" 총합
-    '''
-    binance = bnc()
-    return binance.fetch_balance(params={"type": "future"})     #선물 잔고 조회 
+    df.rename(columns = {'Open' : 'open', "Close" : "close", "High" : "high", "Low":"low"}, inplace = True)
 
-# 취소 주문
-def order_cancel(orderId, coin):
-    binance = bnc()
-    return binance.cancel_order(orderId, coin)
-
-# 지정가 매매
-def trade_limit(coin, order, amount, price):
-    binance = bnc()
-    if order == "buy":
-        return binance.create_limit_buy_order(coin, amount, price)
-    elif order == "sell":
-        return binance.create_limit_sell_order(coin, amount, price)
-
-# 시장가 매매
-def trade_market(coin, order, amount):
-    binance = bnc()
-    if order == "buy":
-        return binance.create_market_buy_order(coin, amount)
-    elif order == "sell":
-        return binance.create_market_sell_order(coin, amount)
-
-def order_hedge_limit(coin, side, amount, price, positionside):
-    '''
-        ** Open position **
-        Long : positionSide= 'LONG', side= 'BUY' 
-        Short: positionSide= 'SHORT', side= 'SELL'
-        ** Close position **
-        Close long position: positionSide=LONG, side=SELL 
-        Close short position: positionSide=SHORT, side=BUY 
-    '''
-    binance = bnc()
-    return binance.create_order(coin, 'limit', side, amount, price, params={'positionSide' : positionside})
-
-def order_hedge_market(coin, side, amount, positionside):
-    '''
-        ** Open position **
-        Long : positionSide= 'LONG', side= 'BUY' 
-        Short: positionSide= 'SHORT', side= 'SELL'
-        ** Close position **
-        Close long position: positionSide=LONG, side=SELL 
-        Close short position: positionSide=SHORT, side=BUY 
-    '''
-    binance = bnc()
-    return binance.create_order(coin, 'market', side, amount, params={'positionSide' : positionside})
+    return df
 
 def Ema(df, span=8):
     '''ema 지수이평선 '''
@@ -677,7 +628,7 @@ def display_all_signal(df, name, interval):
                         increasing={'line': {'color': 'firebrick'}},
                         decreasing={'line': {'color': 'royalblue'}},
                         )
-    ema = pltygo.Scatter(x=df.index, y=df['ema'], name="8ema", mode='lines', line=dict( width=0.8))
+    ema = pltygo.Scatter(x=df.index, y=df['ema'], name="8ema", mode='lines', line=dict(color="green", width=0.8))
 
     macd = pltygo.Scatter( x=df.index, y=df['macd'],  mode='lines',name="MACD") 
     signal = pltygo.Scatter( x=df.index, y=df['macdSignal'], mode='lines', name="Signal") 
@@ -705,19 +656,18 @@ def display_all_signal(df, name, interval):
                         )
     bolUp = pltygo.Scatter(x=df.index, y=df['bolUpper'], name="bolUpper",  mode='lines', line=dict(color='black', width=1))
     bolLow = pltygo.Scatter(x=df.index, y=df['bolLower'], name="bolLower",  mode='lines',line=dict(color='black', width=1))
-    ma20 = pltygo.Scatter(x=df.index, y=df['20ma'], name="20ma",  mode='lines',line=dict(color='purple', width=0.8))
+    ma20 = pltygo.Scatter(x=df.index, y=df['20ma'], name="20ma",  mode='lines',line=dict(color='orange', width=0.8))
 
     # OHLC,볼밴 + RSI + MACD 차트
     fig1 = subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.05,
                                 row_width=[0.4, 0.4,1], shared_xaxes=True, 
                                 subplot_titles=('Candle Chart', 'RSI', 'MACD' ))       # row : 행 , col : 열
-    # OHLC,볼밴 + HA 차트
-    fig2 = subplots.make_subplots(rows=2, cols=1, vertical_spacing=0.05,
-                                row_width=[1, 1], shared_xaxes=True, 
-                                subplot_titles=('Candle Chart','Heiken Ashi'))       # row : 행 , col : 열
+    # HA 차트 + 20ma 8ema
+    fig2 = subplots.make_subplots(rows=1, cols=1, shared_xaxes=True,
+                                subplot_titles=('Heiken Ashi',""))       # row : 행 , col : 열
     # OHLC,일목 차트
     fig3 = subplots.make_subplots(rows=1, cols=1, shared_xaxes=True,
-                                subplot_titles=('Candle + ichimoku Chart'))       # row : 행 , col : 열
+                                subplot_titles=('ichimoku Chart, kijun : '+str(round(df['kijun'].iloc[-1],2)),""))       # row : 행 , col : 열
 
 
     # fig1 
@@ -740,12 +690,9 @@ def display_all_signal(df, name, interval):
     fig1.write_image("fig1.png")
 
     # fig2
-    for ohlc in setOhlc: 
-        fig2.add_trace(ohlc, 1,1) 
-
     setHa = [ha, ma20, ema]
     for ha in setHa: 
-        fig2.add_trace(ha, 2,1)
+        fig2.add_trace(ha, 1,1)
     
     fig2.update_xaxes(rangeslider_thickness = 0)     # 스크롤바 두께
     fig2.update_layout(title_text=name+ " " + interval +" chart")
@@ -989,25 +936,25 @@ def signal_maker(df):
             txt.append("⚠️0. 〰️20ma > 8ema : 역배열 반등↘️↗️")
     
     ## 일목기준표
-    if df['close'].iloc[-2] > df['kijun'].iloc[-2] & df['close'].iloc[-1] < df['kijun'].iloc[-1]:
+    if df['close'].iloc[-2] > df['kijun'].iloc[-2] and df['close'].iloc[-1] < df['kijun'].iloc[-1]:
         txt.append("💙3. 〰️일목 : 기준선 하향돌파⬇️")
         sellCnt -= 3
-    elif df['close'].iloc[-2] < df['kijun'].iloc[-2] & df['close'].iloc[-1] > df['kijun'].iloc[-1]:
+    elif df['close'].iloc[-2] < df['kijun'].iloc[-2] and df['close'].iloc[-1] > df['kijun'].iloc[-1]:
         txt.append("❤️3. 〰️일목 : 기준선 상향돌파⬆️")
         buyCnt += 3 
     elif df['senkouSpanB'].iloc[-1] > df['close'].iloc[-1] : # 선행스팬 아래
         if df['kijun'].iloc[-1] < df['tenkan'].iloc[-1] : # 기준 < 전환
-            txt.append("💙2. 〰️일목 : 선행⬇️ 저항구간")
+            txt.append("💙2. 〰️일목 : 선행B⬇️ 저항구간")
             sellCnt -= 2
         elif df['kijun'].iloc[-1] > df['tenkan'].iloc[-1] : # 기준 > 전환
-            txt.append("💙1. 〰️ 일복 : 선행⬇️ 하락구간↘️")
+            txt.append("💙1. 〰️ 일복 : 선행B⬇️ 하락구간↘️")
             sellCnt -= 1
     elif df['senkouSpanB'].iloc[-1] < df['close'].iloc[-1] : # 선행스팬 위
         if df['kijun'].iloc[-1] < df['tenkan'].iloc[-1] : # 기준 < 전환
-            txt.append("❤️1. 〰️일목 : 선행⬆️ 상승구간↗️")
+            txt.append("❤️1. 〰️일목 : 선행B⬆️ 상승구간↗️")
             buyCnt += 1
         elif df['kijun'].iloc[-1] > df['tenkan'].iloc[-1] : # 기준 > 전환
-            txt.append("❤️2. 〰️일목 : 선행⬇️ 지지구간")
+            txt.append("❤️2. 〰️일목 : 선행B⬆️ 지지구간")
             buyCnt += 2
 
     txt.append(buyCnt + sellCnt)
@@ -1034,6 +981,7 @@ def signal_maker_time():
         df = Rsi(df)
         df = Ema(df)
         df = Heiken_ashi(df)
+        df = ichimoku(df)
         txt = signal_maker(df)
 
         if txt[-1] > 5: #매수 시그널
@@ -1119,58 +1067,6 @@ schedule.every().hour.at("54:45").do(lambda:signal_maker_time())
 schedule.every().hour.at("59:45").do(lambda:signal_maker_time())
 
 
-# 레버리지 설정
-def set_leverage(coin, leverage):
-    binance = bnc()
-    markets = binance.load_markets()
-    market = binance.market(coin)
-    resp = binance.fapiPrivate_post_leverage({
-    'symbol': market['id'],
-    'leverage': leverage
-    })
-def fetch_position(coin, balance):
-    '''
-    coin : "BTCUSDT"
-    balance = binance.fetch_balance()
-    '''
-    positions = balance['info']['positions']
-    for position in positions:
-        if position["symbol"] == coin:
-            return position
-
-def fetch_position2(coin, balance, longshort):            # 들고있는 포지션 조회
-    '''
-    coin : "BTCUSDT"
-    balance = binance.fetch_balance()
-    '''
-    positions = balance['info']['positions']
-    for position in positions:
-        if position["symbol"] == coin and position["positionSide"] == longshort: 
-            return position
-
-# 대기주문 조회
-def fetch_open_order(coin, side, positionSide):
-    '''
-    return {'id', 'amount'} or []
-    '''
-    open_orders = bnc().fetch_open_orders(symbol=coin)
-    for open_order in open_orders:
-        if open_order['symbol'] == coin:
-            if open_order['info']['side'] == side and open_order['info']['positionSide'] == positionSide:
-                return open_order
-    return []    
-
-# 대기주문 조회
-def fetch_open_order2(coin):
-    '''
-    return {'id', 'amount'} or []
-    '''
-    open_orders = bnc().fetch_open_orders(symbol=coin)
-    if open_orders == []:
-        return open_orders
-    else:
-        return open_orders[0]
-
 def heiken_ashi_coin(country, coin='BTC/USDT', interval='1d', count=60):
     print(country + " " + coin +" heiken_ashi_coin")
     if country == "binance":
@@ -1199,21 +1095,6 @@ def heiken_ashi_coin(country, coin='BTC/USDT', interval='1d', count=60):
 
     df_HA = df_HA.fillna(0) # NA 값을 0으로
     return df_HA       
-
-def fetch_jusik(name, country, count):
-    ''' country : krx, us'''
-    today = dt.date.today()
-    delta = dt.timedelta(days=count)    # count 봉 전부터
-    past = today-delta
-    if country == "krx":
-        df = fdr.DataReader(codefind(name, "krx"), past, today)
-    elif country == "us":
-        df = fdr.DataReader(name, past, today)
-
-
-    df.rename(columns = {'Open' : 'open', "Close" : "close", "High" : "high", "Low":"low"}, inplace = True)
-
-    return df
 
 def heiken_ashi_jusik(token, region, count):
     print(token+" heiken_ashi_jusik")
@@ -1251,7 +1132,7 @@ def heiken_ashi_jusik(token, region, count):
     df_HA = df_HA.fillna(0) # NA 값을 0으로
     return df_HA       
 
-def buy_signal(token, interval, df_HA, bot=None, channel=None, channel_id=None):
+def buy_signal(token, interval, df_HA, channel_id=None):
     print(token+" buy_signal")
     # ha음봉(ha_open > ha_close) -> ha양봉(ha_open < ha_close)  # 양전
     if df_HA["open"].iloc[-2] > df_HA["close"].iloc[-2] and df_HA["open"].iloc[-1] < df_HA["close"].iloc[-1] :
@@ -1290,7 +1171,7 @@ def buy_signal(token, interval, df_HA, bot=None, channel=None, channel_id=None):
     time.sleep(1)
     return 0
 
-def sell_signal(token, interval, df_HA, bot=None, channel=None, channel_id=None):
+def sell_signal(token, interval, df_HA, channel_id=None):
     print(token+" sell_signal")
     # ha양봉(ha_open < ha_close) -> ha양봉(ha_open < ha_close)  # 양봉연속
     if df_HA["open"].iloc[-2] < df_HA["close"].iloc[-2] and df_HA["open"].iloc[-1] < df_HA["close"].iloc[-1]:
@@ -1355,8 +1236,8 @@ def krx_ha_check():
     #     post_message(tokenKorea,channelKorea, "@@@@@@@@@@ KOREA @@@@@@@@@ ")
     for token in jongmok: # krx
         df_HA = heiken_ashi_jusik(token, "krx", count)
-        buy_signal(token, "day", df_HA, bot=tokenKorea, channel=channelKorea, channel_id=channel_id_korea)
-        sell_signal(token, "day", df_HA, bot=tokenKorea, channel=channelKorea, channel_id=channel_id_korea)
+        buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
+        sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
 # 매일 정해진 시간에
 schedule.every().day.at("08:52").do(lambda:krx_ha_check())
 schedule.every().day.at("15:02").do(lambda:krx_ha_check())
@@ -1367,8 +1248,8 @@ def us_ha_check():
     #     post_message(tokenUsa,channelUsa,"@@@@@@@@@@ USA @@@@@@@@@ ")
     for token in jongmok2: #us
         df_HA = heiken_ashi_jusik(token, "us", count)
-        buy_signal(token, "day", df_HA, bot=tokenUsa, channel=channelUsa, channel_id=channel_id_usa)
-        sell_signal(token, "day", df_HA, bot=tokenUsa, channel=channelUsa, channel_id=channel_id_usa)
+        buy_signal(token, "day", df_HA, channel_id=channel_id_usa)
+        sell_signal(token, "day", df_HA, channel_id=channel_id_usa)
 # 매일 정해진 시간에
 schedule.every().day.at("16:31").do(lambda:us_ha_check()) 
 schedule.every().day.at("22:31").do(lambda:us_ha_check())
@@ -1383,8 +1264,8 @@ def coin_ha_check_5min():
     interval_5 = "minute5"
     df_HA_5 = heiken_ashi_coin("upbit",coin, interval_5, count)
     plot_candle_chart(df_HA_5, "test")
-    buy_signal(coin, interval_5, df_HA_5, bot=tokenCoin, channel=channelUpbit, channel_id=channel_id)
-    sell_signal(coin, interval_5, df_HA_5, bot=tokenCoin, channel=channelUpbit, channel_id=channel_id)
+    buy_signal(coin, interval_5, df_HA_5, channel_id=channel_id)
+    sell_signal(coin, interval_5, df_HA_5, channel_id=channel_id)
 # 5분에 한번씩 실행
 schedule.every().hour.at("04:30").do(lambda:coin_ha_check_5min())
 schedule.every().hour.at("09:30").do(lambda:coin_ha_check_5min())
@@ -1440,8 +1321,9 @@ def binance_ha_check_day():
 schedule.every().day.at("08:52").do(lambda:binance_ha_check_day())
 schedule.every().day.at("23:52").do(lambda:binance_ha_check_day())
 
-if msgOn == 1 :
-    telbot.sendMessage(chat_id=channel_id_feedback, text=("업데이트완료...")) # 메세지 보내기
+
+telbot.sendMessage(chat_id=channel_id_feedback, text=("업데이트완료...")) # 메세지 보내기
+
 # 작동 테스트
 if runtest==1:
     print("runtest")
