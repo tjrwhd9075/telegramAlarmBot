@@ -31,7 +31,7 @@ import plotly.graph_objs as pltygo
 plotly.__version__
 
 '''
-version 5.4
+version 5.5
 '''
 
 jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
