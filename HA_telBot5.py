@@ -31,7 +31,7 @@ import plotly.graph_objs as pltygo
 plotly.__version__
 
 '''
-version 5.2
+version 5.3
 '''
 
 jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
@@ -45,7 +45,7 @@ jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원�
         "KBSTAR Fn수소경제테마", "TIGER KRX2차전지K-뉴딜","TIGER TOP10", "TIGER 금은선물(H)", "KODEX 바이오", 
         "TIGER KRX바이오K-뉴딜", "TIGER 여행레저", "TIGER 우량가치", "TIGER 경기방어"}
 jongmok2 = {"AAPL","ABNB","ADBE","ADSK","ASML","ATVI","AMD","AMZN","AMCR","AXP","BA","BAC","BLK","BRK",
-        "CCL","CPNG","COIN","DD","DIS","DISCK","DPZ","DOW","FITB","F","FB","GOOGL","GS","GM", "GLW","GPS",
+        "CCL","CPNG","COIN", "CRWD","DD","DIS","DISCK","DPZ","DOW","FITB","F","FB","GOOGL","GS","GM", "GLW","GPS",
         "INTC","IRM","JNJ","JPM",
         "KO","KEY","LMT","LEVI","NFLX","NVDA","NET","NEM","NKE", "MRNA","MET","MO","MU","MSFT", "MRK","ORCL",
         "PFE", "PINS", "PLD", "PVH","PYPL","QCOM", "RL","REAL","RBLX","SNAP", "SNOW","SNY", "SPCE","SHOP",
@@ -518,76 +518,20 @@ def fetch_ohlcvs(coin='BTC/USDT', timeframe='1d', limit=30):
                                         # 시간간격 :'1m','3m','5m','15m','30m','1h','2h','4h','6h','8h','12h','1d','3d','1w','1M'
     return dic2df(ohlcv)   # 딕셔너리를 데이터프레임으로 변환
 
-# 현재가 조회
-def fetch_ticker(coin, ohlcvabl):
-    '''
-    ohlcvabl : "open" "high" "close" "volume" "ask"(매도1호가) "bid"(매수1호가) "last"(최근거래가격)
-    '''
-    binance = bnc()
-    ticker = binance.fetch_ticker(coin)
-    return ticker[ohlcvabl]
+def fetch_jusik(name, country, count):
+    ''' country : krx, us'''
+    today = dt.date.today()
+    delta = dt.timedelta(days=count)    # count 봉 전부터
+    past = today-delta
+    if country == "krx":
+        df = fdr.DataReader(codefind(name, "krx"), past, today)
+    elif country == "us":
+        df = fdr.DataReader(name, past, today)
 
-# 잔고조회
-def fetch_balance(coin):
-    '''
-    coin :"USDT" 
-    fut : "free" 사용가능 "used" 주문넣은것 "total" 총합
-    '''
-    binance = bnc()
-    return binance.fetch_balance(params={"type": "future"})[coin]     #선물 잔고 조회
 
-def fetch_balances():
-    '''
-    coin : "BTC", "USDT" 
-    fut : "free" 사용가능 "used" 주문넣은것 "total" 총합
-    '''
-    binance = bnc()
-    return binance.fetch_balance(params={"type": "future"})     #선물 잔고 조회 
+    df.rename(columns = {'Open' : 'open', "Close" : "close", "High" : "high", "Low":"low"}, inplace = True)
 
-# 취소 주문
-def order_cancel(orderId, coin):
-    binance = bnc()
-    return binance.cancel_order(orderId, coin)
-
-# 지정가 매매
-def trade_limit(coin, order, amount, price):
-    binance = bnc()
-    if order == "buy":
-        return binance.create_limit_buy_order(coin, amount, price)
-    elif order == "sell":
-        return binance.create_limit_sell_order(coin, amount, price)
-
-# 시장가 매매
-def trade_market(coin, order, amount):
-    binance = bnc()
-    if order == "buy":
-        return binance.create_market_buy_order(coin, amount)
-    elif order == "sell":
-        return binance.create_market_sell_order(coin, amount)
-
-def order_hedge_limit(coin, side, amount, price, positionside):
-    '''
-        ** Open position **
-        Long : positionSide= 'LONG', side= 'BUY' 
-        Short: positionSide= 'SHORT', side= 'SELL'
-        ** Close position **
-        Close long position: positionSide=LONG, side=SELL 
-        Close short position: positionSide=SHORT, side=BUY 
-    '''
-    binance = bnc()
-    return binance.create_order(coin, 'limit', side, amount, price, params={'positionSide' : positionside})
-
-def order_hedge_market(coin, side, amount, positionside):
-    '''
-        ** Open position **
-        Long : positionSide= 'LONG', side= 'BUY' 
-        Short: positionSide= 'SHORT', side= 'SELL'
-        ** Close position **
-        Close long position: positionSide=LONG, side=SELL 
-        Close short position: positionSide=SHORT, side=BUY 
-    '''
-    binance = bnc()
-    return binance.create_order(coin, 'market', side, amount, params={'positionSide' : positionside})
+    return df
 
 def Ema(df, span=8):
     '''ema 지수이평선 '''
@@ -699,7 +643,7 @@ def display_all_signal(df, name, interval):
     # ichimoku
     kijun = pltygo.Scatter(x=df.index, y=df['kijun'], name="kijun",  mode='lines', line=dict(color='gray', width=2))
     tenkan = pltygo.Scatter(x=df.index, y=df['tenkan'], name="tenkan",  mode='lines',line=dict(color='red', width=2))
-    senkouSpanA = pltygo.Scatter(x=df.index, y=df['senkouSpanA'], name="spanA",  mode='lines',line=dict(color='green', width=0.8),fill=None)#'tonexty',fillcolor ='rgba(235, 233, 102, 0.5)'
+    senkouSpanA = pltygo.Scatter(x=df.index, y=df['senkouSpanA'], name="spanA",  mode='lines',line=dict(color='rgba(167, 59, 206, 0.9)', width=0.8),fill=None)#'tonexty',fillcolor ='rgba(235, 233, 102, 0.5)'
     senkouSpanB = pltygo.Scatter(x=df.index, y=df['senkouSpanB'], name="spanB",  mode='lines',line=dict(color='green', width=0.8),fill='tonexty',fillcolor ='rgba(111, 236, 203, 0.5)')
 
 
@@ -1123,58 +1067,6 @@ schedule.every().hour.at("54:45").do(lambda:signal_maker_time())
 schedule.every().hour.at("59:45").do(lambda:signal_maker_time())
 
 
-# 레버리지 설정
-def set_leverage(coin, leverage):
-    binance = bnc()
-    markets = binance.load_markets()
-    market = binance.market(coin)
-    resp = binance.fapiPrivate_post_leverage({
-    'symbol': market['id'],
-    'leverage': leverage
-    })
-def fetch_position(coin, balance):
-    '''
-    coin : "BTCUSDT"
-    balance = binance.fetch_balance()
-    '''
-    positions = balance['info']['positions']
-    for position in positions:
-        if position["symbol"] == coin:
-            return position
-
-def fetch_position2(coin, balance, longshort):            # 들고있는 포지션 조회
-    '''
-    coin : "BTCUSDT"
-    balance = binance.fetch_balance()
-    '''
-    positions = balance['info']['positions']
-    for position in positions:
-        if position["symbol"] == coin and position["positionSide"] == longshort: 
-            return position
-
-# 대기주문 조회
-def fetch_open_order(coin, side, positionSide):
-    '''
-    return {'id', 'amount'} or []
-    '''
-    open_orders = bnc().fetch_open_orders(symbol=coin)
-    for open_order in open_orders:
-        if open_order['symbol'] == coin:
-            if open_order['info']['side'] == side and open_order['info']['positionSide'] == positionSide:
-                return open_order
-    return []    
-
-# 대기주문 조회
-def fetch_open_order2(coin):
-    '''
-    return {'id', 'amount'} or []
-    '''
-    open_orders = bnc().fetch_open_orders(symbol=coin)
-    if open_orders == []:
-        return open_orders
-    else:
-        return open_orders[0]
-
 def heiken_ashi_coin(country, coin='BTC/USDT', interval='1d', count=60):
     print(country + " " + coin +" heiken_ashi_coin")
     if country == "binance":
@@ -1203,21 +1095,6 @@ def heiken_ashi_coin(country, coin='BTC/USDT', interval='1d', count=60):
 
     df_HA = df_HA.fillna(0) # NA 값을 0으로
     return df_HA       
-
-def fetch_jusik(name, country, count):
-    ''' country : krx, us'''
-    today = dt.date.today()
-    delta = dt.timedelta(days=count)    # count 봉 전부터
-    past = today-delta
-    if country == "krx":
-        df = fdr.DataReader(codefind(name, "krx"), past, today)
-    elif country == "us":
-        df = fdr.DataReader(name, past, today)
-
-
-    df.rename(columns = {'Open' : 'open', "Close" : "close", "High" : "high", "Low":"low"}, inplace = True)
-
-    return df
 
 def heiken_ashi_jusik(token, region, count):
     print(token+" heiken_ashi_jusik")
