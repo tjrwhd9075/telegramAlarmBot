@@ -31,13 +31,13 @@ import plotly.graph_objs as pltygo
 plotly.__version__
 
 '''
-version 5.5
+version 6.1
 '''
 
 jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
         "데브시스터즈", "롯데칠성","빙그레", "삼성전자", "삼성엔지니어링", "삼성에스디에스","삼성SDI", "삼성바이오로직스","삼성제약","서린바이오",
         "셀트리온","셀트리온제약","셀트리온헬스케어", "스튜디오드래곤", "신세계", "신풍제약","신일제약", "씨젠","씨에스윈드", "씨에스베어링",
-        "에스엠", "에스디바이오센서", "이마트","아이진","우리바이오", "와이지엔터테인먼트", "위메이드","용평리조트",
+        "에스엠", "에스디바이오센서", "이마트","아이진","우리바이오", "와이지엔터테인먼트", "와이엔텍","위메이드","용평리조트",
         "제일약품", "진매트릭스", "천보",  "카카오", "코오롱인더", "펄어비스","프로스테믹스", "하이브", "한화솔루션", "한전KPS","한국전력", "한미반도체", "현대차", "현대모비스", 
         "현대바이오", "휴마시스", "CJ ENM","CJ대한통운","CJ제일제당","CJ CGV","SK하이닉스", "BGF", "F&F", "NAVER", "LG디스플레이", "DB하이텍", "LG화학", "LG전자", 
         "HMM","SK이노베이션", "SK바이오사이언스","SK케미칼","JYP Ent.", "KT","KG ETS",
@@ -55,7 +55,7 @@ myApikey = "hOpHmrM35aqoqakISj0m7PAy42bDLXBmhXIrOsvadPBU6bW8Gtin0ggp7UnzFg9f"
 mySecretkey = "rJp7j47DyzzvqRhaa9ExusnxrcPSF2I6Aa1B6bNvjlzxv3VP7fs3sl3cMNvSbEdU"
 
 #텔레그램 봇
-myToken = '1811197670:AAFGAP3NO6_vJmHeQTURZO-1rAsF3eLdmYQ'
+myToken = '1811197670:AAFaSU2l8pKxT6tDA3tOl2Tpue-OiNC1Af0'
 telbot = tel.Bot(token=myToken)
 channel_id = "@ha_alarm"                  # 업비트 채널
 channel_id_binance = "@ha_alarm_binance"  # 바이낸스 채널
@@ -116,7 +116,6 @@ def plot_candle_chart(df, title):
                     addplot=adp,
                     block=False
                     )
-    print(title + " plot candle chart")
 
 # 캔들차트 그리기
 def plot_candle_chart2(df, title):  
@@ -133,7 +132,6 @@ def plot_candle_chart2(df, title):
                     addplot= adp1 + adp2 +adp3,
                     block=False
                     )
-    print(title + " plot candle chart")
 
 # 캔들차트 그리기
 def plot_candle_chart_ichimoku(df, title):  
@@ -177,10 +175,9 @@ def build_button(text_list, callback_header = "") : # make button list
     return button_list
 
 def get_name(bot, update):
-    print("get_name")    
     chat_id = bot.channel_post.chat.id         # 최근 입력된 메시지의 챗아이디
     msg = bot.channel_post.text[1:].upper()               #  최근 입력된 메시지의 텍스트 "/" 떼고, 대문자로변환
-    print(msg)
+    print("get_name" + msg)
 
     if codefind(msg, "krx") != 0: # 한국종목이름 검색 결과
         df = fetch_jusik(msg, "krx", 120)
@@ -203,12 +200,12 @@ def get_name(bot, update):
             else:
                 temp = temp + t + "\n"
 
-        update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
-                                chat_id=chat_id)
+        # update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
+        #                         chat_id=chat_id)
         display_all_signal(df, msg, "1day")
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
-        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'))  
+        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'), caption="💲💲 "+ msg + " 1일봉 💲💲\n" +temp)  
     else :
         update.bot.send_message(text="검색결과가 없습니다.\n\
                 \n코인 : /btc /eth /비트 /이더\
@@ -218,10 +215,9 @@ def get_name(bot, update):
                                 chat_id=chat_id)
 # 명령어 응답
 def get_command(bot, update):
-    print("get command")
     chat_id = bot.channel_post.chat.id         # 최근 입력된 메시지의 챗아이디
     msg = bot.channel_post.text[1:].upper()               #  최근 입력된 메시지의 텍스트 "/" 떼고, 대문자로변환
-    print(msg)
+    print("get command" +msg)
 
     show_list = []
     show_list.append(InlineKeyboardButton("binance", callback_data="binance")) # add on button
@@ -261,12 +257,12 @@ def get_command(bot, update):
             else:
                 temp = temp + t + "\n"
 
-        update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
-                                chat_id=chat_id)
+        # update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
+        #                         chat_id=chat_id)
         display_all_signal(df, msg, "1day")
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
-        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'))        
+        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'), caption="💲💲 "+ msg + " 1일봉 💲💲\n" +temp)        
     elif namefind(msg) != 0: # 미국티커 검색 결과
         print(namefind(msg))
         df = fetch_jusik(msg, "us", 120)
@@ -289,12 +285,12 @@ def get_command(bot, update):
             else:
                 temp = temp + t + "\n"
 
-        update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
-                                chat_id=chat_id)
+        # update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
+        #                         chat_id=chat_id)
         display_all_signal(df, msg, "1day")
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
-        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'))
+        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'), caption="💲💲 "+ msg + " 1일봉 💲💲\n" +temp)
     elif codefind(msg, "krx") != 0: # 한국종목이름 검색 결과
         df = fetch_jusik(msg, "krx", 120)
         df = Macd(df)
@@ -316,12 +312,12 @@ def get_command(bot, update):
             else:
                 temp = temp + t + "\n"
 
-        update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
-                                chat_id=chat_id)
+        # update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
+        #                         chat_id=chat_id)
         display_all_signal(df, msg, "1day")
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
-        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'))  
+        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'), caption="💲💲 "+ msg + " 1일봉 💲💲\n" +temp)  
     
     elif msg == "/help":
         bot.effective_message.reply_text("* 검색방법 *\n\
@@ -413,13 +409,14 @@ def callback_get(bot, update):
                 else:
                     temp = temp + t + "\n"
 
-            update.bot.sendMessage(text="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +\
-                                    temp, chat_id=bot.callback_query.message.chat_id)
+            # update.bot.sendMessage(text="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +\
+            #                         temp, chat_id=bot.callback_query.message.chat_id)
 
             display_all_signal(df, coin, interval)
             telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig1.png', 'rb'))
             telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig2.png', 'rb'))                                    
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'))     
+            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'), 
+                                caption="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +temp)     
         elif  name == "upbit" :  # 업비트 검색
             if data_selected.split(",")[-1] == "1d": interval = "day"
             elif data_selected.split(",")[-1] == "4h": interval = "minute240"
@@ -452,13 +449,15 @@ def callback_get(bot, update):
                 else:
                     temp = temp + t + "\n"
 
-            update.bot.sendMessage(text="💲💲 "+ name + " "+ coin +" " + interval +" 💲💲\n" +\
-                                    temp, chat_id=bot.callback_query.message.chat_id)
+            # update.bot.sendMessage(text="💲💲 "+ name + " "+ coin +" " + interval +" 💲💲\n" +\
+            #                         temp, chat_id=bot.callback_query.message.chat_id)
 
             display_all_signal(df, coin, interval)
             telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig1.png', 'rb'))
             telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig2.png', 'rb'))                        
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'))     
+            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'),
+                               caption="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +temp )
+
         #ㅡㅡETH -> 바낸, 업비트 선택ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
         elif  name == "binance2" :   # 바이낸스 백테스트
             coin = "ETH/USDT"
@@ -484,13 +483,14 @@ def callback_get(bot, update):
                 else:
                     temp = temp + t + "\n"
 
-            update.bot.sendMessage(text="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +\
-                                    temp, chat_id=bot.callback_query.message.chat_id)
+            # update.bot.sendMessage(text="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +\
+            #                         temp, chat_id=bot.callback_query.message.chat_id)
 
             display_all_signal(df, coin, interval)
             telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig1.png', 'rb'))
             telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig2.png', 'rb'))                        
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'))     
+            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'),
+                            caption="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +temp )     
         elif  name == "upbit2" :   # 업비트 백테스트
             if data_selected.split(",")[-1] == "1d": interval = "day"
             elif data_selected.split(",")[-1] == "4h": interval = "minute240"
@@ -523,13 +523,14 @@ def callback_get(bot, update):
                 else:
                     temp = temp + t + "\n"
 
-            update.bot.sendMessage(text="💲💲 "+ name + " "+ coin +" " + interval +" 💲💲\n" +\
-                                    temp, chat_id=bot.callback_query.message.chat_id)
+            # update.bot.sendMessage(text="💲💲 "+ name + " "+ coin +" " + interval +" 💲💲\n" +\
+            #                         temp, chat_id=bot.callback_query.message.chat_id)
 
             display_all_signal(df, coin, interval)
             telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig1.png', 'rb'))
             telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig2.png', 'rb'))                        
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'))     
+            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'),
+                            caption="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +temp )     
         
 # 바이낸스 정보 , 선물 설정
 def bnc():
@@ -655,7 +656,6 @@ def ichimoku(df):
 
 #  - 봉 -> 해당봉의 모든 지표 표시
 def display_all_signal(df, name, interval):
-    print(name + " "+ interval+ " display_all_signal start")
 
     # df.dropna(inplace=True)         # Na 값 있는 행은 지움
 
@@ -753,14 +753,12 @@ def display_all_signal(df, name, interval):
     fig3.update_layout(legend=dict(yanchor="top", y=1, xanchor="left", x=0))
     fig3.write_image("fig3.png")
 
-    print(name + " "+ interval+ " display_all_signal start end")
 
 #  - 지표 -> 모든 봉의 해당 지표 값 표시
 def display_all_interval(dfSet,intervalSet, name ,signal):
     '''
     signal : 'ohlc', 'ha', 'macd', 'rsi', 
     '''
-    print(name +" " +signal +" display_all_interval start")
 
     if signal == 'ohlc':
         fig = subplots.make_subplots(rows=len(intervalSet), cols=1, 
@@ -845,11 +843,9 @@ def display_all_interval(dfSet,intervalSet, name ,signal):
     fig.update_layout(showlegend=False)             # 범례 안보이게
     fig.write_image("fig3.png")
         
-    print(name + ' ' + signal + ' display_all_interval end')
     
 # 시그널 메이커
 def signal_maker(df):
-    print("signal maker")
     buyCnt = 0
     sellCnt= 0
     txt = []
@@ -1107,7 +1103,6 @@ schedule.every().hour.at("59:45").do(lambda:signal_maker_time())
 
 
 def heiken_ashi_coin(country, coin='BTC/USDT', interval='1d', count=60):
-    print(country + " " + coin +" heiken_ashi_coin")
     if country == "binance":
         df = fetch_ohlcvs(coin, interval, count)
     elif country == "upbit":
@@ -1136,7 +1131,6 @@ def heiken_ashi_coin(country, coin='BTC/USDT', interval='1d', count=60):
     return df_HA       
 
 def heiken_ashi_jusik(token, region, count):
-    print(token+" heiken_ashi_jusik")
     today = dt.date.today()
     delta = dt.timedelta(days=count)    # count 봉 전부터
     past = today-delta
@@ -1172,7 +1166,6 @@ def heiken_ashi_jusik(token, region, count):
     return df_HA       
 
 def buy_signal(token, interval, df_HA, channel_id=None):
-    print(token+" buy_signal")
     # ha음봉(ha_open > ha_close) -> ha양봉(ha_open < ha_close)  # 양전
     if df_HA["open"].iloc[-2] > df_HA["close"].iloc[-2] and df_HA["open"].iloc[-1] < df_HA["close"].iloc[-1] :
         # 8ema < 20ma   # 하락추세중 추세반전
@@ -1181,37 +1174,24 @@ def buy_signal(token, interval, df_HA, channel_id=None):
             if df_HA["ema"].iloc[-1] < df_HA["close"].iloc[-1]:
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    # post_message(bot, channel, token + " " + interval + " 양봉전환 : 100% 매수")
-                    # post_image(bot, channel, image)
-                    telbot.sendMessage(chat_id=channel_id, text=token + " " + interval + " 양봉전환 : 100% 매수") # 메세지 보내기
-                    time.sleep(1)
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'))  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 100% 매수")  # 사진보내기
                 return 100
             # 8ema > ha_close  :  50% 매수
             if df_HA["ema"].iloc[-1] > df_HA["close"].iloc[-1]:
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    # post_message(bot, channel, token + " " + interval + " 양봉전환 : 50% 매수")
-                    # post_image(bot, channel, image)
-                    telbot.sendMessage(chat_id=channel_id, text=token + " " + interval + " 양봉전환 : 50% 매수") # 메세지 보내기
-                    time.sleep(1)
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'))  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 50% 매수")  # 사진보내기
                 return 50
         # 8ema > 20ma   # 상승추세중 불타기 추세반전
         if df_HA["ema"].iloc[-1] > df_HA["ma"].iloc[-1]:
             plot_candle_chart(df_HA, token)
             if msgOn == 1:
-                # post_message(bot, channel, token + " " + interval + " 양봉전환 : 10% 매수")
-                # post_image(bot, channel, image)
-                telbot.sendMessage(chat_id=channel_id, text=token + " " + interval + " 양봉전환 : 10% 매수") # 메세지 보내기
-                time.sleep(1)
-                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'))  # 사진보내기
+                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 10% 매수")  # 사진보내기
             return 10
     time.sleep(1)
     return 0
 
 def sell_signal(token, interval, df_HA, channel_id=None):
-    print(token+" sell_signal")
     # ha양봉(ha_open < ha_close) -> ha양봉(ha_open < ha_close)  # 양봉연속
     if df_HA["open"].iloc[-2] < df_HA["close"].iloc[-2] and df_HA["open"].iloc[-1] < df_HA["close"].iloc[-1]:
         # ha양봉 and 캔들양봉 : 10% 매도
@@ -1226,41 +1206,25 @@ def sell_signal(token, interval, df_HA, channel_id=None):
             if df_HA["close"].iloc[-1] > df_HA["ema"].iloc[-1] :
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    # post_message(bot, channel, token + " " + interval + " 음봉전환 : 50% 매도")
-                    # post_image(bot, channel, image)
-                    telbot.sendMessage(chat_id=channel_id, text=token + " " + interval + " 음봉전환 : 50% 매도") # 메세지 보내기
-                    time.sleep(1)
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'))  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 50% 매도")  # 사진보내기
                 return 50
             # 큰 낙폭    
             if df_HA["close"].iloc[-1] < df_HA["ema"].iloc[-1] :
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    # post_message(bot, channel, token + " " + interval + " 음봉전환 : 80% 매도")
-                    # post_image(bot, channel, image)
-                    telbot.sendMessage(chat_id=channel_id, text=token + " " + interval + " 음봉전환 : 80% 매도") # 메세지 보내기
-                    time.sleep(1)
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'))  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 80% 매도")  # 사진보내기
                 return 80
             # 떡락
             if df_HA["close"].iloc[-1] < df_HA["ma"].iloc[-1] :
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    # post_message(bot, channel, token + " " + interval + " 음봉전환 : 100% 매도")
-                    # post_image(bot, channel, image)
-                    telbot.sendMessage(chat_id=channel_id, text=token + " " + interval + " 음봉전환 : 100% 매도") # 메세지 보내기
-                    time.sleep(1)
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'))  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도")  # 사진보내기
                 return 100
         # 하락추세
         if df_HA["ema"].iloc[-1] < df_HA["ma"].iloc[-1] :
             plot_candle_chart(df_HA, token)
             if msgOn == 1:
-                # post_message(bot, channel, token + " " + interval + " 음봉전환 : 100% 매도")
-                # post_image(bot, channel, image)
-                telbot.sendMessage(chat_id=channel_id, text=token + " " + interval + " 음봉전환 : 100% 매도") # 메세지 보내기
-                time.sleep(1)
-                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'))  # 사진보내기
+                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도")  # 사진보내기
             return 100
     time.sleep(1)
     return 0
@@ -1270,9 +1234,6 @@ def sell_signal(token, interval, df_HA, channel_id=None):
 
 count = 60
 def krx_ha_check():
-    print("krx_ha_check")
-    # if msgOn==1:
-    #     post_message(tokenKorea,channelKorea, "@@@@@@@@@@ KOREA @@@@@@@@@ ")
     for token in jongmok: # krx
         df_HA = heiken_ashi_jusik(token, "krx", count)
         buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
@@ -1282,9 +1243,6 @@ schedule.every().day.at("08:52").do(lambda:krx_ha_check())
 schedule.every().day.at("15:02").do(lambda:krx_ha_check())
 
 def us_ha_check():
-    print("us_ha_check")
-    # if msgOn == 1 :
-    #     post_message(tokenUsa,channelUsa,"@@@@@@@@@@ USA @@@@@@@@@ ")
     for token in jongmok2: #us
         df_HA = heiken_ashi_jusik(token, "us", count)
         buy_signal(token, "day", df_HA, channel_id=channel_id_usa)
@@ -1299,7 +1257,6 @@ coin = "KRW-BTC"
 
     # 5분봉
 def coin_ha_check_5min():
-    print("coin_ha_check_5min")
     interval_5 = "minute5"
     df_HA_5 = heiken_ashi_coin("upbit",coin, interval_5, count)
     plot_candle_chart(df_HA_5, "test")
@@ -1321,7 +1278,6 @@ schedule.every().hour.at("59:30").do(lambda:coin_ha_check_5min())
 
     # 60분봉
 def coin_ha_check_60min():
-    print("coin_ha_check_60min")
     interval_60 = "minute60"
     df_HA_h = heiken_ashi_coin("upbit",coin, interval_60, count)
     buy_signal(coin, interval_60, df_HA_h, channel_id=channel_id)
@@ -1343,7 +1299,6 @@ btc = 'BTC/USDT'
 
     # 60분봉
 def binance_ha_check_60min():
-    print("binance_ha_check_60min")
     interval_60 = "1h"
     df_HA_h = heiken_ashi_coin("binance",btc, interval_60, count)
     buy_signal(btc, interval_60, df_HA_h, channel_id=channel_id_binance)
@@ -1352,7 +1307,6 @@ def binance_ha_check_60min():
 schedule.every().hour.at("58:00").do(lambda:binance_ha_check_60min())
     # 1일봉
 def binance_ha_check_day():
-    print("binance_ha_check_day")
     interval_day = "1d"
     df_HA_d = heiken_ashi_coin("binance",btc, interval_day, count)
     buy_signal(btc, interval_day, df_HA_d, channel_id=channel_id_binance)
