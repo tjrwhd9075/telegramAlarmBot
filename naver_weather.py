@@ -197,3 +197,15 @@ def add_emoji(txt):
         return txt+ " 🌩"
     elif txt == "눈":
         return txt+ " ❄️"
+
+def temperature():
+    URL = requests.get("https://hangang.ivlis.kr/aapi.php?type=dgr")
+    data = BeautifulSoup(URL.content, 'html.parser')
+    
+    return data.get_text().replace("â„ƒ","℃")
+    
+
+def wise_saying():
+    URL= requests.get("https://hangang.ivlis.kr/aapi.php?type=text")
+    data = BeautifulSoup(URL.content, 'html.parser')
+    return data.get_text()

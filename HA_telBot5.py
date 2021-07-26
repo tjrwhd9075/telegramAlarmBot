@@ -32,7 +32,7 @@ import naver_weather
 plotly.__version__
 
 '''
-version 7.2 비트 이더 한글 검색 수정
+version 7.3 한강 수온, 명언 업데이트
 '''
 
 jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
@@ -228,7 +228,7 @@ def get_name(bot, update):
         txt = naver_weather.search(msg.split(' ')[1])
         update.bot.edit_message_text(text=txt, chat_id=chat_id, message_id=bot.channel_post.message_id)
     elif msg == "한강 수온" or msg == "한강수온" or msg == "한강 물온도" or msg == "한강":
-        update.bot.edit_message_text(text="[한강수온](https://hangang.life/)",parse_mode="Markdown", chat_id=chat_id, message_id=bot.channel_post.message_id)
+        update.bot.edit_message_text(text="🌊 현재 한강 수온 🌡 "+naver_weather.temperature()+ "\n\n"+ naver_weather.wise_saying()+"\n[한강수온](https://hangang.life/)",parse_mode="Markdown", chat_id=chat_id, message_id=bot.channel_post.message_id)
     else :
         update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n\
                 \n코인 : /btc /eth /비트 /이더\
