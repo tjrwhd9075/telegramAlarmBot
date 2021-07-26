@@ -180,6 +180,18 @@ def get_name(bot, update):
     msg = bot.channel_post.text[1:].upper()               #  최근 입력된 메시지의 텍스트 "/" 떼고, 대문자로변환
     print("get_name  " + msg)
 
+    show_list = []
+    show_list.append(InlineKeyboardButton("binance", callback_data="binance")) # add on button
+    show_list.append(InlineKeyboardButton("upbit", callback_data="upbit")) # add off button
+    show_list.append(InlineKeyboardButton("cancel", callback_data="cancel")) # add cancel button
+    show_markup = InlineKeyboardMarkup(build_menu(show_list, len(show_list) - 1)) # make markup
+
+    show_list2 = []
+    show_list2.append(InlineKeyboardButton("binance", callback_data="binance2")) # add on button
+    show_list2.append(InlineKeyboardButton("upbit", callback_data="upbit2")) # add off button
+    show_list2.append(InlineKeyboardButton("cancel", callback_data="cancel")) # add cancel button
+    show_markup2 = InlineKeyboardMarkup(build_menu(show_list2, len(show_list2) - 1)) # make markup
+
     if codefind(msg, "krx") != 0: # 한국종목이름 검색 결과
         df = fetch_jusik(msg, "krx", 120)
         df = Macd(df)
@@ -207,6 +219,11 @@ def get_name(bot, update):
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'), caption="💲💲 "+ msg + " 1일봉 💲💲\n" +temp)  
+    
+    elif msg == "비트" or msg == "비트코인" :
+        update.bot.edit_message_text(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup, chat_id=chat_id, message_id=bot.channel_post.message_id)
+    elif msg == "이더" or msg == "이더리움":
+        update.bot.edit_message_text(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup2, chat_id=chat_id, message_id=bot.channel_post.message_id)
     elif msg.split(' ')[0] == "날씨":
         txt = naver_weather.search(msg.split(' ')[1])
         update.bot.edit_message_text(text=txt, chat_id=chat_id, message_id=bot.channel_post.message_id)
@@ -240,9 +257,9 @@ def get_command(bot, update):
     show_markup2 = InlineKeyboardMarkup(build_menu(show_list2, len(show_list2) - 1)) # make markup
 
 
-    if msg == "BTC" or msg == "비트" or msg == "비트코인" :
+    if msg == "BTC":
         update.bot.edit_message_text(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup, chat_id=chat_id, message_id=bot.channel_post.message_id)
-    elif msg == "ETH" or msg == "이더" or msg == "이더리움":
+    elif msg == "ETH":
         update.bot.edit_message_text(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup2, chat_id=chat_id, message_id=bot.channel_post.message_id)
     elif codefind(msg.lower().capitalize(), "us") != 0: # 미국종목이름 검색 결과
         df = fetch_jusik(codefind(msg.lower().capitalize(), "us"), "us", 120)
