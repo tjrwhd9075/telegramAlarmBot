@@ -28,10 +28,11 @@ import plotly
 from plotly import plot, subplots
 import plotly.offline as plty
 import plotly.graph_objs as pltygo
+import naver_weather
 plotly.__version__
 
 '''
-version 6.1
+version 7.1
 '''
 
 jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
@@ -177,7 +178,7 @@ def build_button(text_list, callback_header = "") : # make button list
 def get_name(bot, update):
     chat_id = bot.channel_post.chat.id         # 최근 입력된 메시지의 챗아이디
     msg = bot.channel_post.text[1:].upper()               #  최근 입력된 메시지의 텍스트 "/" 떼고, 대문자로변환
-    print("get_name" + msg)
+    print("get_name  " + msg)
 
     if codefind(msg, "krx") != 0: # 한국종목이름 검색 결과
         df = fetch_jusik(msg, "krx", 120)
@@ -206,18 +207,25 @@ def get_name(bot, update):
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'), caption="💲💲 "+ msg + " 1일봉 💲💲\n" +temp)  
+    elif msg.split(' ')[0] == "날씨":
+        txt = naver_weather.search(msg.split(' ')[1])
+        update.bot.edit_message_text(text=txt, chat_id=chat_id, message_id=bot.channel_post.message_id)
+    elif msg == "한강 수온" or msg == "한강수온" or msg == "한강 물온도" or msg == "한강":
+        update.bot.edit_message_text(text="[한강수온](https://hangang.life/)",parse_mode="Markdown", chat_id=chat_id, message_id=bot.channel_post.message_id)
     else :
-        update.bot.send_message(text="검색결과가 없습니다.\n\
+        update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n\
                 \n코인 : /btc /eth /비트 /이더\
                 \n한국 : /종목명\
                 \n미국 : /종목명 or /티커\
+                \n날씨 : /날씨 <도시명>\
+                \n한강수온 : /한강 or /한강수온\
                 \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.",
-                                chat_id=chat_id)
+                                chat_id=chat_id, message_id=bot.channel_post.message_id)
 # 명령어 응답
 def get_command(bot, update):
     chat_id = bot.channel_post.chat.id         # 최근 입력된 메시지의 챗아이디
     msg = bot.channel_post.text[1:].upper()               #  최근 입력된 메시지의 텍스트 "/" 떼고, 대문자로변환
-    print("get command" +msg)
+    print("get command " +msg)
 
     show_list = []
     show_list.append(InlineKeyboardButton("binance", callback_data="binance")) # add on button
@@ -233,9 +241,9 @@ def get_command(bot, update):
 
 
     if msg == "BTC" or msg == "비트" or msg == "비트코인" :
-        bot.effective_message.reply_text("BTC 선택됨. 거래소를 선택하세요.", reply_markup=show_markup)
+        update.bot.edit_message_text(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup, chat_id=chat_id, message_id=bot.channel_post.message_id)
     elif msg == "ETH" or msg == "이더" or msg == "이더리움":
-        bot.effective_message.reply_text("ETH 선택됨. 거래소를 선택하세요.", reply_markup=show_markup2)
+        update.bot.edit_message_text(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup2, chat_id=chat_id, message_id=bot.channel_post.message_id)
     elif codefind(msg.lower().capitalize(), "us") != 0: # 미국종목이름 검색 결과
         df = fetch_jusik(codefind(msg.lower().capitalize(), "us"), "us", 120)
         df = Macd(df)
@@ -312,26 +320,28 @@ def get_command(bot, update):
             else:
                 temp = temp + t + "\n"
 
-        # update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
-        #                         chat_id=chat_id)
         display_all_signal(df, msg, "1day")
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'), caption="💲💲 "+ msg + " 1일봉 💲💲\n" +temp)  
     
-    elif msg == "/help":
+    elif msg == "HELP":
         bot.effective_message.reply_text("* 검색방법 *\n\
                 \n코인 : /btc /eth /비트 /이더\
                 \n한국 : /종목명\
                 \n미국 : /종목명 or /티커\
+                \n날씨 : /날씨 <도시명>\
+                \n한강수온 : /한강 or /한강수온\
                 \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.")
     else :
-        update.bot.send_message(text="검색결과가 없습니다.\n\
+        update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n\
                 \n코인 : /btc /eth /비트 /이더\
                 \n한국 : /종목명\
                 \n미국 : /종목명 or /티커\
+                \n날씨 : /날씨 <도시명>\
+                \n한강수온 : /한강 or /한강수온\
                 \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.",
-                                chat_id=chat_id)
+                                chat_id=chat_id, message_id=bot.channel_post.message_id)
 
 # 버튼 누르면 다시 호출되는
 def callback_get(bot, update):
@@ -1238,9 +1248,11 @@ def krx_ha_check():
         df_HA = heiken_ashi_jusik(token, "krx", count)
         buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
         sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
+    telbot.sendMessage(text=naver_weather.rainday("순천"), chat_id=channel_id_feedback) 
 # 매일 정해진 시간에
 schedule.every().day.at("08:52").do(lambda:krx_ha_check())
 schedule.every().day.at("15:02").do(lambda:krx_ha_check())
+schedule.every().day.at("20:02").do(lambda:krx_ha_check())
 
 def us_ha_check():
     for token in jongmok2: #us
