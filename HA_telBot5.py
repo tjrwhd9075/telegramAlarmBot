@@ -32,7 +32,7 @@ import naver_weather
 plotly.__version__
 
 '''
-version 7.1
+version 7.2 비트 이더 한글 검색 수정
 '''
 
 jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
