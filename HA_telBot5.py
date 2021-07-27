@@ -33,7 +33,12 @@ plotly.__version__
 
 '''
 version 7.3 한강 수온, 명언 업데이트
+version 8.1 지수, 환율 추가
 '''
+version = "\nversion 7.3 한강 수온, 명언 업데이트\
+           \nversion 8.1 지수, 환율 추가\
+           \n** 사용법은 /help"
+updateText = "업데이트 완료 : " + version
 
 jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
         "데브시스터즈", "롯데칠성","빙그레", "삼성전자", "삼성엔지니어링", "삼성에스디에스","삼성SDI", "삼성바이오로직스","삼성제약","서린바이오",
@@ -149,6 +154,31 @@ def plot_candle_chart_ichimoku(df, title):
                     fill_between = dict(y1=df['senkouSpanA'].values, y2=df['senkouSpanB'].values, color='#f2ad73', alpha=0.20)
                     )
 
+def plot_candle_chart_jisu(df, name):
+    '''
+    ks11, kq11, dji, ixic, us500
+    '''
+
+    if name.upper() == "KS11": title = "KOSPI"
+    elif name.upper() == "KQ11": title = "KOSDAQ"
+    elif name.upper() == "DJI": title = "DOWJONES"
+    elif name.upper() == "IXIC": title = "NASDAQ"
+    elif name.upper() == "US500" : title = "S&P500"
+    else: title = name.upper()
+
+    if df["close"].iloc[-1]-df["close"].iloc[-2] > 0:
+        txt = title+" now : "+str(round(df["close"].iloc[-1],2)) + " (+"+  str(round(df["close"].iloc[-1]-df["close"].iloc[-2],2))+")"
+    else :
+        txt = title+" now : "+str(round(df["close"].iloc[-1],2)) + " ("+  str(round(df["close"].iloc[-1]-df["close"].iloc[-2],2))+")"
+
+    fig = mplfinance.plot(df, type='candle', style='charles', mav=(20,60,120),  
+                    title=(txt), ylabel='price', show_nontrading=False,
+                    savefig='jusik.png',
+                    block=False
+                    )
+
+
+
 ############# 텔레그램 봇 #######################
 global korea; korea =0
 global usa; usa =0
@@ -220,6 +250,34 @@ def get_name(bot, update):
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'), caption="💲💲 "+ msg + " 1일봉 💲💲\n" +temp)  
     
+    if msg == "지수":
+        plot_candle_chart_jisu(fetch_jisu('ks11',300),'ks11')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+        plot_candle_chart_jisu(fetch_jisu('kq11',300),'kq11')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+        plot_candle_chart_jisu(fetch_jisu('dji',300),'dji')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+        plot_candle_chart_jisu(fetch_jisu('ixic',300),'ixic')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+        plot_candle_chart_jisu(fetch_jisu('US500',300),'US500')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "환율":
+        plot_candle_chart_jisu(fetch_jisu('usd/krw',300),'usd/krw')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "코스피":
+        plot_candle_chart_jisu(fetch_jisu('ks11',300),'ks11')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "코스닥":
+        plot_candle_chart_jisu(fetch_jisu('kq11',300),'kq11')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "나스닥":
+        plot_candle_chart_jisu(fetch_jisu('ixic',300),'ixic')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "다우" or msg == "다우존스":
+        plot_candle_chart_jisu(fetch_jisu('dji',300),'dji')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+        
+
     elif msg == "비트" or msg == "비트코인" :
         update.bot.edit_message_text(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup, chat_id=chat_id, message_id=bot.channel_post.message_id)
     elif msg == "이더" or msg == "이더리움":
@@ -342,6 +400,21 @@ def get_command(bot, update):
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'), caption="💲💲 "+ msg + " 1일봉 💲💲\n" +temp)  
     
+    elif msg == "KOSPI":
+        plot_candle_chart_jisu(fetch_jisu('ks11',300),'ks11')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "KOSDAQ":
+        plot_candle_chart_jisu(fetch_jisu('kq11',300),'kq11')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "NASDAQ":
+        plot_candle_chart_jisu(fetch_jisu('ixic',300),'ixic')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "DOWJONES":
+        plot_candle_chart_jisu(fetch_jisu('dji',300),'dji')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "US500" or msg == "S&P500":
+        plot_candle_chart_jisu(fetch_jisu('US500',300),'US500')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
     elif msg == "HELP":
         bot.effective_message.reply_text("* 검색방법 *\n\
                 \n코인 : /btc /eth /비트 /이더\
@@ -349,6 +422,8 @@ def get_command(bot, update):
                 \n미국 : /종목명 or /티커\
                 \n날씨 : /날씨 <도시명>\
                 \n한강수온 : /한강 or /한강수온\
+                \n지수 : /지수 or /코스피,나스닥,kospi...\
+                \n환율 : /환율\
                 \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.")
     else :
         update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n\
@@ -600,6 +675,21 @@ def fetch_jusik(name, country, count):
 
     return df
 
+def fetch_jisu(name, count):
+    '''
+    ks11, kq11, dji, ixic, us500, usd/krw
+    '''
+    today = dt.date.today()
+    delta = dt.timedelta(days=count)    # count 봉 전부터
+    past = today-delta
+ 
+    df = fdr.DataReader(name, past, today)
+
+    df.rename(columns = {'Open' : 'open', "Close" : "close", "High" : "high", "Low":"low"}, inplace = True)
+
+    return df
+# 캔들차트 그리기
+
 def Ema(df, span=8):
     '''ema 지수이평선 '''
     df["ema"] = df["close"].ewm(span=span, adjust=False).mean()
@@ -780,7 +870,6 @@ def display_all_signal(df, name, interval):
     fig3.update_layout(legend=dict(yanchor="top", y=1, xanchor="left", x=0))
     fig3.write_image("fig3.png")
 
-
 #  - 지표 -> 모든 봉의 해당 지표 값 표시
 def display_all_interval(dfSet,intervalSet, name ,signal):
     '''
@@ -870,7 +959,6 @@ def display_all_interval(dfSet,intervalSet, name ,signal):
     fig.update_layout(showlegend=False)             # 범례 안보이게
     fig.write_image("fig3.png")
         
-    
 # 시그널 메이커
 def signal_maker(df):
     buyCnt = 0
@@ -1344,7 +1432,7 @@ schedule.every().day.at("08:52").do(lambda:binance_ha_check_day())
 schedule.every().day.at("23:52").do(lambda:binance_ha_check_day())
 
 
-telbot.sendMessage(chat_id=channel_id_feedback, text=("업데이트완료...")) # 메세지 보내기
+telbot.sendMessage(chat_id=channel_id_feedback, text=(updateText)) # 메세지 보내기
 
 # 작동 테스트
 if runtest==1:
