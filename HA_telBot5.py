@@ -34,9 +34,11 @@ plotly.__version__
 '''
 version 7.3 한강 수온, 명언 업데이트
 version 8.1 지수, 환율 추가
+version 8.2 비 검색 추가, 날씨 이모지 수정
 '''
 version = "\nversion 7.3 한강 수온, 명언 업데이트\
            \nversion 8.1 지수, 환율 추가\
+           version 8.2 비 검색 추가, 날씨 이모지 수정\
            \n** 사용법은 /help"
 updateText = "업데이트 완료 : " + version
 
@@ -50,7 +52,7 @@ jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원�
         "KODEX 자동차","KODEX 200","KODEX 200 중소형","KODEX 200ESG", "KODEX 200동일가중", "네비게이터 친환경자동차밸류체인액티브", "TIGER KRX BBIG K-뉴딜", 
         "KBSTAR Fn수소경제테마", "TIGER KRX2차전지K-뉴딜","TIGER TOP10", "TIGER 금은선물(H)", "KODEX 바이오", 
         "TIGER KRX바이오K-뉴딜", "TIGER 여행레저", "TIGER 우량가치", "TIGER 경기방어"}
-jongmok2 = {"AAPL","ABNB","ADBE","ADSK","ASML","ATVI","AMD","AMZN","AMCR","AXP","BA","BAC","BLK","BRK",
+jongmok2 = {"AAPL","ABNB","ADBE","ADSK","ASML","ATVI","AMD","AMZN","AXP","BA","BAC","BLK","BRK",
         "CCL","CPNG","COIN", "CRWD","DD","DIS","DISCK","DPZ","DOW","FITB","F","FB","GOOGL","GS","GM", "GLW","GPS",
         "INTC","IRM","JNJ","JPM",
         "KO","KEY","LMT","LEVI","NFLX","NVDA","NET","NEM","NKE", "MRNA","MET","MO","MU","MSFT", "MRK","ORCL", "ODP",
@@ -177,8 +179,6 @@ def plot_candle_chart_jisu(df, name):
                     block=False
                     )
 
-
-
 ############# 텔레그램 봇 #######################
 global korea; korea =0
 global usa; usa =0
@@ -283,8 +283,18 @@ def get_name(bot, update):
     elif msg == "이더" or msg == "이더리움":
         update.bot.edit_message_text(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup2, chat_id=chat_id, message_id=bot.channel_post.message_id)
     elif msg.split(' ')[0] == "날씨":
-        txt = naver_weather.search(msg.split(' ')[1])
-        update.bot.edit_message_text(text=txt, chat_id=chat_id, message_id=bot.channel_post.message_id)
+        if len(msg.split(' ')) == 2:
+            txt = naver_weather.search(msg.split(' ')[1])
+            update.bot.edit_message_text(text=txt, chat_id=chat_id, message_id=bot.channel_post.message_id)
+        else:
+            update.bot.edit_message_text(text="도시명도 같이 입력해주세요", chat_id=chat_id, message_id=bot.channel_post.message_id)
+    elif msg.split(' ')[0] == "비":
+        if len(msg.split(' ')) == 2:
+            txt = naver_weather.rainday(msg.split(' ')[1])
+            update.bot.edit_message_text(text=txt, chat_id=chat_id, message_id=bot.channel_post.message_id)
+        else:
+            update.bot.edit_message_text(text="도시명도 같이 입력해주세요", chat_id=chat_id, message_id=bot.channel_post.message_id)
+    
     elif msg == "한강 수온" or msg == "한강수온" or msg == "한강 물온도" or msg == "한강":
         update.bot.edit_message_text(text="🌊 현재 한강 수온 🌡 "+naver_weather.temperature()+ "\n\n"+ naver_weather.wise_saying()+"\n[한강수온](https://hangang.life/)",parse_mode="Markdown", chat_id=chat_id, message_id=bot.channel_post.message_id)
     else :
@@ -292,7 +302,7 @@ def get_name(bot, update):
                 \n코인 : /btc /eth /비트 /이더\
                 \n한국 : /종목명\
                 \n미국 : /종목명 or /티커\
-                \n날씨 : /날씨 <도시명>\
+                \n날씨 : /날씨 <도시명> or /비 <도시명>\
                 \n한강수온 : /한강 or /한강수온\
                 \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.",
                                 chat_id=chat_id, message_id=bot.channel_post.message_id)

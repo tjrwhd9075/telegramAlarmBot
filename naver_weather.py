@@ -79,12 +79,12 @@ def search(area):
 
     result = (
             "["+ area + " 날씨 검색 결과]\n"
-            + "- 오늘(" + t_ary[24] + ")\n"
-            + "\t강수확률 - 오전: " + t_ary[27] +" "+ add_emoji(t_ary[28]) + ", 오후: " + t_ary[31] +" "+ add_emoji(t_ary[32]) + "\n"
-            + "\t최저기온: " + t_ary[34] + ", 최고기온: " + t_ary[37] +"\n"
-            + "- 내일(" + t_ary[39] + ")\n"
-            + "\t강수확률 - 오전: " + t_ary[42] +" "+ add_emoji(t_ary[43]) + ", 오후: " + t_ary[46] +" "+ add_emoji(t_ary[47]) + "\n"
-            + "\t최저기온: " + t_ary[49] + ", 최고기온: " + t_ary[52] +"\n"
+            + "** 오늘(" + t_ary[24] + ")\n"
+            + "\t<강수확률>\n🌞오전: " + t_ary[27] +" "+ add_emoji(t_ary[28]) + "\n🌙오후: " + t_ary[31] +" "+ add_emoji(t_ary[32]) + "\n"
+            + "\t<기온>\n🌡최저: " + t_ary[34] + ", 최고: " + t_ary[37] +"\n\n"
+            + "** 내일(" + t_ary[39] + ")\n"
+            + "\t<강수확률>\n🌞오전: " + t_ary[42] +" "+ add_emoji(t_ary[43]) + "\n🌙오후: " + t_ary[46] +" "+ add_emoji(t_ary[47]) + "\n"
+            + "\t<기온>\n🌡최저: " + t_ary[49] + ", 최고: " + t_ary[52] +"\n"
             )
     return result
 
@@ -167,36 +167,38 @@ def rainday(area):
     table = soup.find(class_="card card_week")
     
     t_ary = list(table.stripped_strings)
-    # ☀️ 맑음 🌤 ⛅️ 구름많음 🌥☁️ 흐림 🌦 구름많고 비 🌧 비 ⛈ 번개비 🌩 번개 🌨 ❄️눈
+    
 
 
     tmp = ""
-    for i in range(len(t_ary)):
-        if t_ary[i].find("비") >= 0 :
-            if t_ary[i-3] == "오후":
-                tmp += (t_ary[i-8]  +"(" + t_ary[i-9]+ ") 오후 강수확률: " + t_ary[i-1] + " " + add_emoji(t_ary[i]) +"\n")
-            elif t_ary[i-3] == "오전":
-                tmp += (t_ary[i-5] +"(" + t_ary[i-4]+ ") 오전 강수확률: " + t_ary[i-1] + " " + add_emoji(t_ary[i]) +"\n")
+    # print(t_ary)
 
+    for i in range(len(t_ary)):
+        if t_ary[i].find("비") >= 0 or t_ary[i].find("소나기") >= 0:
+            if t_ary[i-3] == "오후":
+                # print(t_ary[i])
+                # print(add_emoji(t_ary[i]))
+                tmp += (t_ary[i-9]  +"(" + t_ary[i-8]+ ") 🌙 오후 강수확률: " + t_ary[i-1] + " " + add_emoji(t_ary[i]) +"\n")
+            elif t_ary[i-3] == "오전":
+                # print(t_ary[i])
+                # print(add_emoji(t_ary[i]))
+                tmp += (t_ary[i-5] +"(" + t_ary[i-4]+ ") 🌞 오전 강수확률: " + t_ary[i-1] + " " + add_emoji(t_ary[i]) +"\n")
+    # print(tmp)
     return tmp
     
 def add_emoji(txt):
-    if txt == "맑음":
-        return txt+" ☀️"
-    elif txt == "구름많음":
-        return txt+ " ⛅️"
-    elif txt == "흐림":
-        return txt+ " ☁️"
-    elif txt == "구름많고 비":
-        return txt+ " 🌦"
-    elif txt == "비":
-        return txt+ " 🌧"
-    elif txt == "번개비":
-        return txt+ " ⛈"
-    elif txt == "번개":
-        return txt+ " 🌩"
-    elif txt == "눈":
-        return txt+ " ❄️"
+    # ☀️ 맑음 🌤 ⛅️ 구름많음 🌥☁️ 흐림 🌦 구름많고 비 🌧 비 ⛈ 번개비 🌩 번개 🌨 ❄️눈
+    if txt == "맑음": return txt+" ☀️"
+    elif txt == "구름많음": return txt+ " ⛅️"
+    elif txt == "흐림": return txt+ " ☁️"
+    elif txt == "흐리고 비": return txt+ " 🌦"
+    elif txt == "구름많고 비": return txt+ " 🌦"
+    elif txt == "구름많고 소나기": return txt+ " 🌦"
+    elif txt == "비": return txt+ " 🌧"
+    elif txt == "번개비": return txt+ " ⛈"
+    elif txt == "번개": return txt+ " 🌩"
+    elif txt == "눈": return txt+ " ❄️"
+    else: return txt
 
 def temperature():
     URL = requests.get("https://hangang.ivlis.kr/aapi.php?type=dgr")
@@ -209,3 +211,6 @@ def wise_saying():
     URL= requests.get("https://hangang.ivlis.kr/aapi.php?type=text")
     data = BeautifulSoup(URL.content, 'html.parser')
     return data.get_text()
+
+
+# rainday("순천")
