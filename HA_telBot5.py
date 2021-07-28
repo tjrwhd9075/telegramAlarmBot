@@ -38,7 +38,7 @@ version 8.2 비 검색 추가, 날씨 이모지 수정
 '''
 version = "\nversion 7.3 한강 수온, 명언 업데이트\
            \nversion 8.1 지수, 환율 추가\
-           version 8.2 비 검색 추가, 날씨 이모지 수정\
+           \nversion 8.2 비 검색 추가, 날씨 이모지 수정\
            \n** 사용법은 /help"
 updateText = "업데이트 완료 : " + version
 
