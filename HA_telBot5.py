@@ -31,18 +31,14 @@ import plotly.graph_objs as pltygo
 import naver_weather
 plotly.__version__
 
-'''
-version 7.3 한강 수온, 명언 업데이트
-version 8.1 지수, 환율 추가
-version 8.2 비 검색 추가, 날씨 이모지 수정
-'''
 version = "\nversion 7.3 한강 수온, 명언 업데이트\
            \nversion 8.1 지수, 환율 추가\
            \nversion 8.2 비 검색 추가, 날씨 이모지 수정\
+           \nversion 8.3 그래프에 종가 표시 추가, rsi 볼밴 알림에 1분봉도 추가\
            \n** 사용법은 /help"
 updateText = "업데이트 완료 : " + version
 
-jongmok = {"강원랜드", "고려신용정보", "골프존","기아", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
+jongmok = {"강원랜드", "고려신용정보", "골프존","기아","다날", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
         "데브시스터즈", "롯데칠성","빙그레", "삼성전자", "삼성엔지니어링", "삼성에스디에스","삼성SDI", "삼성바이오로직스","삼성제약","서린바이오",
         "셀트리온","셀트리온제약","셀트리온헬스케어", "스튜디오드래곤", "신세계", "신풍제약","신일제약", "씨젠","씨에스윈드", "씨에스베어링",
         "에스엠", "에스디바이오센서", "이마트","아이진","우리바이오", "와이지엔터테인먼트", "와이엔텍","위메이드","용평리조트",
@@ -169,9 +165,13 @@ def plot_candle_chart_jisu(df, name):
     else: title = name.upper()
 
     if df["close"].iloc[-1]-df["close"].iloc[-2] > 0:
-        txt = title+" now : "+str(round(df["close"].iloc[-1],2)) + " (+"+  str(round(df["close"].iloc[-1]-df["close"].iloc[-2],2))+")"
+        txt = title+" now : "+str(round(df["close"].iloc[-1],2))\
+             + " (+"+  str(round(df["close"].iloc[-1]-df["close"].iloc[-2],2))\
+             +" " + str(round((df["close"].iloc[-2]/df["close"].iloc[-1]-1)*100,2)) + "%)"
     else :
-        txt = title+" now : "+str(round(df["close"].iloc[-1],2)) + " ("+  str(round(df["close"].iloc[-1]-df["close"].iloc[-2],2))+")"
+        txt = title+" now : "+str(round(df["close"].iloc[-1],2))\
+             + " ("+  str(round(df["close"].iloc[-1]-df["close"].iloc[-2],2))\
+             +" " + str(round((df["close"].iloc[-2]/df["close"].iloc[-1]-1)*100,2)) + "%)"
 
     fig = mplfinance.plot(df, type='candle', style='charles', mav=(20,60,120),  
                     title=(txt), ylabel='price', show_nontrading=False,
@@ -827,10 +827,10 @@ def display_all_signal(df, name, interval):
     # OHLC,볼밴 + RSI + MACD 차트
     fig1 = subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.05,
                                 row_width=[0.4, 0.4,1], shared_xaxes=True, 
-                                subplot_titles=('Candle Chart', 'RSI', 'MACD' ))       # row : 행 , col : 열
+                                subplot_titles=('Candle Chart, close : '+str(round(df['close'].iloc[-1],2)), 'RSI : '+str(round(df['rsi'].iloc[-1],2)), 'MACD' ))       # row : 행 , col : 열
     # HA 차트 + 20ma 8ema
     fig2 = subplots.make_subplots(rows=1, cols=1, shared_xaxes=True,
-                                subplot_titles=('Heiken Ashi',""))       # row : 행 , col : 열
+                                subplot_titles=('Heiken Ashi, close : '+str(round(df['close'].iloc[-1],2)),""))       # row : 행 , col : 열
     # OHLC,일목 차트
     fig3 = subplots.make_subplots(rows=1, cols=1, shared_xaxes=True,
                                 subplot_titles=('ichimoku Chart, kijun : '+str(round(df['kijun'].iloc[-1],2)),""))       # row : 행 , col : 열
@@ -1124,7 +1124,7 @@ def signal_maker(df):
 def signal_maker_time():
     coin = "BTC/USDT"
     count = 100
-    intervalSet = ['5m', '15m', '30m', '1h', '4h', '1d']
+    intervalSet = ['1m','5m', '15m', '30m', '1h', '4h', '1d']
     plus = 0
     minus = 0
     plusIntervalSet = []
@@ -1194,20 +1194,20 @@ def signal_maker_time():
             else:
                 bbSet[interval] =df['bolLower'].iloc[-1]
     
-    if plus >= 3 : # 매수시그널이 더 많을때
+    if plus >= 4 : # 매수시그널이 더 많을때
         for txt in plusIntervalSet:
             telbot.sendMessage(text=txt, chat_id=channel_id_binance)
-    elif minus >= 3 : # 매도시그널이 더 많을때
+    elif minus >= 4 : # 매도시그널이 더 많을때
         for txt in minusIntervalSet:
             telbot.sendMessage(text=txt, chat_id=channel_id_binance)
     
-    if len(rsiSet) >=4:  # rsi <31 해당하는게 3개 이상있으면
+    if len(rsiSet) >=5:  # rsi <31 해당하는게 5개 이상있으면
         txtr="❗️❗️ RSI ❗️❗️\n"
         for key in rsiSet:
             txtr = txtr + (key + " : " + str(round(rsiSet[key],2)) + "\n")
         telbot.sendMessage(text=txtr, chat_id=channel_id_binance)
     
-    if len(bbSet) >=4:  # BB 초과, 미만 3개 이상있으면
+    if len(bbSet) >=5:  # BB 초과, 미만 5개 이상있으면
         txtbb ="❗️❗️ BB ❗️❗️ / close : " + str(round(close,2)) +"\n"
         for key in bbSet:
             txtbb = txtbb + (key + " : " + str(round(bbSet[key],2)) + "\n")
@@ -1299,19 +1299,19 @@ def buy_signal(token, interval, df_HA, channel_id=None):
             if df_HA["ema"].iloc[-1] < df_HA["close"].iloc[-1]:
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 100% 매수")  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 100% 매수\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
                 return 100
             # 8ema > ha_close  :  50% 매수
             if df_HA["ema"].iloc[-1] > df_HA["close"].iloc[-1]:
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 50% 매수")  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 50% 매수\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
                 return 50
         # 8ema > 20ma   # 상승추세중 불타기 추세반전
         if df_HA["ema"].iloc[-1] > df_HA["ma"].iloc[-1]:
             plot_candle_chart(df_HA, token)
             if msgOn == 1:
-                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 10% 매수")  # 사진보내기
+                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 10% 매수\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
             return 10
     time.sleep(1)
     return 0
@@ -1331,25 +1331,25 @@ def sell_signal(token, interval, df_HA, channel_id=None):
             if df_HA["close"].iloc[-1] > df_HA["ema"].iloc[-1] :
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 50% 매도")  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 50% 매도\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
                 return 50
             # 큰 낙폭    
             if df_HA["close"].iloc[-1] < df_HA["ema"].iloc[-1] :
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 80% 매도")  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 80% 매도\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
                 return 80
             # 떡락
             if df_HA["close"].iloc[-1] < df_HA["ma"].iloc[-1] :
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도")  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
                 return 100
         # 하락추세
         if df_HA["ema"].iloc[-1] < df_HA["ma"].iloc[-1] :
             plot_candle_chart(df_HA, token)
             if msgOn == 1:
-                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도")  # 사진보내기
+                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
             return 100
     time.sleep(1)
     return 0
@@ -1381,27 +1381,6 @@ schedule.every().day.at("22:31").do(lambda:us_ha_check())
 
 ########### upbit ####################
 coin = "KRW-BTC"
-
-    # 5분봉
-def coin_ha_check_5min():
-    interval_5 = "minute5"
-    df_HA_5 = heiken_ashi_coin("upbit",coin, interval_5, count)
-    plot_candle_chart(df_HA_5, "test")
-    buy_signal(coin, interval_5, df_HA_5, channel_id=channel_id)
-    sell_signal(coin, interval_5, df_HA_5, channel_id=channel_id)
-# 5분에 한번씩 실행
-schedule.every().hour.at("04:30").do(lambda:coin_ha_check_5min())
-schedule.every().hour.at("09:30").do(lambda:coin_ha_check_5min())
-schedule.every().hour.at("14:30").do(lambda:coin_ha_check_5min())
-schedule.every().hour.at("19:30").do(lambda:coin_ha_check_5min())
-schedule.every().hour.at("24:30").do(lambda:coin_ha_check_5min())
-schedule.every().hour.at("29:30").do(lambda:coin_ha_check_5min())
-schedule.every().hour.at("34:30").do(lambda:coin_ha_check_5min())
-schedule.every().hour.at("39:30").do(lambda:coin_ha_check_5min())
-schedule.every().hour.at("44:30").do(lambda:coin_ha_check_5min())
-schedule.every().hour.at("49:30").do(lambda:coin_ha_check_5min())
-schedule.every().hour.at("54:30").do(lambda:coin_ha_check_5min())
-schedule.every().hour.at("59:30").do(lambda:coin_ha_check_5min())
 
     # 60분봉
 def coin_ha_check_60min():
@@ -1447,7 +1426,6 @@ telbot.sendMessage(chat_id=channel_id_feedback, text=(updateText)) # 메세지 �
 # 작동 테스트
 if runtest==1:
     print("runtest")
-    coin_ha_check_5min()
     coin_ha_check_60min()
     coin_ha_check_day()
     binance_ha_check_day()
