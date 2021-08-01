@@ -171,7 +171,7 @@ def plot_candle_chart_jisu(df, name):
     else :
         txt = title+" now : "+str(round(df["close"].iloc[-1],2))\
              + " ("+  str(round(df["close"].iloc[-1]-df["close"].iloc[-2],2))\
-             +" " + str(round((df["close"].iloc[-2]/df["close"].iloc[-1]-1)*100,2)) + "%)"
+             +" -" + str(round((df["close"].iloc[-2]/df["close"].iloc[-1]-1)*100,2)) + "%)"
 
     fig = mplfinance.plot(df, type='candle', style='charles', mav=(20,60,120),  
                     title=(txt), ylabel='price', show_nontrading=False,
@@ -1299,19 +1299,19 @@ def buy_signal(token, interval, df_HA, channel_id=None):
             if df_HA["ema"].iloc[-1] < df_HA["close"].iloc[-1]:
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 100% 매수\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 100% 매수\nclose : " + str(round(df_HA["close"].iloc[-1],2)))  # 사진보내기
                 return 100
             # 8ema > ha_close  :  50% 매수
             if df_HA["ema"].iloc[-1] > df_HA["close"].iloc[-1]:
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 50% 매수\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 50% 매수\nclose : " + str(round(df_HA["close"].iloc[-1],2)))  # 사진보내기
                 return 50
         # 8ema > 20ma   # 상승추세중 불타기 추세반전
         if df_HA["ema"].iloc[-1] > df_HA["ma"].iloc[-1]:
             plot_candle_chart(df_HA, token)
             if msgOn == 1:
-                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 10% 매수\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
+                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 10% 매수\nclose : " + str(round(df_HA["close"].iloc[-1],2)))  # 사진보내기
             return 10
     time.sleep(1)
     return 0
@@ -1331,25 +1331,25 @@ def sell_signal(token, interval, df_HA, channel_id=None):
             if df_HA["close"].iloc[-1] > df_HA["ema"].iloc[-1] :
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 50% 매도\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 50% 매도\nclose : " + str(round(df_HA["close"].iloc[-1],2)))  # 사진보내기
                 return 50
             # 큰 낙폭    
             if df_HA["close"].iloc[-1] < df_HA["ema"].iloc[-1] :
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 80% 매도\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 80% 매도\nclose : " + str(round(df_HA["close"].iloc[-1],2)))  # 사진보내기
                 return 80
             # 떡락
             if df_HA["close"].iloc[-1] < df_HA["ma"].iloc[-1] :
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도\nclose : " + str(round(df_HA["close"].iloc[-1],2)))  # 사진보내기
                 return 100
         # 하락추세
         if df_HA["ema"].iloc[-1] < df_HA["ma"].iloc[-1] :
             plot_candle_chart(df_HA, token)
             if msgOn == 1:
-                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도\nclose : " + df_HA["close"].iloc[-1])  # 사진보내기
+                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도\nclose : " + str(round(df_HA["close"].iloc[-1],2)))  # 사진보내기
             return 100
     time.sleep(1)
     return 0
