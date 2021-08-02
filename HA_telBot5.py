@@ -1,3 +1,4 @@
+from mmap import ALLOCATIONGRANULARITY
 from os import close, name
 from threading import Thread
 from FinanceDataReader import data
@@ -35,6 +36,7 @@ version = "\nversion 7.3 한강 수온, 명언 업데이트\
            \nversion 8.1 지수, 환율 추가\
            \nversion 8.2 비 검색 추가, 날씨 이모지 수정\
            \nversion 8.3 그래프에 종가 표시 추가, rsi 볼밴 알림에 1분봉도 추가\
+           \nversion 9.1 워뇨띠 포지션 추가\
            \n** 사용법은 /help"
 updateText = "업데이트 완료 : " + version
 
@@ -297,6 +299,14 @@ def get_name(bot, update):
     
     elif msg == "한강 수온" or msg == "한강수온" or msg == "한강 물온도" or msg == "한강":
         update.bot.edit_message_text(text="🌊 현재 한강 수온 🌡 "+naver_weather.temperature()+ "\n\n"+ naver_weather.wise_saying()+"\n[한강수온](https://hangang.life/)",parse_mode="Markdown", chat_id=chat_id, message_id=bot.channel_post.message_id)
+    
+    elif msg == "워뇨띠":
+        txtList = Whales_Position()
+        if txtList[1] == "SHORT":
+            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2],  chat_id=chat_id, message_id=bot.channel_post.message_id)
+        elif txtList[1] == "LONG":
+            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇⬆️\n업데이트 시간 : " + txtList[2],  chat_id=chat_id, message_id=bot.channel_post.message_id)
+                
     else :
         update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n\
                 \n코인 : /btc /eth /비트 /이더\
@@ -304,6 +314,9 @@ def get_name(bot, update):
                 \n미국 : /종목명 or /티커\
                 \n날씨 : /날씨 <도시명> or /비 <도시명>\
                 \n한강수온 : /한강 or /한강수온\
+                \n지수 : /지수 or /코스피,나스닥,kospi...\
+                \n환율 : /환율\
+                \n워뇨띠 포지션 : /워뇨띠 or /aoa\
                 \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.",
                                 chat_id=chat_id, message_id=bot.channel_post.message_id)
 # 명령어 응답
@@ -425,6 +438,13 @@ def get_command(bot, update):
     elif msg == "US500" or msg == "S&P500":
         plot_candle_chart_jisu(fetch_jisu('US500',300),'US500')
         telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "AOA":
+        txtList = Whales_Position()
+        if txtList[1] == "SHORT":
+            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2],  chat_id=chat_id, message_id=bot.channel_post.message_id)
+        elif txtList[1] == "LONG":
+            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇⬆️\n업데이트 시간 : " + txtList[2],  chat_id=chat_id, message_id=bot.channel_post.message_id)
+              
     elif msg == "HELP":
         bot.effective_message.reply_text("* 검색방법 *\n\
                 \n코인 : /btc /eth /비트 /이더\
@@ -434,6 +454,7 @@ def get_command(bot, update):
                 \n한강수온 : /한강 or /한강수온\
                 \n지수 : /지수 or /코스피,나스닥,kospi...\
                 \n환율 : /환율\
+                \n워뇨띠 포지션 : /워뇨띠 or /aoa\
                 \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.")
     else :
         update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n\
@@ -1212,6 +1233,16 @@ def signal_maker_time():
         for key in bbSet:
             txtbb = txtbb + (key + " : " + str(round(bbSet[key],2)) + "\n")
         telbot.sendMessage(text=txtbb, chat_id=channel_id_binance)
+    
+    global aoaLastTime
+    txtList = Whales_Position()
+    if txtList[2] != aoaLastTime:
+        if txtList[1] == "SHORT":
+            telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_binance)
+        elif txtList[1] == "LONG":
+            telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_binance)
+        aoaLastTime = txtList[2]
+
 # 5분에 한번씩 실행
 schedule.every().hour.at("04:45").do(lambda:signal_maker_time())
 schedule.every().hour.at("09:45").do(lambda:signal_maker_time())
@@ -1226,6 +1257,31 @@ schedule.every().hour.at("49:45").do(lambda:signal_maker_time())
 schedule.every().hour.at("54:45").do(lambda:signal_maker_time())
 schedule.every().hour.at("59:45").do(lambda:signal_maker_time())
 
+from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
+ua = UserAgent()
+header = {'user-agent':ua.chrome}
+
+global aoaLastTime
+aoaLastTime =""
+
+def Whales_Position():
+    '''
+    aoa, aoaPosition, aoaTime
+    '''
+    Whales_URL = requests.get('https://kimpya.site/apps/leaderboard.php', headers=header)
+    Whales = BeautifulSoup(Whales_URL.content, 'html.parser')
+    AOA = Whales.find('div', class_="tbl darklight")
+    
+    aoa = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.get_text() # aoa
+    aoaPosition = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.get_text() # position
+    aoaTime = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.get_text() # 업데이트 날짜
+    # 
+    txt = []
+    txt.append(aoa)
+    txt.append(aoaPosition)
+    txt.append(aoaTime)
+    return txt 
 
 def heiken_ashi_coin(country, coin='BTC/USDT', interval='1d', count=60):
     if country == "binance":
@@ -1409,6 +1465,7 @@ def binance_ha_check_60min():
     df_HA_h = heiken_ashi_coin("binance",btc, interval_60, count)
     buy_signal(btc, interval_60, df_HA_h, channel_id=channel_id_binance)
     sell_signal(btc, interval_60, df_HA_h, channel_id=channel_id_binance)
+
 # 60분에 한번씩 실행
 schedule.every().hour.at("58:00").do(lambda:binance_ha_check_60min())
     # 1일봉
