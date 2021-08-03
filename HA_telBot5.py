@@ -37,6 +37,7 @@ version = "\nversion 7.3 한강 수온, 명언 업데이트\
            \nversion 8.2 비 검색 추가, 날씨 이모지 수정\
            \nversion 8.3 그래프에 종가 표시 추가, rsi 볼밴 알림에 1분봉도 추가\
            \nversion 9.1 워뇨띠 포지션 추가...\
+           \nversion 9.2 김프 추가\
            \n** 사용법은 /help"
 updateText = "업데이트 완료 : " + version
 
@@ -167,11 +168,11 @@ def plot_candle_chart_jisu(df, name):
     else: title = name.upper()
 
     if df["close"].iloc[-1]-df["close"].iloc[-2] > 0:
-        txt = title+" now : "+str(round(df["close"].iloc[-1],2))\
+        txt = title+" now : "+str(format(round(df["close"].iloc[-1],2),','))\
              + " (+"+  str(round(df["close"].iloc[-1]-df["close"].iloc[-2],2))\
              +" +" + str(round((df["close"].iloc[-1]/df["close"].iloc[-2]-1)*100,2)) + "%)"
     elif df["close"].iloc[-1]-df["close"].iloc[-2] < 0:
-        txt = title+" now : "+str(round(df["close"].iloc[-1],2))\
+        txt = title+" now : "+str(format(round(df["close"].iloc[-1],2),','))\
              + " ("+  str(round(df["close"].iloc[-1]-df["close"].iloc[-2],2))\
              +" " + str(round((df["close"].iloc[-1]/df["close"].iloc[-2]-1)*100,2)) + "%)"
 
@@ -299,13 +300,27 @@ def get_name(bot, update):
     
     elif msg == "한강 수온" or msg == "한강수온" or msg == "한강 물온도" or msg == "한강":
         update.bot.edit_message_text(text="🌊 현재 한강 수온 🌡 "+naver_weather.temperature()+ "\n\n"+ naver_weather.wise_saying()+"\n[한강수온](https://hangang.life/)",parse_mode="Markdown", chat_id=chat_id, message_id=bot.channel_post.message_id)
-    
+    elif msg == "김프" :
+        dfBi = fetch_ohlcvs('BTC/USDT', '1d', 2)
+        dfUp = pyupbit.get_ohlcv('KRW-BTC', 'day', 2)
+        usd2krw = fetch_jisu('usd/krw',10)
+        biWon = dfBi['close'].iloc[-1]*usd2krw['close'].iloc[-1]
+        kimpWon = dfUp['close'].iloc[-1] - biWon
+        kimpPer = (dfUp['close'].iloc[-1]/biWon - 1)*100
+
+        update.bot.edit_message_text(text="[[ 비트코인 김프 ]]\
+                                            \n\n업비트 현재가 : " + str(format(round(dfUp['close'].iloc[-1]),",")) + "₩\
+                                            \n바이낸스 현재가 : " + str(format(round(dfBi['close'].iloc[-1],2),',')) + "$\
+                                            \n\t\t = " + str(format(round(biWon),',')) +"₩"
+                                            + "\n\n김프 : " + str(format(round(kimpWon),',')) +"₩ ("+ str(format(round(kimpPer,2),',')) + "%)"
+                                            ,  chat_id=chat_id, message_id=bot.channel_post.message_id)
+
     elif msg == "워뇨띠":
         txtList = Whales_Position()
         if txtList[1] == "SHORT":
-            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2],  chat_id=chat_id, message_id=bot.channel_post.message_id)
+            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
         elif txtList[1] == "LONG":
-            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇⬆️\n업데이트 시간 : " + txtList[2],  chat_id=chat_id, message_id=bot.channel_post.message_id)
+            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
                 
     else :
         update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n\
@@ -317,6 +332,7 @@ def get_name(bot, update):
                 \n지수 : /지수 or /코스피,나스닥,kospi...\
                 \n환율 : /환율\
                 \n워뇨띠 포지션 : /워뇨띠 or /aoa\
+                \n김프 : /김프\
                 \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.",
                                 chat_id=chat_id, message_id=bot.channel_post.message_id)
 # 명령어 응답
@@ -441,9 +457,9 @@ def get_command(bot, update):
     elif msg == "AOA":
         txtList = Whales_Position()
         if txtList[1] == "SHORT":
-            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2],  chat_id=chat_id, message_id=bot.channel_post.message_id)
+            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2]  + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
         elif txtList[1] == "LONG":
-            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇⬆️\n업데이트 시간 : " + txtList[2],  chat_id=chat_id, message_id=bot.channel_post.message_id)
+            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
               
     elif msg == "HELP":
         bot.effective_message.reply_text("* 검색방법 *\n\
@@ -455,6 +471,7 @@ def get_command(bot, update):
                 \n지수 : /지수 or /코스피,나스닥,kospi...\
                 \n환율 : /환율\
                 \n워뇨띠 포지션 : /워뇨띠 or /aoa\
+                \n김프 : /김프\
                 \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.")
     else :
         update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n\
@@ -848,13 +865,13 @@ def display_all_signal(df, name, interval):
     # OHLC,볼밴 + RSI + MACD 차트
     fig1 = subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.05,
                                 row_width=[0.4, 0.4,1], shared_xaxes=True, 
-                                subplot_titles=('Candle Chart, close : '+str(round(df['close'].iloc[-1],2)), 'RSI : '+str(round(df['rsi'].iloc[-1],2)), 'MACD' ))       # row : 행 , col : 열
+                                subplot_titles=('Candle Chart, close : '+str(format(round(df['close'].iloc[-1],2),',')), 'RSI : '+str(round(df['rsi'].iloc[-1],2)), 'MACD' ))       # row : 행 , col : 열
     # HA 차트 + 20ma 8ema
     fig2 = subplots.make_subplots(rows=1, cols=1, shared_xaxes=True,
-                                subplot_titles=('Heiken Ashi, close : '+str(round(df['close'].iloc[-1],2)),""))       # row : 행 , col : 열
+                                subplot_titles=('Heiken Ashi, close : '+str(format(round(df['close'].iloc[-1],2),',')),""))       # row : 행 , col : 열
     # OHLC,일목 차트
     fig3 = subplots.make_subplots(rows=1, cols=1, shared_xaxes=True,
-                                subplot_titles=('ichimoku Chart, kijun : '+str(round(df['kijun'].iloc[-1],2)),""))       # row : 행 , col : 열
+                                subplot_titles=('ichimoku Chart, kijun : '+str(format(round(df['kijun'].iloc[-1],2),',')),""))       # row : 행 , col : 열
 
 
     # fig1 
@@ -1229,9 +1246,9 @@ def signal_maker_time():
         telbot.sendMessage(text=txtr, chat_id=channel_id_binance)
     
     if len(bbSet) >=5:  # BB 초과, 미만 5개 이상있으면
-        txtbb ="❗️❗️ BB ❗️❗️ / close : " + str(round(close,2)) +"\n"
+        txtbb ="❗️❗️ BB ❗️❗️ / close : " + str(format(round(close,2),',')) +"\n"
         for key in bbSet:
-            txtbb = txtbb + (key + " : " + str(round(bbSet[key],2)) + "\n")
+            txtbb = txtbb + (key + " : " + str(format(round(bbSet[key],2),',')) + "\n")
         telbot.sendMessage(text=txtbb, chat_id=channel_id_binance)
     
     global aoaLastTime
@@ -1355,19 +1372,19 @@ def buy_signal(token, interval, df_HA, channel_id=None):
             if df_HA["ema"].iloc[-1] < df_HA["close"].iloc[-1]:
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 100% 매수\nclose : " + str(round(df_HA["Close"].iloc[-1],2)))  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 100% 매수\nclose : " + str(format(round(df_HA["Close"].iloc[-1],2),',')))  # 사진보내기
                 return 100
             # 8ema > ha_close  :  50% 매수
             if df_HA["ema"].iloc[-1] > df_HA["close"].iloc[-1]:
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 50% 매수\nclose : " + str(round(df_HA["Close"].iloc[-1],2)))  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 50% 매수\nclose : " + str(format(round(df_HA["Close"].iloc[-1],2),',')))  # 사진보내기
                 return 50
         # 8ema > 20ma   # 상승추세중 불타기 추세반전
         if df_HA["ema"].iloc[-1] > df_HA["ma"].iloc[-1]:
             plot_candle_chart(df_HA, token)
             if msgOn == 1:
-                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 10% 매수\nclose : " + str(round(df_HA["Close"].iloc[-1],2)))  # 사진보내기
+                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 양봉전환 : 10% 매수\nclose : " + str(format(round(df_HA["Close"].iloc[-1],2),',')))  # 사진보내기
             return 10
     time.sleep(1)
     return 0
@@ -1387,25 +1404,25 @@ def sell_signal(token, interval, df_HA, channel_id=None):
             if df_HA["close"].iloc[-1] > df_HA["ema"].iloc[-1] :
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 50% 매도\nclose : " + str(round(df_HA["Close"].iloc[-1],2)))  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 50% 매도\nclose : " + str(format(round(df_HA["Close"].iloc[-1],2),',')))  # 사진보내기
                 return 50
             # 큰 낙폭    
             if df_HA["close"].iloc[-1] < df_HA["ema"].iloc[-1] :
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 80% 매도\nclose : " + str(round(df_HA["Close"].iloc[-1],2)))  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 80% 매도\nclose : " + str(format(round(df_HA["Close"].iloc[-1],2),',')))  # 사진보내기
                 return 80
             # 떡락
             if df_HA["close"].iloc[-1] < df_HA["ma"].iloc[-1] :
                 plot_candle_chart(df_HA, token)
                 if msgOn == 1:
-                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도\nclose : " + str(round(df_HA["Close"].iloc[-1],2)))  # 사진보내기
+                    telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도\nclose : " + str(format(round(df_HA["Close"].iloc[-1],2),',')))  # 사진보내기
                 return 100
         # 하락추세
         if df_HA["ema"].iloc[-1] < df_HA["ma"].iloc[-1] :
             plot_candle_chart(df_HA, token)
             if msgOn == 1:
-                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도\nclose : " + str(round(df_HA["Close"].iloc[-1],2)))  # 사진보내기
+                telbot.send_photo(chat_id=channel_id, photo=open(image, 'rb'), caption=token + " " + interval + " 음봉전환 : 100% 매도\nclose : " + str(format(round(df_HA["Close"].iloc[-1],2),',')))  # 사진보내기
             return 100
     time.sleep(1)
     return 0
