@@ -1,3 +1,4 @@
+
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -5,9 +6,15 @@ import time
 
 
 from selenium import webdriver
+from pyvirtualdisplay import Display
 
+display = Display(visible=0, size=(1024, 768)) 
+display.start()
+
+path = '/home/ubuntu/Downloads/chromedriver' 
 url = "https://sigbtc.pro/"
-driver = webdriver.Chrome('./chromedriver')
+# driver = webdriver.Chrome('./chromedriver')
+driver = webdriver.Chrome(path)
 driver.maximize_window()
 driver.implicitly_wait(30)
 driver.get(url)
