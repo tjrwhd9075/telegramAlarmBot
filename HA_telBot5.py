@@ -169,11 +169,11 @@ def plot_candle_chart_jisu(df, name):
     if df["close"].iloc[-1]-df["close"].iloc[-2] > 0:
         txt = title+" now : "+str(round(df["close"].iloc[-1],2))\
              + " (+"+  str(round(df["close"].iloc[-1]-df["close"].iloc[-2],2))\
-             +" " + str(round((df["close"].iloc[-2]/df["close"].iloc[-1]-1)*100,2)) + "%)"
-    else :
+             +" +" + str(round((df["close"].iloc[-1]/df["close"].iloc[-2]-1)*100,2)) + "%)"
+    elif df["close"].iloc[-1]-df["close"].iloc[-2] < 0:
         txt = title+" now : "+str(round(df["close"].iloc[-1],2))\
              + " ("+  str(round(df["close"].iloc[-1]-df["close"].iloc[-2],2))\
-             +" -" + str(round((df["close"].iloc[-2]/df["close"].iloc[-1]-1)*100,2)) + "%)"
+             +" " + str(round((df["close"].iloc[-1]/df["close"].iloc[-2]-1)*100,2)) + "%)"
 
     fig = mplfinance.plot(df, type='candle', style='charles', mav=(20,60,120),  
                     title=(txt), ylabel='price', show_nontrading=False,
