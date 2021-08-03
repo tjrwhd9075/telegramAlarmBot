@@ -36,7 +36,7 @@ version = "\nversion 7.3 한강 수온, 명언 업데이트\
            \nversion 8.1 지수, 환율 추가\
            \nversion 8.2 비 검색 추가, 날씨 이모지 수정\
            \nversion 8.3 그래프에 종가 표시 추가, rsi 볼밴 알림에 1분봉도 추가\
-           \nversion 9.1 워뇨띠 포지션 추가\
+           \nversion 9.1 워뇨띠 포지션 추가...\
            \n** 사용법은 /help"
 updateText = "업데이트 완료 : " + version
 
