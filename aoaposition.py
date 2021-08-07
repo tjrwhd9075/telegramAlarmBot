@@ -6,30 +6,48 @@ import time
 
 
 from selenium import webdriver
-from pyvirtualdisplay import Display
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+# from pyvirtualdisplay import Display
 
-display = Display(visible=0, size=(1024, 768)) 
-display.start()
+print("start")
 
-path = '/home/ubuntu/Downloads/chromedriver' 
+# display = Display(visible=0, size=(1024, 768)) 
+# display.start()
+
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument("--single-process")
+chrome_options.add_argument("--disable-dev-shm-usage")
+
 url = "https://sigbtc.pro/"
-# driver = webdriver.Chrome('./chromedriver')
-driver = webdriver.Chrome(path)
+
+# path = '/home/ubuntu/Downloads/chromedriver' 
+# driver = webdriver.Chrome(path, options=chrome_options)
+
+
+driver = webdriver.Chrome('chromedriver')
 driver.maximize_window()
-driver.implicitly_wait(30)
+# driver.implicitly_wait(30)
 driver.get(url)
 
-
-aoaPosition = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-highlight']")
+aoaPosition = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-highlight']")))
+# aoaPosition = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-highlight']")
 print(aoaPosition.text) # 이름
 
-aoaPosition2 = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-info mt-2 type1update']")
+aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-info mt-2 type1update']")))
+# aoaPosition2 = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-info mt-2 type1update']")
 print(aoaPosition2.text) # 업데이트 시간
 
-aoaPosition3 = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/a[@class='text-muted']")
+aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='d-flex align-items-center text-hover-success']/a[@class='text-muted']")))
+# aoaPosition3 = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/a[@class='text-muted']")
 print(aoaPosition3.text) # 포지션
 
 driver.close()
+
+print("end")
 
 
 # iframes = driver.find_elements_by_css_selector('iframe') #iframe이 여러개 있을 경우를 대비

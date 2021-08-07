@@ -30,6 +30,7 @@ from plotly import plot, subplots
 import plotly.offline as plty
 import plotly.graph_objs as pltygo
 import naver_weather
+import naver_news
 plotly.__version__
 
 version = "\nversion 7.3 한강 수온, 명언 업데이트\
@@ -38,6 +39,7 @@ version = "\nversion 7.3 한강 수온, 명언 업데이트\
            \nversion 8.3 그래프에 종가 표시 추가, rsi 볼밴 알림에 1분봉도 추가\
            \nversion 9.1 워뇨띠 포지션 추가...\
            \nversion 9.2 김프 추가\
+           \nversion 10.1 관심종목 추가, 뉴스 알림 -> 한국 주식방(@ha_alarm_korea)\
            \n** 사용법은 /help"
 updateText = "업데이트 완료 : " + version
 
@@ -320,8 +322,37 @@ def get_name(bot, update):
         if txtList[1] == "SHORT":
             update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
         elif txtList[1] == "LONG":
-            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
-                
+            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
+    elif msg.split(' ')[0] == "관종":
+        if len(msg.split(' ')) == 2:
+            rst = naver_news.add_query(msg.split(' ')[1])
+            if rst == 1:
+                update.bot.edit_message_text(text=msg.split(' ')[1] + " : 검색 목록에 추가했습니다." , chat_id=chat_id, message_id=bot.channel_post.message_id)
+            elif rst == 0:
+                update.bot.edit_message_text(text=msg.split(' ')[1] + " : 검색 목록에 있습니다." , chat_id=chat_id, message_id=bot.channel_post.message_id)
+       
+        else:
+            update.bot.edit_message_text(text="추가할 검색어를 입력해주세요", chat_id=chat_id, message_id=bot.channel_post.message_id)
+    elif msg.split(' ')[0] == "관종삭제":
+        if len(msg.split(' ')) == 2:
+            rst = naver_news.del_query(msg.split(' ')[1])
+            if rst == 1:
+                update.bot.edit_message_text(text=msg.split(' ')[1] + " : 검색 목록에서 삭제했습니다." , chat_id=chat_id, message_id=bot.channel_post.message_id)
+            elif rst == 0:
+                update.bot.edit_message_text(text=msg.split(' ')[1] + " : 검색 목록에 없습니다." , chat_id=chat_id, message_id=bot.channel_post.message_id)
+       
+        else:
+            update.bot.edit_message_text(text="삭제할 검색어를 입력해주세요", chat_id=chat_id, message_id=bot.channel_post.message_id)
+    elif msg == "관종목록":
+        querys = naver_news.get_querys()
+        txt = ""
+        for query in querys:
+            txt = txt + query + ", "
+        update.bot.edit_message_text(text="[관심종목 목록]\n\n" + txt,
+                chat_id=chat_id, message_id=bot.channel_post.message_id)
+
+
+    
     else :
         update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n\
                 \n코인 : /btc /eth /비트 /이더\
@@ -333,6 +364,7 @@ def get_name(bot, update):
                 \n환율 : /환율\
                 \n워뇨띠 포지션 : /워뇨띠 or /aoa\
                 \n김프 : /김프\
+                \n관종 : /관종 <추가할 검색어> or /관종삭제 <삭제할 검색어> or /관종목록\
                 \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.",
                                 chat_id=chat_id, message_id=bot.channel_post.message_id)
 # 명령어 응답
@@ -459,7 +491,7 @@ def get_command(bot, update):
         if txtList[1] == "SHORT":
             update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2]  + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
         elif txtList[1] == "LONG":
-            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
+            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
               
     elif msg == "HELP":
         bot.effective_message.reply_text("* 검색방법 *\n\
@@ -472,6 +504,7 @@ def get_command(bot, update):
                 \n환율 : /환율\
                 \n워뇨띠 포지션 : /워뇨띠 or /aoa\
                 \n김프 : /김프\
+                \n관종 : /관종 <추가할 검색어> or /관종삭제 <삭제할 검색어> or /관종목록\
                 \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.")
     else :
         update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n\
@@ -480,6 +513,11 @@ def get_command(bot, update):
                 \n미국 : /종목명 or /티커\
                 \n날씨 : /날씨 <도시명>\
                 \n한강수온 : /한강 or /한강수온\
+                \n지수 : /지수 or /코스피,나스닥,kospi...\
+                \n환율 : /환율\
+                \n워뇨띠 포지션 : /워뇨띠 or /aoa\
+                \n김프 : /김프\
+                \n관종 : /관종 <추가할 검색어> or /관종삭제 <삭제할 검색어> or /관종목록\
                 \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.",
                                 chat_id=chat_id, message_id=bot.channel_post.message_id)
 
@@ -1251,6 +1289,9 @@ def signal_maker_time():
             txtbb = txtbb + (key + " : " + str(format(round(bbSet[key],2),',')) + "\n")
         telbot.sendMessage(text=txtbb, chat_id=channel_id_binance)
     
+    
+    ############## 5분마다 실행할 코드들 ############################
+
     global aoaLastTime
     txtList = Whales_Position()
     if txtList[2] != aoaLastTime:
@@ -1259,6 +1300,8 @@ def signal_maker_time():
         elif txtList[1] == "LONG":
             telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_binance)
         aoaLastTime = txtList[2]
+    
+    naver_news.send_new_links(telbot, channel_id_korea)
 
 # 5분에 한번씩 실행
 schedule.every().hour.at("04:45").do(lambda:signal_maker_time())
@@ -1513,39 +1556,31 @@ def alarmi():
     while True:
         try:
             schedule.run_pending()
-            time.sleep(1)
 
-        except Exception as e:               # 에러 발생시 예외 발생
+        except Exception as e:   # 에러 발생시 예외 발생
             print(e)
             telbot.sendMessage(chat_id=channel_id_feedback, text=(e)) # 메세지 보내기
             telbot.sendMessage(chat_id=channel_id_feedback, text=("스레드 에러발생!")) # 메세지 보내기
-            time.sleep(1)
+
 
 
 try :
+        
     # 스레드로 while문 따로 돌림
     t = Thread(target=alarmi, daemon=True)
     t.start()
 
-    try :
-        
-        # 메시지 받아오는 곳
-        message_handler = MessageHandler(Filters.text & (~Filters.command), get_name)
-        updater.dispatcher.add_handler(message_handler)
-        # 명령어 받아오는 곳
-        message_handler2 = MessageHandler(Filters.command, get_command)
-        updater.dispatcher.add_handler(message_handler2)
-        # 버튼 콜백
-        updater.dispatcher.add_handler(CallbackQueryHandler(callback_get))
-        updater.start_polling(timeout=3)
-        updater.idle()
-    except Exception as e:               # 에러 발생시 예외 발생
-        print(e)
-        telbot.sendMessage(chat_id=channel_id_feedback, text=(e)) # 메세지 보내기
-        telbot.sendMessage(chat_id=channel_id_feedback, text=("텔레그램발생!")) # 메세지 보내기
-        time.sleep(1)
-
-except KeyboardInterrupt:       # Ctrl+C 입력시 예외 발생새
-    print("개발중... 잠시 종료됩니다!")
-    telbot.sendMessage(chat_id=channel_id_feedback, text=("개발중... 잠시 종료됩니다!")) # 메세지 보내기
-    sys.exit() #종료    
+    # 메시지 받아오는 곳
+    message_handler = MessageHandler(Filters.text & (~Filters.command), get_name)
+    updater.dispatcher.add_handler(message_handler)
+    # 명령어 받아오는 곳
+    message_handler2 = MessageHandler(Filters.command, get_command)
+    updater.dispatcher.add_handler(message_handler2)
+    # 버튼 콜백
+    updater.dispatcher.add_handler(CallbackQueryHandler(callback_get))
+    updater.start_polling(timeout=3)
+    updater.idle()
+except Exception as e:               # 에러 발생시 예외 발생
+    print(e)
+    telbot.sendMessage(chat_id=channel_id_feedback, text=(e)) # 메세지 보내기
+    telbot.sendMessage(chat_id=channel_id_feedback, text=("텔레그램발생!")) # 메세지 보내기
