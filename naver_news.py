@@ -4,8 +4,11 @@ import time
 import requests
 from bs4 import BeautifulSoup as bs
 
+fileNews = 'news.txt'
+fileQuery = 'query.txt'
+
 def get_querys():
-    with open('C:/Users/seokjong_2/Desktop/Programming/cryptoauto/query.txt', 'r', encoding = 'UTF-8') as f:
+    with open(fileQuery, 'r', encoding = 'UTF-8') as f:
         querys = f.read().splitlines() 
     return querys
 
@@ -27,10 +30,10 @@ def del_query(name):
 
     else :
         print(name + " : 목록에 있습니다. 삭제합니다.")
-        with open('C:/Users/seokjong_2/Desktop/Programming/cryptoauto/query.txt','rt', encoding = 'UTF-8') as f: 
+        with open(fileQuery,'rt', encoding = 'UTF-8') as f: 
             querys=f.read().splitlines() 
 
-        with open('C:/Users/seokjong_2/Desktop/Programming/cryptoauto/query.txt','w', encoding = 'UTF-8') as f: 
+        with open(fileQuery,'w', encoding = 'UTF-8') as f: 
             for query in querys: 
                 if query != name: # 같으면 건너뜀
                     f.write(query + '\n')
@@ -51,7 +54,7 @@ def add_query(name):
             print(name + " : 목록에 있습니다.")
             return 0 # 저장안하고 종료
 
-    with open('C:/Users/seokjong_2/Desktop/Programming/cryptoauto/query.txt', 'a', encoding = 'UTF-8') as f:          
+    with open(fileQuery, 'a', encoding = 'UTF-8') as f:          
         f.write(name + "\n")
         print(name +" : 목록에 없습니다. 추가합니다.")
         return 1 # 저장함
@@ -82,7 +85,7 @@ def get_links(oldLinks=[], querys=[]):
         for link in links:
             if link not in oldLinks:
                 newLinks.append(link)
-                with open('C:/Users/seokjong_2/Desktop/Programming/cryptoauto/news.txt', 'a', encoding = 'UTF-8') as f:          # 새로운 링크 한줄씩 저장
+                with open(fileNews, 'a', encoding = 'UTF-8') as f:          # 새로운 링크 한줄씩 저장
                     f.write(link + "\n")
     return newLinks
 
@@ -91,7 +94,7 @@ def send_new_links(bot, chat_id):
     '''
     querys : 관심종목 리스트
     '''
-    with open('C:/Users/seokjong_2/Desktop/Programming/cryptoauto/news.txt', 'r', encoding = 'UTF-8') as f:
+    with open(fileNews, 'r', encoding = 'UTF-8') as f:
         oldLinks = f.read().splitlines() 
 
     newLinks = get_links(oldLinks, get_querys())
