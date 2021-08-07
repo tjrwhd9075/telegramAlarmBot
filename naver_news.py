@@ -39,11 +39,6 @@ def del_query(name):
                     f.write(query + '\n')
         return 1
 
-
-
-    
-    
-
 def add_query(name):
     '''
     return -> 0 (fail) / 1 (true)
@@ -96,6 +91,7 @@ def send_new_links(bot, chat_id):
     '''
     with open(fileNews, 'r', encoding = 'UTF-8') as f:
         oldLinks = f.read().splitlines() 
+    
 
     newLinks = get_links(oldLinks, get_querys())
 
@@ -105,5 +101,15 @@ def send_new_links(bot, chat_id):
             time.sleep(3)
     else:
         pass
+
+    # 검색어 갯수 * 50 개보다 저장된 뉴스 갯수가 더 많으면 반퉁 지움
+    lenQ = len(get_querys())
+    if (lenQ * 50) < len(oldLinks):
+        with open(fileNews,'rt', encoding = 'UTF-8') as f: 
+            oldLinks=f.read().splitlines() 
+        with open(fileNews, 'w', encoding = 'UTF-8') as f:
+            for i, line in enumerate(oldLinks):
+                if i > (lenQ*20) :
+                    f.write(line + "\n")
 
     return newLinks

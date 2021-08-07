@@ -40,6 +40,7 @@ version = "\nversion 7.3 한강 수온, 명언 업데이트\
            \nversion 9.1 워뇨띠 포지션 추가...\
            \nversion 9.2 김프 추가\
            \nversion 10.1 관심종목 추가, 뉴스 알림 -> 한국 주식방(@ha_alarm_korea)\
+           \nversion 10.2 앤톡 새글 알리미 t.me/antok_alarm\
            \n** 사용법은 /help"
 updateText = "업데이트 완료 : " + version
 
@@ -1565,7 +1566,6 @@ def alarmi():
 
 
 try :
-        
     # 스레드로 while문 따로 돌림
     t = Thread(target=alarmi, daemon=True)
     t.start()
