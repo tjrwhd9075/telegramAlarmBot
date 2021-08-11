@@ -43,7 +43,11 @@ def send_new():
             try:
                 name = news.select_one('#board-list > div:nth-child(2) > table > tbody > tr > td.author > div > img')['title']
             except:
-                name = news.select_one('#board-list > div:nth-child(2) > table > tbody > tr > td.author > div > a').get_text()
+                try:
+                    name = news.select_one('#board-list > div:nth-child(2) > table > tbody > tr > td.author > div > a').get_text()
+                except:
+                    name = " "
+
             # print(name + "\n")
             line =link + "@" + title + "@" + name
             # print(line)
@@ -75,7 +79,7 @@ def send_new():
                     "\n📋 게시판 : "+ gesipan +\
                     "\n✏️ 제목 : " + line.split('@')[1] + \
                     "\n🗣 글쓴이 : " + line.split('@')[2] + \
-                    "\n📱 링크 : " + str(line.split('@')[0])
+                    "\n📱 링크 : [홈페이지로 이동](" + str(line.split('@')[0])+")"
                 print(line.split('@'))
                 bot.sendMessage(chat_id=chat_id, text=txt, parse_mode='Markdown')
                 time.sleep(3)
@@ -102,7 +106,7 @@ try:
         sched.start()
     except Exception as e:
         print(e)
-        bot.sendMessage(chat_id=chat_id, text=e)
+        # bot.sendMessage(chat_id=chat_id, text=e)
 except KeyboardInterrupt:
     print("ctrl + C")
     bot.sendMessage(chat_id=chat_id, text="ctrl + C")
