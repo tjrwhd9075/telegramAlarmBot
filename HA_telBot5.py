@@ -20,8 +20,10 @@ import matplotlib.font_manager as fm
 import mplfinance
 import ccxt
 import sys
+import pprint
 import pandas as pd
 import telegram as tel
+from telegram import chat
 from telegram.ext import Updater, MessageHandler, Filters, CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from ccxt.binance import binance
@@ -31,35 +33,38 @@ import plotly.offline as plty
 import plotly.graph_objs as pltygo
 import naver_weather
 import naver_news
+import watchlist
+import asyncio
 plotly.__version__
 
-version = "\nversion 7.3 한강 수온, 명언 업데이트\
-           \nversion 8.1 지수, 환율 추가\
-           \nversion 8.2 비 검색 추가, 날씨 이모지 수정\
-           \nversion 8.3 그래프에 종가 표시 추가, rsi 볼밴 알림에 1분봉도 추가\
-           \nversion 9.1 워뇨띠 포지션 추가...\
-           \nversion 9.2 김프 추가\
-           \nversion 10.1 관심종목 추가, 뉴스 알림 -> 한국 주식방(@ha_alarm_korea)\
-           \nversion 10.2 앤톡 새글 알리미 t.me/antok_alarm\
-           \n** 사용법은 /help"
+version = "사용법은 /help\n\
+        \n\[version]\
+        \n*10.3 HA 추세변환 알림 종목추가, 삭제 기능 추가 *\
+        \n [HA 한국 주식](t.me/ha_alarm_korea) , [HA 미국 주식](t.me/ha_alarm_usa)\
+        \n\n10.2 [앤톡 새글 알리미](t.me/antok_alarm)\
+        \n10.1 뉴스 검색 추가, 뉴스 알림 >> [뉴스 알리미](t.me/naver_news_alarm)\
+        \n9.2 김프 추가\
+        \n9.1 워뇨띠 포지션 추가\
+        \n8.3 그래프에 종가 표시 추가, rsi 볼밴 알림에 1분봉도 추가\
+        \n8.2 비 검색 추가, 날씨 이모지 수정\
+        \n8.1 지수, 환율 추가\
+        \n7.3 한강 수온, 명언 업데이트"
 updateText = "업데이트 완료 : " + version
 
-jongmok = {"강원랜드", "고려신용정보", "골프존","기아","다날", "대원미디어", "대한항공", "대교","두산퓨얼셀", "두산중공업","더네이쳐홀딩스", 
-        "데브시스터즈", "롯데칠성","빙그레", "삼성전자", "삼성엔지니어링", "삼성에스디에스","삼성SDI", "삼성바이오로직스","삼성제약","서린바이오",
-        "셀트리온","셀트리온제약","셀트리온헬스케어", "스튜디오드래곤", "신세계", "신풍제약","신일제약", "씨젠","씨에스윈드", "씨에스베어링",
-        "에스엠", "에스디바이오센서", "이마트","아이진","우리바이오", "와이지엔터테인먼트", "와이엔텍","위메이드","용평리조트",
-        "제일약품", "진매트릭스", "천보",  "카카오", "코오롱인더", "펄어비스","프로스테믹스", "하이브", "한화솔루션", "한전KPS","한국전력", "한미반도체", "현대차", "현대모비스", 
-        "현대바이오", "휴마시스", "CJ ENM","CJ대한통운","CJ제일제당","CJ CGV","SK하이닉스", "BGF", "F&F", "NAVER", "LG디스플레이", "DB하이텍", "LG화학", "LG전자", 
-        "HMM","SK이노베이션", "SK바이오사이언스","SK케미칼","JYP Ent.", "KT","KG ETS",
-        "KODEX 자동차","KODEX 200","KODEX 200 중소형","KODEX 200ESG", "KODEX 200동일가중", "네비게이터 친환경자동차밸류체인액티브", "TIGER KRX BBIG K-뉴딜", 
-        "KBSTAR Fn수소경제테마", "TIGER KRX2차전지K-뉴딜","TIGER TOP10", "TIGER 금은선물(H)", "KODEX 바이오", 
-        "TIGER KRX바이오K-뉴딜", "TIGER 여행레저", "TIGER 우량가치", "TIGER 경기방어"}
-jongmok2 = {"AAPL","ABNB","ADBE","ADSK","ASML","ATVI","AMD","AMZN","AXP","BA","BAC","BLK","BRK",
-        "CCL","CPNG","COIN", "CRWD","DD","DIS","DISCK","DPZ","DOW","FITB","F","FB","GOOGL","GS","GM", "GLW","GPS",
-        "INTC","IRM","JNJ","JPM",
-        "KO","KEY","LMT","LEVI","NFLX","NVDA","NET","NEM","NKE", "MRNA","MET","MO","MU","MSFT", "MRK","ORCL", "ODP",
-        "PFE", "PINS", "PLD", "PVH","PYPL","QCOM", "RL","REAL","RBLX","SNAP", "SNOW","SNY", "SPCE","SHOP",
-        "TSLA", "TSM","TWTR", "U","UBER","UAL","V","VFC","VIAC","ZM","Z"}
+textHelp = "\n코인 : /btc /eth /비트 /이더\
+            \n한국 : /종목명\
+            \n미국 : /종목명 or /티커\
+            \nHA 추세 알림 : /haadd /hadel /halist \
+            \n날씨 : /날씨 <도시명>\
+            \n한강수온 : /한강 or /한강수온\
+            \n지수 : /지수 or /코스피,나스닥,kospi...\
+            \n환율 : /환율\
+            \n워뇨띠 포지션 : /워뇨띠 or /aoa\
+            \n김프 : /김프\
+            \n뉴스검색어 : /뉴스추가 <추가할 검색어> or /뉴스삭제 <삭제할 검색어> or /뉴스목록 /뉴스검색 <검색어>\
+            \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요."
+
+
 
 myApikey = "hOpHmrM35aqoqakISj0m7PAy42bDLXBmhXIrOsvadPBU6bW8Gtin0ggp7UnzFg9f"
 mySecretkey = "rJp7j47DyzzvqRhaa9ExusnxrcPSF2I6Aa1B6bNvjlzxv3VP7fs3sl3cMNvSbEdU"
@@ -67,12 +72,20 @@ mySecretkey = "rJp7j47DyzzvqRhaa9ExusnxrcPSF2I6Aa1B6bNvjlzxv3VP7fs3sl3cMNvSbEdU"
 #텔레그램 봇
 myToken = '1811197670:AAFaSU2l8pKxT6tDA3tOl2Tpue-OiNC1Af0'
 telbot = tel.Bot(token=myToken)
+myBotName = "alarm_haBot"
+updater = Updater(myToken, use_context=True)
+
+myToken2 = '1944946345:AAEffpHSAtU52pC06P6z8qM6x78OzJ0LwV8'  # 네이버 뉴스용
+telbot2 = tel.Bot(token=myToken2) # 네이버 뉴스용
+myBotName2 = "naver_news_alarm_bot"
+
 channel_id = "@ha_alarm"                  # 업비트 채널
-channel_id_binance = "@ha_alarm_binance"  # 바이낸스 채널
+channel_id_binance = "@ha_alarm_binance"  # 바이낸스 채널=
 channel_id_korea = "@ha_alarm_korea"  # 한국 채널
 channel_id_usa = "@ha_alarm_usa"  # 미국 채널
 channel_id_feedback = "@ha_alarm_feedback"  # 피드백채널
-updater = Updater(myToken, use_context=True)
+group_id_naver_news = '-1001173681896'
+
 
 image = "jusik.png"
 msgOn = 1 # 1일때 메시지 켜짐, 0일때 메시지 꺼짐
@@ -212,50 +225,17 @@ def build_button(text_list, callback_header = "") : # make button list
     return button_list
 
 def get_name(bot, update):
-    chat_id = bot.channel_post.chat.id         # 최근 입력된 메시지의 챗아이디
-    msg = bot.channel_post.text[1:].upper()               #  최근 입력된 메시지의 텍스트 "/" 떼고, 대문자로변환
-    print("get_name  " + msg)
-
-    show_list = []
-    show_list.append(InlineKeyboardButton("binance", callback_data="binance")) # add on button
-    show_list.append(InlineKeyboardButton("upbit", callback_data="upbit")) # add off button
-    show_list.append(InlineKeyboardButton("cancel", callback_data="cancel")) # add cancel button
-    show_markup = InlineKeyboardMarkup(build_menu(show_list, len(show_list) - 1)) # make markup
-
-    show_list2 = []
-    show_list2.append(InlineKeyboardButton("binance", callback_data="binance2")) # add on button
-    show_list2.append(InlineKeyboardButton("upbit", callback_data="upbit2")) # add off button
-    show_list2.append(InlineKeyboardButton("cancel", callback_data="cancel")) # add cancel button
-    show_markup2 = InlineKeyboardMarkup(build_menu(show_list2, len(show_list2) - 1)) # make markup
-
-    if codefind(msg, "krx") != 0: # 한국종목이름 검색 결과
-        df = fetch_jusik(msg, "krx", 120)
-        df = Macd(df)
-        df = BolingerBand(df)
-        df = Rsi(df)
-        df = Ema(df)
-        df = Heiken_ashi(df)
-        df = ichimoku(df)
-        txt = signal_maker(df)
-        temp = ""
-        for t in txt:
-            if str(type(t)) == "<class 'int'>":
-                if t > 0 :
-                    temp = temp + "\n❤️ " + str(t) + ". 〰️매수 우위"
-                elif t < 0 :
-                    temp = temp + "\n💙 " + str(-t) + ". 〰️매도 우위"
-                else :
-                    temp = temp + "\n⚠️ " + str(t) + ". 〰️중립" 
-            else:
-                temp = temp + t + "\n"
-
-        # update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
-        #                         chat_id=chat_id)
-        display_all_signal(df, msg, "1day")
-        telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
-        telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
-        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'), caption="💲💲 "+ msg + " 1일봉 💲💲\n" +temp)  
+    if bot.channel_post is not None : tp = "channel_post"   #채널일 경우
+    elif bot.message is not None : tp = "message"           #그룹일 경우
+    elif bot.edited_channel_post is not None  : return      #봇이 채널에 에딧한 메세지일 경우
+    else : print(bot)
     
+    chat_id = bot[tp]['chat']['id']
+    msg = bot[tp]['text'][1:].upper()
+    message_id = bot[tp]['message_id']
+    
+    print("get_name  " + msg)
+  
     if msg == "지수":
         plot_candle_chart_jisu(fetch_jisu('ks11',300),'ks11')
         telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
@@ -283,26 +263,37 @@ def get_name(bot, update):
         plot_candle_chart_jisu(fetch_jisu('dji',300),'dji')
         telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
         
-
     elif msg == "비트" or msg == "비트코인" :
-        update.bot.edit_message_text(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup, chat_id=chat_id, message_id=bot.channel_post.message_id)
+        show_list = []
+        show_list.append(InlineKeyboardButton("binance", callback_data="binance")) # add on button
+        show_list.append(InlineKeyboardButton("upbit", callback_data="upbit")) # add off button
+        show_list.append(InlineKeyboardButton("cancel", callback_data="cancel")) # add cancel button
+        show_markup = InlineKeyboardMarkup(build_menu(show_list, len(show_list) - 1)) # make markup
+        telbot.send_message(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup, chat_id=chat_id)
     elif msg == "이더" or msg == "이더리움":
-        update.bot.edit_message_text(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup2, chat_id=chat_id, message_id=bot.channel_post.message_id)
+        show_list2 = []
+        show_list2.append(InlineKeyboardButton("binance", callback_data="binance2")) # add on button
+        show_list2.append(InlineKeyboardButton("upbit", callback_data="upbit2")) # add off button
+        show_list2.append(InlineKeyboardButton("cancel", callback_data="cancel")) # add cancel button
+        show_markup2 = InlineKeyboardMarkup(build_menu(show_list2, len(show_list2) - 1)) # make markup
+        telbot.send_message(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup2, chat_id=chat_id)
+    
     elif msg.split(' ')[0] == "날씨":
         if len(msg.split(' ')) == 2:
             txt = naver_weather.search(msg.split(' ')[1])
-            update.bot.edit_message_text(text=txt, chat_id=chat_id, message_id=bot.channel_post.message_id)
+            telbot.send_message(text=txt, chat_id=chat_id)
         else:
-            update.bot.edit_message_text(text="도시명도 같이 입력해주세요", chat_id=chat_id, message_id=bot.channel_post.message_id)
+            telbot.send_message(text="도시명도 같이 입력해주세요", chat_id=chat_id)
     elif msg.split(' ')[0] == "비":
         if len(msg.split(' ')) == 2:
             txt = naver_weather.rainday(msg.split(' ')[1])
-            update.bot.edit_message_text(text=txt, chat_id=chat_id, message_id=bot.channel_post.message_id)
+            telbot.send_message(text=txt, chat_id=chat_id)
         else:
-            update.bot.edit_message_text(text="도시명도 같이 입력해주세요", chat_id=chat_id, message_id=bot.channel_post.message_id)
+            telbot.send_message(text="도시명도 같이 입력해주세요", chat_id=chat_id)
     
     elif msg == "한강 수온" or msg == "한강수온" or msg == "한강 물온도" or msg == "한강":
-        update.bot.edit_message_text(text="🌊 현재 한강 수온 🌡 "+naver_weather.temperature()+ "\n\n"+ naver_weather.wise_saying()+"\n[한강수온](https://hangang.life/)",parse_mode="Markdown", chat_id=chat_id, message_id=bot.channel_post.message_id)
+        telbot.send_message(text="🌊 현재 한강 수온 🌡 "+naver_weather.temperature()+ "\n\n"+ naver_weather.wise_saying()+"\n[한강수온](https://hangang.life/)",parse_mode="Markdown", chat_id=chat_id)
+    
     elif msg == "김프" :
         dfBi = fetch_ohlcvs('BTC/USDT', '1d', 2)
         dfUp = pyupbit.get_ohlcv('KRW-BTC', 'day', 2)
@@ -311,86 +302,258 @@ def get_name(bot, update):
         kimpWon = dfUp['close'].iloc[-1] - biWon
         kimpPer = (dfUp['close'].iloc[-1]/biWon - 1)*100
 
-        update.bot.edit_message_text(text="[[ 비트코인 김프 ]]\
+        telbot.send_message(text="[[ 비트코인 김프 ]]\
                                             \n\n업비트 현재가 : " + str(format(round(dfUp['close'].iloc[-1]),",")) + "₩\
                                             \n바이낸스 현재가 : " + str(format(round(dfBi['close'].iloc[-1],2),',')) + "$\
                                             \n\t\t = " + str(format(round(biWon),',')) +"₩"
                                             + "\n\n김프 : " + str(format(round(kimpWon),',')) +"₩ ("+ str(format(round(kimpPer,2),',')) + "%)"
-                                            ,  chat_id=chat_id, message_id=bot.channel_post.message_id)
+                                            ,  chat_id=chat_id)
 
     elif msg == "워뇨띠":
         txtList = Whales_Position()
         if txtList[1] == "SHORT":
-            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
+            telbot.send_message(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id)
         elif txtList[1] == "LONG":
-            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
-    elif msg.split(' ')[0] == "관종":
-        if len(msg.split(' ')) == 2:
-            rst = naver_news.add_query(msg.split(' ')[1])
+            telbot.send_message(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id)
+    
+    elif msg.split(' ')[0] == "뉴스추가":
+        if len(msg.split(' ')) >= 2 : 
+            rst = naver_news.add_query(msg[5:])
             if rst == 1:
-                update.bot.edit_message_text(text=msg.split(' ')[1] + " : 검색 목록에 추가했습니다." , chat_id=chat_id, message_id=bot.channel_post.message_id)
+                telbot.send_message(text=msg[5:] + " : 뉴스 검색어 목록에 추가했습니다." , chat_id=chat_id)
             elif rst == 0:
-                update.bot.edit_message_text(text=msg.split(' ')[1] + " : 검색 목록에 있습니다." , chat_id=chat_id, message_id=bot.channel_post.message_id)
-       
+                telbot.send_message(text=msg[5:] + " : 뉴스 검색어 목록에 있습니다." , chat_id=chat_id)
         else:
-            update.bot.edit_message_text(text="추가할 검색어를 입력해주세요", chat_id=chat_id, message_id=bot.channel_post.message_id)
-    elif msg.split(' ')[0] == "관종삭제":
-        if len(msg.split(' ')) == 2:
-            rst = naver_news.del_query(msg.split(' ')[1])
+            telbot.send_message(text="추가할 검색어를 입력해주세요", chat_id=chat_id)
+    elif msg.split(' ')[0] == "뉴스삭제":
+        if len(msg.split(' ')) >= 2:
+            rst = naver_news.del_query(msg[5:])
             if rst == 1:
-                update.bot.edit_message_text(text=msg.split(' ')[1] + " : 검색 목록에서 삭제했습니다." , chat_id=chat_id, message_id=bot.channel_post.message_id)
+                telbot.send_message(text=msg[5:] + " : 뉴스 검색어 목록에서 삭제했습니다." , chat_id=chat_id)
             elif rst == 0:
-                update.bot.edit_message_text(text=msg.split(' ')[1] + " : 검색 목록에 없습니다." , chat_id=chat_id, message_id=bot.channel_post.message_id)
-       
+                telbot.send_message(text=msg[5:] + " : 뉴스 검색어 목록에 없습니다." , chat_id=chat_id)
         else:
-            update.bot.edit_message_text(text="삭제할 검색어를 입력해주세요", chat_id=chat_id, message_id=bot.channel_post.message_id)
-    elif msg == "관종목록":
+            telbot.send_message(text="삭제할 검색어를 입력해주세요", chat_id=chat_id)
+    elif msg.split(' ')[0] == "뉴스검색":
+        if len(msg.split(' ')) >= 2:
+            query = msg[5:]
+            naver_news.get_send_link(query, telbot2, chat_id)
+        else:
+            telbot.send_message(text="뉴스 검색어를 입력해주세요", chat_id=chat_id)
+
+    elif msg == "뉴스목록":
         querys = naver_news.get_querys()
         txt = ""
         for query in querys:
             txt = txt + query + ", "
-        update.bot.edit_message_text(text="[관심종목 목록]\n\n" + txt,
-                chat_id=chat_id, message_id=bot.channel_post.message_id)
+        telbot.send_message(text="[뉴스 검색어 목록]\n\n" + txt, chat_id=chat_id)
 
+    elif codefind(msg, "krx") != 0: # 한국종목이름 검색 결과
+        df = fetch_jusik(msg, "krx", 120)
+        df = Macd(df)
+        df = BolingerBand(df)
+        df = Rsi(df)
+        df = Ema(df)
+        df = Heiken_ashi(df)
+        df = ichimoku(df)
+        txt = signal_maker(df)
+        temp = ""
+        for t in txt:
+            if str(type(t)) == "<class 'int'>":
+                if t > 0 :
+                    temp = temp + "\n❤️ " + str(t) + ". 〰️매수 우위"
+                elif t < 0 :
+                    temp = temp + "\n💙 " + str(-t) + ". 〰️매도 우위"
+                else :
+                    temp = temp + "\n⚠️ " + str(t) + ". 〰️중립" 
+            else:
+                temp = temp + t + "\n"
 
-    
+        display_all_signal(df, msg, "1day")
+        telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
+        telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
+        telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'), caption="💲💲 "+ msg + " 1일봉 💲💲\n" +temp)  
+      
     else :
-        update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n\
-                \n코인 : /btc /eth /비트 /이더\
-                \n한국 : /종목명\
-                \n미국 : /종목명 or /티커\
-                \n날씨 : /날씨 <도시명> or /비 <도시명>\
-                \n한강수온 : /한강 or /한강수온\
-                \n지수 : /지수 or /코스피,나스닥,kospi...\
-                \n환율 : /환율\
-                \n워뇨띠 포지션 : /워뇨띠 or /aoa\
-                \n김프 : /김프\
-                \n관종 : /관종 <추가할 검색어> or /관종삭제 <삭제할 검색어> or /관종목록\
-                \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.",
-                                chat_id=chat_id, message_id=bot.channel_post.message_id)
+        try :
+            update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n" + textHelp, chat_id=chat_id, message_id=message_id)
+            return
+        except Exception:pass
+    
+    try :telbot.delete_message(chat_id=chat_id, message_id=message_id)
+    except Exception:pass
+
 # 명령어 응답
 def get_command(bot, update):
-    chat_id = bot.channel_post.chat.id         # 최근 입력된 메시지의 챗아이디
-    msg = bot.channel_post.text[1:].upper()               #  최근 입력된 메시지의 텍스트 "/" 떼고, 대문자로변환
-    print("get command " +msg)
+    if bot.channel_post is not None : tp = "channel_post"   #채널일 경우
+    elif bot.message is not None : tp = "message"           #그룹일 경우
+    elif bot.edited_channel_post is not None  : return      #봇이 채널에 에딧한 메세지일 경우
+    else : print(bot)
+    
 
-    show_list = []
-    show_list.append(InlineKeyboardButton("binance", callback_data="binance")) # add on button
-    show_list.append(InlineKeyboardButton("upbit", callback_data="upbit")) # add off button
-    show_list.append(InlineKeyboardButton("cancel", callback_data="cancel")) # add cancel button
-    show_markup = InlineKeyboardMarkup(build_menu(show_list, len(show_list) - 1)) # make markup
+    chat_id = bot[tp]['chat']['id']
+    msg = bot[tp]['text'].split('@')[0].upper()    # / 제외하고, 대문자로 변환
+    message_id = bot[tp]['message_id']
 
-    show_list2 = []
-    show_list2.append(InlineKeyboardButton("binance", callback_data="binance2")) # add on button
-    show_list2.append(InlineKeyboardButton("upbit", callback_data="upbit2")) # add off button
-    show_list2.append(InlineKeyboardButton("cancel", callback_data="cancel")) # add cancel button
-    show_markup2 = InlineKeyboardMarkup(build_menu(show_list2, len(show_list2) - 1)) # make markup
+    if bot[tp]['text'].split('@')[1] != myBotName :
+        print(bot[tp]['text'].split('@')[1] + " : 날 부른게 아닌거 같아요")
+        return
+
+    print("get command : " + msg)
+
+    if msg == "/BTC":
+        show_list = []
+        show_list.append(InlineKeyboardButton("binance", callback_data="binance")) # add on button
+        show_list.append(InlineKeyboardButton("upbit", callback_data="upbit")) # add off button
+        show_list.append(InlineKeyboardButton("cancel", callback_data="cancel")) # add cancel button
+        show_markup = InlineKeyboardMarkup(build_menu(show_list, len(show_list) - 1)) # make markup
+        telbot.send_message(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup, chat_id=chat_id)
+    elif msg == "/ETH":
+        show_list2 = []
+        show_list2.append(InlineKeyboardButton("binance", callback_data="binance2")) # add on button
+        show_list2.append(InlineKeyboardButton("upbit", callback_data="upbit2")) # add off button
+        show_list2.append(InlineKeyboardButton("cancel", callback_data="cancel")) # add cancel button
+        show_markup2 = InlineKeyboardMarkup(build_menu(show_list2, len(show_list2) - 1)) # make markup
+        telbot.send_message(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup2, chat_id=chat_id)
+    
+    elif msg == "/KOSPI":
+        plot_candle_chart_jisu(fetch_jisu('ks11',300),'ks11')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "/KOSDAQ":
+        plot_candle_chart_jisu(fetch_jisu('kq11',300),'kq11')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "/NASDAQ":
+        plot_candle_chart_jisu(fetch_jisu('ixic',300),'ixic')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "/DOWJONES":
+        plot_candle_chart_jisu(fetch_jisu('dji',300),'dji')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    elif msg == "/US500" or msg == "/S&P500":
+        plot_candle_chart_jisu(fetch_jisu('US500',300),'US500')
+        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
+    
+    elif msg == "/AOA":
+        txtList = Whales_Position()
+        if txtList[1] == "SHORT":
+            telbot.send_message(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2]  + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id)
+        elif txtList[1] == "LONG":
+            telbot.send_message(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id)
+              
+    elif msg.split(' ')[0] =="/HAADD":
+        if len(msg.split(' ')) < 2:
+            print('추가할 종목의 이름 or 티커를 입력해주세요')
+            telbot.send_message(text='추가할 종목의 이름 or 티커를 입력해주세요', chat_id=chat_id)
+            return
+
+        if codefind(msg[6:], "krx") != 0 :
+            fileHa = 'korea_watchlist.txt'
+        elif  namefind(msg[6:]) != 0 :
+            fileHa = 'usa_watchlist.txt'
+            name = namefind(msg[6:])
+        else:
+            print(msg[6:] + ' : 한국, 미국 종목 DB에 없습니다.')
+            telbot.send_message(text=msg[6:] + ' : 한국, 미국 종목 DB에 없습니다.', chat_id=chat_id)
+            return 
+
+        rst = watchlist.add_query(msg[6:], fileHa)  
+        if rst == 0 : 
+            print(msg[6:] + ' : 이미 HA 목록에 있습니다')
+            telbot.send_message(text=msg[6:] + ' : 이미 HA 목록에 있습니다.', chat_id=chat_id)
+        elif rst == 1 :
+            if namefind(msg[6:]) != 0 : # 미국종목이면
+                print(msg[6:] + " ("+ name + ') : HA 목록에 추가되었습니다.')
+                telbot.send_message(text=msg[6:] + " ("+ name + ') : HA 목록에 추가되었습니다.', chat_id=chat_id)
+            else : # 한국종목이면
+               telbot.send_message(text=msg[6:] + ' : HA 목록에 추가되었습니다.', chat_id=chat_id)
+    elif msg.split(' ')[0] == "/HADEL":
+        if len(msg.split(' ')) < 2:
+            print('추가할 종목의 이름 or 티커를 입력해주세요')
+            telbot.send_message(text='추가할 종목의 이름 or 티커를 입력해주세요', chat_id=chat_id)
+            return
+
+        if codefind(msg[6:], "krx") != 0 :
+            fileHa = 'korea_watchlist.txt'
+        elif  namefind(msg[6:]) != 0 :
+            fileHa = 'usa_watchlist.txt'
+        else:
+            print(msg[6:] + ' : 한국, 미국 종목 DB에 없습니다.')
+            telbot.send_message(text=msg[6:] + ' : 한국, 미국 종목 DB에 없습니다.', chat_id=chat_id)
+            return 
+
+        print(fileHa)
+        print(msg[6:])
+        rst = watchlist.del_query(msg[6:], fileHa) 
+        if rst == 0 : 
+            print(msg[6:] + ' : HA 목록에 없습니다')
+            telbot.send_message(text=msg[6:] + ' : HA 목록에 없습니다', chat_id=chat_id)
+        elif rst == 1 :
+            print(msg[6:] + ' : HA 목록에서 삭제했습니다.')
+            telbot.send_message(text=msg[6:] + ' : HA 목록에서 삭제했습니다.', chat_id=chat_id)
+    elif msg == "/HALIST":
+        print("ha 관심 목록 조회")
+        fileKo = 'korea_watchlist.txt'
+        fileMi = 'usa_watchlist.txt'
+
+        querysKo = watchlist.get_querys(fileKo)
+        txt1 = "<한국종목>\n"
+        for query in querysKo:
+            txt1 = txt1 + query + ", "
+        querysMi = watchlist.get_querys(fileMi)
+        txt2 = "<미국종목>\n"
+        for query in querysMi:
+            txt2 = txt2 + query + ", "
+
+        telbot.send_message(text="[HA 관심 목록]\n\n" + txt1 + "\n" + txt2, chat_id=chat_id)
+
+    elif msg.split(' ')[0] == "날씨":
+        if len(msg.split(' ')) == 2:
+            txt = naver_weather.search(msg.split(' ')[1])
+            telbot.send_message(text=txt, chat_id=chat_id)
+        else:
+            telbot.send_message(text="도시명도 같이 입력해주세요", chat_id=chat_id)
+    elif msg.split(' ')[0] == "비":
+        if len(msg.split(' ')) == 2:
+            txt = naver_weather.rainday(msg.split(' ')[1])
+            telbot.send_message(text=txt, chat_id=chat_id)
+        else:
+            telbot.send_message(text="도시명도 같이 입력해주세요", chat_id=chat_id)
+    
+    elif msg == "/HANGANG":
+        telbot.send_message(text="🌊 현재 한강 수온 🌡 "+naver_weather.temperature()+ "\n\n"+ naver_weather.wise_saying()+"\n[한강수온](https://hangang.life/)",parse_mode="Markdown", chat_id=chat_id)
+    
+    elif msg.split(' ')[0] == "뉴스추가":
+        if len(msg.split(' ')) >= 2 : 
+            rst = naver_news.add_query(msg[5:])
+            if rst == 1:
+                telbot.send_message(text=msg[5:] + " : 뉴스 검색어 목록에 추가했습니다." , chat_id=chat_id)
+            elif rst == 0:
+                telbot.send_message(text=msg[5:] + " : 뉴스 검색어 목록에 있습니다." , chat_id=chat_id)
+        else:
+            telbot.send_message(text="추가할 검색어를 입력해주세요", chat_id=chat_id)
+    elif msg.split(' ')[0] == "뉴스삭제":
+        if len(msg.split(' ')) >= 2:
+            rst = naver_news.del_query(msg[5:])
+            if rst == 1:
+                telbot.send_message(text=msg[5:] + " : 뉴스 검색어 목록에서 삭제했습니다." , chat_id=chat_id)
+            elif rst == 0:
+                telbot.send_message(text=msg[5:] + " : 뉴스 검색어 목록에 없습니다." , chat_id=chat_id)
+        else:
+            telbot.send_message(text="삭제할 검색어를 입력해주세요", chat_id=chat_id)
+    elif msg.split(' ')[0] == "뉴스검색":
+        if len(msg.split(' ')) >= 2:
+            query = msg[5:]
+            naver_news.get_send_link(query, telbot2, chat_id)
+        else:
+            telbot.send_message(text="뉴스 검색어를 입력해주세요", chat_id=chat_id)
+    elif msg == "/NEWSLIST":
+        querys = naver_news.get_querys()
+        txt = ""
+        for query in querys:
+            txt = txt + query + ", "
+        telbot.send_message(text="[뉴스 검색어 목록]\n\n" + txt, chat_id=chat_id)
+        return 123
 
 
-    if msg == "BTC":
-        update.bot.edit_message_text(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup, chat_id=chat_id, message_id=bot.channel_post.message_id)
-    elif msg == "ETH":
-        update.bot.edit_message_text(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=show_markup2, chat_id=chat_id, message_id=bot.channel_post.message_id)
     elif codefind(msg.lower().capitalize(), "us") != 0: # 미국종목이름 검색 결과
         df = fetch_jusik(codefind(msg.lower().capitalize(), "us"), "us", 120)
         df = Macd(df)
@@ -412,8 +575,6 @@ def get_command(bot, update):
             else:
                 temp = temp + t + "\n"
 
-        # update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
-        #                         chat_id=chat_id)
         display_all_signal(df, msg, "1day")
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
@@ -440,8 +601,6 @@ def get_command(bot, update):
             else:
                 temp = temp + t + "\n"
 
-        # update.bot.send_message(text="💲💲 "+ msg + " 1일봉 💲💲\n" +temp,
-        #                         chat_id=chat_id)
         display_all_signal(df, msg, "1day")
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
@@ -471,56 +630,17 @@ def get_command(bot, update):
         telbot.send_photo(chat_id=chat_id, photo=open('fig1.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))
         telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'), caption="💲💲 "+ msg + " 1일봉 💲💲\n" +temp)  
-    
-    elif msg == "KOSPI":
-        plot_candle_chart_jisu(fetch_jisu('ks11',300),'ks11')
-        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
-    elif msg == "KOSDAQ":
-        plot_candle_chart_jisu(fetch_jisu('kq11',300),'kq11')
-        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
-    elif msg == "NASDAQ":
-        plot_candle_chart_jisu(fetch_jisu('ixic',300),'ixic')
-        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
-    elif msg == "DOWJONES":
-        plot_candle_chart_jisu(fetch_jisu('dji',300),'dji')
-        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
-    elif msg == "US500" or msg == "S&P500":
-        plot_candle_chart_jisu(fetch_jisu('US500',300),'US500')
-        telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
-    elif msg == "AOA":
-        txtList = Whales_Position()
-        if txtList[1] == "SHORT":
-            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2]  + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
-        elif txtList[1] == "LONG":
-            update.bot.edit_message_text(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, message_id=bot.channel_post.message_id)
-              
-    elif msg == "HELP":
-        bot.effective_message.reply_text("* 검색방법 *\n\
-                \n코인 : /btc /eth /비트 /이더\
-                \n한국 : /종목명\
-                \n미국 : /종목명 or /티커\
-                \n날씨 : /날씨 <도시명>\
-                \n한강수온 : /한강 or /한강수온\
-                \n지수 : /지수 or /코스피,나스닥,kospi...\
-                \n환율 : /환율\
-                \n워뇨띠 포지션 : /워뇨띠 or /aoa\
-                \n김프 : /김프\
-                \n관종 : /관종 <추가할 검색어> or /관종삭제 <삭제할 검색어> or /관종목록\
-                \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.")
+
+    elif msg == "/HELP":
+        telbot.send_message(text = "* 검색방법 *\n" + textHelp,chat_id=chat_id)
     else :
-        update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n\
-                \n코인 : /btc /eth /비트 /이더\
-                \n한국 : /종목명\
-                \n미국 : /종목명 or /티커\
-                \n날씨 : /날씨 <도시명>\
-                \n한강수온 : /한강 or /한강수온\
-                \n지수 : /지수 or /코스피,나스닥,kospi...\
-                \n환율 : /환율\
-                \n워뇨띠 포지션 : /워뇨띠 or /aoa\
-                \n김프 : /김프\
-                \n관종 : /관종 <추가할 검색어> or /관종삭제 <삭제할 검색어> or /관종목록\
-                \n\n* 대소문자 관계 없음, 띄어쓰기는 주의하세요.",
-                                chat_id=chat_id, message_id=bot.channel_post.message_id)
+        try: 
+            update.bot.edit_message_text(text=msg + " : 검색결과가 없습니다.\n" +textHelp, chat_id=chat_id, message_id=message_id)
+            return
+        except Exception : pass
+    
+    try : telbot.delete_message(chat_id=chat_id, message_id=message_id)
+    except Exception: pass
 
 # 버튼 누르면 다시 호출되는
 def callback_get(bot, update):
@@ -528,45 +648,18 @@ def callback_get(bot, update):
     print("callback : ", data_selected)
     # 취소 버튼
     if data_selected.find("cancel") != -1 :
-        update.bot.edit_message_text(text="취소하였습니다.",
-                                    chat_id=bot.callback_query.message.chat_id,
-                                    message_id=bot.callback_query.message.message_id)
-        korea =0; usa=0
+        telbot.send_message(text="취소하였습니다.",chat_id=bot.callback_query.message.chat_id )
+        telbot.delete_message(chat_id=bot.callback_query.message.chat_id, message_id=bot.callback_query.message.message_id)
         return
 
     # BTC or ETH -> 거래소 선택됨
     if len(data_selected.split(",")) == 1 :
-        # 비트코인 
-        if data_selected == "binance": 
-            button_list = build_button(["1d", "4h", "1h", "30m", "15m", "5m", "1m","cancel"], data_selected)
-            show_markup = InlineKeyboardMarkup(build_menu(button_list, len(button_list) - 1))
-            update.bot.edit_message_text(text="봉을 선택해 주세요.",
-                                        chat_id=bot.callback_query.message.chat_id,
-                                        message_id=bot.callback_query.message.message_id,
-                                        reply_markup=show_markup)
-        elif data_selected == "upbit": 
-            button_list = build_button(["1d", "4h", "1h", "30m", "15m", "5m", "1m","cancel"], data_selected)
-            show_markup = InlineKeyboardMarkup(build_menu(button_list, len(button_list) - 1))
-            update.bot.edit_message_text(text="봉을 선택해 주세요.",
-                                        chat_id=bot.callback_query.message.chat_id,
-                                        message_id=bot.callback_query.message.message_id,
-                                        reply_markup=show_markup)
-        
-        # 이더리움
-        elif data_selected == "binance2": 
-            button_list = build_button(["1d", "4h", "1h", "30m", "15m", "5m", "1m","cancel"], data_selected)
-            show_markup = InlineKeyboardMarkup(build_menu(button_list, len(button_list) - 1))
-            update.bot.edit_message_text(text="봉을 선택해 주세요.",
-                                        chat_id=bot.callback_query.message.chat_id,
-                                        message_id=bot.callback_query.message.message_id,
-                                        reply_markup=show_markup)
-        elif data_selected == "upbit2": 
-            button_list = build_button(["1d", "4h", "1h", "30m", "15m", "5m", "1m", "cancel"], data_selected)
-            show_markup = InlineKeyboardMarkup(build_menu(button_list, len(button_list) - 1))
-            update.bot.edit_message_text(text="봉을 선택해 주세요.",
-                                        chat_id=bot.callback_query.message.chat_id,
-                                        message_id=bot.callback_query.message.message_id,
-                                        reply_markup=show_markup)
+        button_list = build_button(["1d", "4h", "1h", "30m", "15m", "5m", "1m", "cancel"], data_selected)
+        show_markup = InlineKeyboardMarkup(build_menu(button_list, len(button_list) - 1))
+        telbot.send_message(text="봉을 선택해 주세요.",
+                                    chat_id=bot.callback_query.message.chat_id,
+                                    reply_markup=show_markup)
+        telbot.delete_message(chat_id=bot.callback_query.message.chat_id, message_id=bot.callback_query.message.message_id)
 
     # 봉 선택됨
     elif len(data_selected.split(",")) == 2 :
@@ -574,39 +667,16 @@ def callback_get(bot, update):
         interval = data_selected.split(",")[-1]
         
         #ㅡㅡBTC -> 바낸, 업비트 선택ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-        if  name == "binance" :  # 바이낸스 검색
-
-            coin = "BTC/USDT"
+        if  name == "binance" or name =="binance2" :  # 바이낸스 검색
             count = 100
-            df = fetch_ohlcvs(coin, interval, count)
-            df = Macd(df)
-            df = BolingerBand(df)
-            df = Rsi(df)
-            df = Ema(df)
-            df = Heiken_ashi(df)
-            df = ichimoku(df)
-            txt = signal_maker(df)
-            temp = ""
-            for t in txt:
-                if str(type(t)) == "<class 'int'>":
-                    if t > 0 :
-                        temp = temp + "\n❤️ " + str(t) + ". 〰️매수 우위"
-                    elif t < 0 :
-                        temp = temp + "\n💙 " + str(-t) + ". 〰️매도 우위"
-                    else :
-                        temp = temp + "\n⚠️ " + str(t) + ". 〰️중립" 
-                else:
-                    temp = temp + t + "\n"
-
-            # update.bot.sendMessage(text="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +\
-            #                         temp, chat_id=bot.callback_query.message.chat_id)
-
-            display_all_signal(df, coin, interval)
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig1.png', 'rb'))
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig2.png', 'rb'))                                    
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'), 
-                                caption="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +temp)     
-        elif  name == "upbit" :  # 업비트 검색
+            if name == "binance" : # 비트 선택
+                coin = "BTC/USDT"
+                df = ichimoku(Heiken_ashi(Ema(Rsi(BolingerBand(Macd(fetch_ohlcvs(coin, interval, count)))))))
+            elif name == "binance2" : # 이더 선택
+                coin = "ETH/USDT"
+                df = ichimoku(Heiken_ashi(Ema(Rsi(BolingerBand(Macd(fetch_ohlcvs(coin, interval, count)))))))
+            
+        elif  name == "upbit" or name == "upbit2":  # 업비트 검색
             if data_selected.split(",")[-1] == "1d": interval = "day"
             elif data_selected.split(",")[-1] == "4h": interval = "minute240"
             elif data_selected.split(",")[-1] == "1h": interval = "minute60"
@@ -615,111 +685,28 @@ def callback_get(bot, update):
             elif data_selected.split(",")[-1] == "5m": interval = "minute5"
             elif data_selected.split(",")[-1] == "1m": interval = "minute1"
             
-            coin = "KRW-BTC"
             count = 100
-            df = pyupbit.get_ohlcv(coin, interval, count)
-            df = Macd(df)
-            df = BolingerBand(df)
-            df = Rsi(df)
-            df = Ema(df)
-            df = Heiken_ashi(df)
-            df = ichimoku(df)
-            txt = signal_maker(df)
+            if name == "upbit": # 비트코인
+                coin = "KRW-BTC"
+                df = ichimoku(Heiken_ashi(Ema(Rsi(BolingerBand(Macd(pyupbit.get_ohlcv(coin, interval, count)))))))
+            elif name == "upbit2" : # 이더리움
+                coin = "KRW-ETH"
+                df = ichimoku(Heiken_ashi(Ema(Rsi(BolingerBand(Macd(pyupbit.get_ohlcv(coin, interval, count)))))))
+            
+        txt = signal_maker(df)
+        temp = ""
+        for t in txt:
+            if str(type(t)) == "<class 'int'>":
+                if t > 0 : temp = temp + "\n❤️ " + str(t) + ". 〰️매수 우위"
+                elif t < 0 : temp = temp + "\n💙 " + str(-t) + ". 〰️매도 우위"
+                else : temp = temp + "\n⚠️ " + str(t) + ". 〰️중립" 
+            else: temp = temp + t + "\n"
 
-            temp = ""
-            for t in txt:
-                if str(type(t)) == "<class 'int'>":
-                    if t > 0 :
-                        temp = temp + "\n❤️ " + str(t) + ". 〰️매수 우위"
-                    elif t < 0 :
-                        temp = temp + "\n💙 " + str(-t) + ". 〰️매도 우위"
-                    else :
-                        temp = temp + "\n⚠️ " + str(t) + ". 〰️중립" 
-                else:
-                    temp = temp + t + "\n"
-
-            # update.bot.sendMessage(text="💲💲 "+ name + " "+ coin +" " + interval +" 💲💲\n" +\
-            #                         temp, chat_id=bot.callback_query.message.chat_id)
-
-            display_all_signal(df, coin, interval)
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig1.png', 'rb'))
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig2.png', 'rb'))                        
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'),
-                               caption="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +temp )
-
-        #ㅡㅡETH -> 바낸, 업비트 선택ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-        elif  name == "binance2" :   # 바이낸스 백테스트
-            coin = "ETH/USDT"
-            count = 100
-            df = fetch_ohlcvs(coin, interval, count)
-            df = Macd(df)
-            df = BolingerBand(df)
-            df = Rsi(df)
-            df = Ema(df)
-            df = Heiken_ashi(df)
-            df = ichimoku(df)
-            txt = signal_maker(df)
-
-            temp = ""
-            for t in txt:
-                if str(type(t)) == "<class 'int'>":
-                    if t > 0 :
-                        temp = temp + "\n❤️ " + str(t) + ". 〰️매수 우위"
-                    elif t < 0 :
-                        temp = temp + "\n💙 " + str(-t) + ". 〰️매도 우위"
-                    else :
-                        temp = temp + "\n⚠️ " + str(t) + ". 〰️중립" 
-                else:
-                    temp = temp + t + "\n"
-
-            # update.bot.sendMessage(text="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +\
-            #                         temp, chat_id=bot.callback_query.message.chat_id)
-
-            display_all_signal(df, coin, interval)
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig1.png', 'rb'))
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig2.png', 'rb'))                        
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'),
-                            caption="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +temp )     
-        elif  name == "upbit2" :   # 업비트 백테스트
-            if data_selected.split(",")[-1] == "1d": interval = "day"
-            elif data_selected.split(",")[-1] == "4h": interval = "minute240"
-            elif data_selected.split(",")[-1] == "1h": interval = "minute60"
-            elif data_selected.split(",")[-1] == "30m": interval = "minute30"
-            elif data_selected.split(",")[-1] == "15m": interval = "minute15"
-            elif data_selected.split(",")[-1] == "5m": interval = "minute5"
-            elif data_selected.split(",")[-1] == "1m": interval = "minute1"
-
-            coin = "KRW-ETH"
-            count = 100
-            df = pyupbit.get_ohlcv(coin, interval, count)
-            df = Macd(df)
-            df = BolingerBand(df)
-            df = Rsi(df)
-            df = Ema(df)
-            df = Heiken_ashi(df)
-            df = ichimoku(df)
-            txt = signal_maker(df)
-
-            temp = ""
-            for t in txt:
-                if str(type(t)) == "<class 'int'>":
-                    if t > 0 :
-                        temp = temp + "\n❤️ " + str(t) + ". 〰️매수 우위"
-                    elif t < 0 :
-                        temp = temp + "\n💙 " + str(-t) + ". 〰️매도 우위"
-                    else :
-                        temp = temp + "\n⚠️ " + str(t) + ". 〰️중립" 
-                else:
-                    temp = temp + t + "\n"
-
-            # update.bot.sendMessage(text="💲💲 "+ name + " "+ coin +" " + interval +" 💲💲\n" +\
-            #                         temp, chat_id=bot.callback_query.message.chat_id)
-
-            display_all_signal(df, coin, interval)
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig1.png', 'rb'))
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig2.png', 'rb'))                        
-            telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'),
-                            caption="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +temp )     
+        display_all_signal(df, coin, interval)
+        telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig1.png', 'rb'))
+        telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig2.png', 'rb'))                        
+        telbot.send_photo(chat_id=bot.callback_query.message.chat_id, photo=open('fig3.png', 'rb'),
+                        caption="💲💲 "+name + " "+ coin +" " + interval +" 💲💲\n" +temp )     
         
 # 바이낸스 정보 , 선물 설정
 def bnc():
@@ -775,7 +762,6 @@ def fetch_jisu(name, count):
     df.rename(columns = {'Open' : 'open', "Close" : "close", "High" : "high", "Low":"low"}, inplace = True)
 
     return df
-# 캔들차트 그리기
 
 def Ema(df, span=8):
     '''ema 지수이평선 '''
@@ -1198,7 +1184,7 @@ def signal_maker(df):
     return txt
 
 # 시그널 메이커 시간 비교
-def signal_maker_time():
+async def signal_maker_time():
     coin = "BTC/USDT"
     count = 100
     intervalSet = ['1m','5m', '15m', '30m', '1h', '4h', '1d']
@@ -1212,13 +1198,7 @@ def signal_maker_time():
     bbSet ={}
 
     for interval in intervalSet:    
-        df = fetch_ohlcvs(coin, interval, count)
-        df = Macd(df)
-        df = BolingerBand(df)
-        df = Rsi(df)
-        df = Ema(df)
-        df = Heiken_ashi(df)
-        df = ichimoku(df)
+        df = ichimoku(Heiken_ashi(Ema(Rsi(BolingerBand(Macd(fetch_ohlcvs(coin, interval, count)))))))
         txt = signal_maker(df)
 
         if txt[-1] > 5: #매수 시그널
@@ -1226,14 +1206,10 @@ def signal_maker_time():
             temp = ""
             for t in txt:
                 if str(type(t)) == "<class 'int'>":
-                    if t > 0 :
-                        temp = temp + "\n❤️ " + str(t) + ". 〰️매수 우위"
-                    elif t < 0 :
-                        temp = temp + "\n💙 " + str(-t) + ". 〰️매도 우위"
-                    else :
-                        temp = temp + "\n⚠️ " + str(t) + ". 〰️중립" 
-                else:
-                    temp = temp + t + "\n"
+                    if t > 0 :  temp = temp + "\n❤️ " + str(t) + ". 〰️매수 우위"
+                    elif t < 0 : temp = temp + "\n💙 " + str(-t) + ". 〰️매도 우위"
+                    else : temp = temp + "\n⚠️ " + str(t) + ". 〰️중립" 
+                else: temp = temp + t + "\n"
             temp = "💲💲 binance "+ coin +" " + interval +" 💲💲\n"+ temp
             plusIntervalSet.append(temp)
         elif txt[-1] <-5: #매도 시그널
@@ -1241,14 +1217,10 @@ def signal_maker_time():
             temp = ""
             for t in txt:
                 if str(type(t)) == "<class 'int'>":
-                    if t > 0 :
-                        temp = temp + "\n❤️ " + str(t) + ". 〰️매수 우위"
-                    elif t < 0 :
-                        temp = temp + "\n💙 " + str(-t) + ". 〰️매도 우위"
-                    else :
-                        temp = temp + "\n⚠️ " + str(t) + ". 〰️중립" 
-                else:
-                    temp = temp + t + "\n"
+                    if t > 0 : temp = temp + "\n❤️ " + str(t) + ". 〰️매수 우위"
+                    elif t < 0 : temp = temp + "\n💙 " + str(-t) + ". 〰️매도 우위"
+                    else : temp = temp + "\n⚠️ " + str(t) + ". 〰️중립" 
+                else: temp = temp + t + "\n"
             temp = "💲💲 binance "+ coin +" " + interval +" 💲💲\n"+ temp
             minusIntervalSet.append(temp)
         
@@ -1294,46 +1266,50 @@ def signal_maker_time():
     ############## 5분마다 실행할 코드들 ############################
 
     global aoaLastTime
-    txtList = Whales_Position()
-    if txtList[2] != aoaLastTime:
-        if txtList[1] == "SHORT":
-            telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_binance)
-        elif txtList[1] == "LONG":
-            telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_binance)
-        aoaLastTime = txtList[2]
+    try :
+        txtList = Whales_Position()
+        if txtList[2] != aoaLastTime:
+            if txtList[1] == "SHORT":
+                telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_binance)
+            elif txtList[1] == "LONG":
+                telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_binance)
+            aoaLastTime = txtList[2]
+    except Exception:
+        pass
     
-    naver_news.send_new_links(telbot, channel_id_korea)
+    naver_news.send_new_links(telbot2, group_id_naver_news)
 
 # 5분에 한번씩 실행
-schedule.every().hour.at("04:45").do(lambda:signal_maker_time())
-schedule.every().hour.at("09:45").do(lambda:signal_maker_time())
-schedule.every().hour.at("14:45").do(lambda:signal_maker_time())
-schedule.every().hour.at("19:45").do(lambda:signal_maker_time())
-schedule.every().hour.at("24:45").do(lambda:signal_maker_time())
-schedule.every().hour.at("29:45").do(lambda:signal_maker_time())
-schedule.every().hour.at("34:45").do(lambda:signal_maker_time())
-schedule.every().hour.at("39:45").do(lambda:signal_maker_time())
-schedule.every().hour.at("44:45").do(lambda:signal_maker_time())
-schedule.every().hour.at("49:45").do(lambda:signal_maker_time())
-schedule.every().hour.at("54:45").do(lambda:signal_maker_time())
-schedule.every().hour.at("59:45").do(lambda:signal_maker_time())
+schedule.every().hour.at("04:45").do(lambda:asyncio.run(signal_maker_time()))
+schedule.every().hour.at("09:45").do(lambda:asyncio.run(signal_maker_time()))
+schedule.every().hour.at("14:45").do(lambda:asyncio.run(signal_maker_time()))
+schedule.every().hour.at("19:45").do(lambda:asyncio.run(signal_maker_time()))
+schedule.every().hour.at("24:45").do(lambda:asyncio.run(signal_maker_time()))
+schedule.every().hour.at("29:45").do(lambda:asyncio.run(signal_maker_time()))
+schedule.every().hour.at("34:45").do(lambda:asyncio.run(signal_maker_time()))
+schedule.every().hour.at("39:45").do(lambda:asyncio.run(signal_maker_time()))
+schedule.every().hour.at("44:45").do(lambda:asyncio.run(signal_maker_time()))
+schedule.every().hour.at("49:45").do(lambda:asyncio.run(signal_maker_time()))
+schedule.every().hour.at("54:45").do(lambda:asyncio.run(signal_maker_time()))
+schedule.every().hour.at("59:45").do(lambda:asyncio.run(signal_maker_time()))
 
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 ua = UserAgent()
 header = {'user-agent':ua.chrome}
 
-global aoaLastTime
 aoaLastTime =""
 
 def Whales_Position():
     '''
     aoa, aoaPosition, aoaTime
     '''
-    Whales_URL = requests.get('https://kimpya.site/apps/leaderboard.php', headers=header)
-    Whales = BeautifulSoup(Whales_URL.content, 'html.parser')
-    AOA = Whales.find('div', class_="tbl darklight")
-    
+    try:
+        Whales_URL = requests.get('https://kimpya.site/apps/leaderboard.php', headers=header)
+        Whales = BeautifulSoup(Whales_URL.content, 'html.parser')
+        AOA = Whales.find('div', class_="tbl darklight")
+    except Exception:
+        return "kimpya.site 접속에러"
     aoa = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.get_text() # aoa
     aoaPosition = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.get_text() # position
     aoaTime = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.get_text() # 업데이트 날짜
@@ -1407,7 +1383,7 @@ def heiken_ashi_jusik(token, region, count):
     df_HA = df_HA.fillna(0) # NA 값을 0으로
     return df_HA       
 
-def buy_signal(token, interval, df_HA, channel_id=None):
+async def buy_signal(token, interval, df_HA, channel_id=None):
     # ha음봉(ha_open > ha_close) -> ha양봉(ha_open < ha_close)  # 양전
     if df_HA["open"].iloc[-2] > df_HA["close"].iloc[-2] and df_HA["open"].iloc[-1] < df_HA["close"].iloc[-1] :
         # 8ema < 20ma   # 하락추세중 추세반전
@@ -1433,7 +1409,7 @@ def buy_signal(token, interval, df_HA, channel_id=None):
     time.sleep(1)
     return 0
 
-def sell_signal(token, interval, df_HA, channel_id=None):
+async def sell_signal(token, interval, df_HA, channel_id=None):
     # ha양봉(ha_open < ha_close) -> ha양봉(ha_open < ha_close)  # 양봉연속
     if df_HA["open"].iloc[-2] < df_HA["close"].iloc[-2] and df_HA["open"].iloc[-1] < df_HA["close"].iloc[-1]:
         # ha양봉 and 캔들양봉 : 10% 매도
@@ -1475,82 +1451,86 @@ def sell_signal(token, interval, df_HA, channel_id=None):
 ####################### jusik ##########################
 
 count = 60
-def krx_ha_check():
+async def krx_ha_check():
+    jongmok = watchlist.get_querys('korea_watchlist.txt')
     for token in jongmok: # krx
+        print(token)
         df_HA = heiken_ashi_jusik(token, "krx", count)
-        buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
-        sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
-    telbot.sendMessage(text=naver_weather.rainday("순천"), chat_id=channel_id_feedback) 
+        await buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
+        await sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
+    telbot.sendMessage(text=naver_weather.rainday("순천"), chat_id=channel_id_feedback)    # 날씨 알림!!
 # 매일 정해진 시간에
-schedule.every().day.at("08:52").do(lambda:krx_ha_check())
-schedule.every().day.at("15:02").do(lambda:krx_ha_check())
-schedule.every().day.at("20:02").do(lambda:krx_ha_check())
+schedule.every().day.at("08:52").do(lambda:asyncio.run(krx_ha_check()))
+schedule.every().day.at("15:02").do(lambda:asyncio.run(krx_ha_check()))
+schedule.every().day.at("20:02").do(lambda:asyncio.run(krx_ha_check()))
 
-def us_ha_check():
+async def us_ha_check():
+    jongmok2 = watchlist.get_querys('usa_watchlist.txt')        
     for token in jongmok2: #us
+        print(token)
         df_HA = heiken_ashi_jusik(token, "us", count)
-        buy_signal(token, "day", df_HA, channel_id=channel_id_usa)
-        sell_signal(token, "day", df_HA, channel_id=channel_id_usa)
+        await buy_signal(token, "day", df_HA, channel_id=channel_id_usa)
+        await sell_signal(token, "day", df_HA, channel_id=channel_id_usa)
 # 매일 정해진 시간에
-schedule.every().day.at("16:31").do(lambda:us_ha_check()) 
-schedule.every().day.at("22:31").do(lambda:us_ha_check())
+schedule.every().day.at("16:31").do(lambda:asyncio.run(us_ha_check())) 
+schedule.every().day.at("22:31").do(lambda:asyncio.run(us_ha_check()))
 
 
 ########### upbit ####################
 coin = "KRW-BTC"
 
     # 60분봉
-def coin_ha_check_60min():
+async def coin_ha_check_60min():
     interval_60 = "minute60"
     df_HA_h = heiken_ashi_coin("upbit",coin, interval_60, count)
-    buy_signal(coin, interval_60, df_HA_h, channel_id=channel_id)
-    sell_signal(coin, interval_60, df_HA_h, channel_id=channel_id)
+    await buy_signal(coin, interval_60, df_HA_h, channel_id=channel_id)
+    await sell_signal(coin, interval_60, df_HA_h, channel_id=channel_id)
 # 60분에 한번씩 실행
-schedule.every().hour.at("59:00").do(lambda:coin_ha_check_60min())
+schedule.every().hour.at("59:00").do(lambda:asyncio.run(coin_ha_check_60min()))
     # 1일봉
-def coin_ha_check_day():
+async def coin_ha_check_day():
     interval_day = "day"
     df_HA_d = heiken_ashi_coin("upbit",coin, interval_day, count)
-    buy_signal(coin, interval_day, df_HA_d, channel_id=channel_id)
-    sell_signal(coin, interval_day, df_HA_d, channel_id=channel_id)
-schedule.every().day.at("08:50").do(lambda:coin_ha_check_day())
-schedule.every().day.at("23:50").do(lambda:coin_ha_check_day())
+    await buy_signal(coin, interval_day, df_HA_d, channel_id=channel_id)
+    await sell_signal(coin, interval_day, df_HA_d, channel_id=channel_id)
+schedule.every().day.at("08:50").do(lambda:asyncio.run(coin_ha_check_day()))
+schedule.every().day.at("23:50").do(lambda:asyncio.run(coin_ha_check_day()))
 
 ############## binance ####################
 
 btc = 'BTC/USDT'
 
     # 60분봉
-def binance_ha_check_60min():
+async def binance_ha_check_60min():
     interval_60 = "1h"
     df_HA_h = heiken_ashi_coin("binance",btc, interval_60, count)
-    buy_signal(btc, interval_60, df_HA_h, channel_id=channel_id_binance)
-    sell_signal(btc, interval_60, df_HA_h, channel_id=channel_id_binance)
+    await buy_signal(btc, interval_60, df_HA_h, channel_id=channel_id_binance)
+    await sell_signal(btc, interval_60, df_HA_h, channel_id=channel_id_binance)
 
 # 60분에 한번씩 실행
-schedule.every().hour.at("58:00").do(lambda:binance_ha_check_60min())
+schedule.every().hour.at("58:00").do(lambda:asyncio.run(binance_ha_check_60min()))
     # 1일봉
-def binance_ha_check_day():
+async def binance_ha_check_day():
     interval_day = "1d"
     df_HA_d = heiken_ashi_coin("binance",btc, interval_day, count)
-    buy_signal(btc, interval_day, df_HA_d, channel_id=channel_id_binance)
-    sell_signal(btc, interval_day, df_HA_d, channel_id=channel_id_binance)
-schedule.every().day.at("08:52").do(lambda:binance_ha_check_day())
-schedule.every().day.at("23:52").do(lambda:binance_ha_check_day())
+    await buy_signal(btc, interval_day, df_HA_d, channel_id=channel_id_binance)
+    await sell_signal(btc, interval_day, df_HA_d, channel_id=channel_id_binance)
+schedule.every().day.at("08:52").do(lambda:asyncio.run(binance_ha_check_day()))
+schedule.every().day.at("23:52").do(lambda:asyncio.run(binance_ha_check_day()))
 
-
-telbot.sendMessage(chat_id=channel_id_feedback, text=(updateText)) # 메세지 보내기
+# from telegram.utils.helpers import escape_markdown escape_markdown(,version=2)
+telbot.sendMessage(chat_id=channel_id_feedback, text=updateText,parse_mode='Markdown',disable_web_page_preview=True) # 메세지 보내기
 
 # 작동 테스트
 if runtest==1:
     print("runtest")
-    coin_ha_check_60min()
-    coin_ha_check_day()
-    binance_ha_check_day()
+    asyncio.run(coin_ha_check_60min())
+    asyncio.run(coin_ha_check_day())
+    asyncio.run( binance_ha_check_day())
 if run_ko == 1:
-    krx_ha_check()
+    asyncio.run( krx_ha_check())
 if run_us == 1:
-    us_ha_check()
+    asyncio.run( us_ha_check())
 
 def alarmi():
     print("쓰레딩이이잉")
@@ -1575,6 +1555,7 @@ try :
     updater.dispatcher.add_handler(message_handler)
     # 명령어 받아오는 곳
     message_handler2 = MessageHandler(Filters.command, get_command)
+    print(message_handler2)
     updater.dispatcher.add_handler(message_handler2)
     # 버튼 콜백
     updater.dispatcher.add_handler(CallbackQueryHandler(callback_get))
@@ -1584,3 +1565,20 @@ except Exception as e:               # 에러 발생시 예외 발생
     print(e)
     telbot.sendMessage(chat_id=channel_id_feedback, text=(e)) # 메세지 보내기
     telbot.sendMessage(chat_id=channel_id_feedback, text=("텔레그램발생!")) # 메세지 보내기
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 관심종목 텍스트파일로 저장 -> 추가, 삭제 기능

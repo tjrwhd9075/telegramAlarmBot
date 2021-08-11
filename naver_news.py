@@ -92,7 +92,6 @@ def send_new_links(bot, chat_id):
     with open(fileNews, 'r', encoding = 'UTF-8') as f:
         oldLinks = f.read().splitlines() 
     
-
     newLinks = get_links(oldLinks, get_querys())
 
     if newLinks:
@@ -113,3 +112,31 @@ def send_new_links(bot, chat_id):
                     f.write(line + "\n")
 
     return newLinks
+
+
+def get_send_link(query, bot, chat_id):
+    '''
+    query : 입력한 검색어
+    '''
+    url = f'https://search.naver.com/search.naver?where=news&sm=tab_jum&query={query}'
+    response = requests.get(url)
+    html = response.text 
+    soup = bs(html, 'html.parser')
+
+    newsList = soup.select('a.news_tit')
+
+    links = []
+
+    for news in newsList:
+        link = news['href']
+        links.append(link)
+
+    if links:
+        for link in links:
+            bot.sendMessage(chat_id=chat_id, text=link)
+            time.sleep(3)
+    else:
+        pass
+
+    return links
+

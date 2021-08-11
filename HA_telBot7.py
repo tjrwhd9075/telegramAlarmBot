@@ -26,6 +26,7 @@ import pprint
 import pandas as pd
 import telegram as tel
 from telegram import chat
+import telegram
 from telegram.ext import Updater, MessageHandler, Filters, CommandHandler, CallbackQueryHandler
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
@@ -38,19 +39,16 @@ import naver_weather
 import naver_news
 import watchlist
 import asyncio
-from pprint import pprint as pp
 
 plotly.__version__
 
 version = "사용법은 /help\n\
         \n\[version]\
         \n 1.1.0 명령어 수정\
-        \n\n[메인 채널](ha_alarm_feedback)\
-        \n[메인 그룹](signalmaker_chat))\
-        \n[HA 추세전환 알림 한국 주식](t.me/ha_alarm_korea)\
-        \n[HA 추세전환 알림 미국 주식](t.me/ha_alarm_usa)\
-        \n[바이낸스 비트코인 HA 추세전환 알림](t.me/ha_alarm_binance)\
-        \n[업비트 비트코인 HA 추세전환 알림](t.me/ha_alarm)\
+        \n\n[바이낸스, 업비트 비트코인, 이더리움 HA 추세전환 알림](t.me/ha_alarm_feedback)\
+        \n[채팅방](t.me/signalmaker_chat)\
+        \n[HA 추세전환 알림 한국, 미국 주식](t.me/ha_alarm_korea)\
+        \n[바이낸스 비트코인 종합시그널](t.me/ha_alarm_binance)\
         \n[앤톡 새글 알리미](t.me/antok_alarm)\
         \n[네이버 뉴스 알리미](t.me/naver_news_alarm)\
         "
@@ -72,10 +70,10 @@ myToken2 = '1944946345:AAEffpHSAtU52pC06P6z8qM6x78OzJ0LwV8'  # 네이버 뉴스�
 telbot2 = tel.Bot(token=myToken2) # 네이버 뉴스용
 myBotName2 = "naver_news_alarm_bot"
 
-channel_id = "@ha_alarm"                  # 업비트 채널
-channel_id_binance = "@ha_alarm_binance"  # 바이낸스 채널=
+# channel_id = "@ha_alarm"                  # 업비트 채널
+channel_id_binance = "@ha_alarm_binance"  # 바이낸스 채널
 channel_id_korea = "@ha_alarm_korea"  # 한국 채널
-channel_id_usa = "@ha_alarm_usa"  # 미국 채널
+# channel_id_usa = "@ha_alarm_usa"  # 미국 채널
 channel_id_feedback = "@ha_alarm_feedback"  # 피드백채널
 group_id_naver_news = '-1001173681896'
 
@@ -237,7 +235,7 @@ def get_name(bot, update):
     global EXCHANGE
     global SELLECT
 
-    if msg == "취소":
+    if msg == "취소" or msg == "CANCEL":
         telbot.send_message(chat_id=chat_id, text = '취소되었습니다.', reply_markup=ReplyKeyboardRemove())
         SELLECT = ''
         COMMAND = ''
@@ -361,7 +359,7 @@ def get_name(bot, update):
             telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'),
                             caption="💲💲 "+ EXCHANGE + " "+ COMMAND[1:] +" " + interval +" 💲💲\n" +temp , reply_markup=ReplyKeyboardRemove())     
 
-############### 기타
+    ############### 기타
     elif COMMAND == "/FUN":
         if msg == "오늘내일 날씨":
             telbot.send_message(text="도시명을 입력해주세요", chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
@@ -403,19 +401,19 @@ def get_name(bot, update):
             print(txt)
             telbot.send_message(text=txt, chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
     
-################ HA
-    elif COMMAND == "HA":
-        if msg == "HA추가":
+    ################ HA
+    elif COMMAND == "/HA":
+        if msg == "HA 알림추가":
             print('추가할 종목의 이름 or 티커를 입력해주세요')
             telbot.send_message(text='추가할 종목의 이름 or 티커를 입력해주세요', chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
             SELLECT = msg
             return
-        elif msg == "HA삭제":
+        elif msg == "HA 목록삭제":
             print('추가할 종목의 이름 or 티커를 입력해주세요')
             telbot.send_message(text='추가할 종목의 이름 or 티커를 입력해주세요', chat_id=chat_id, reply_markup=ReplyKeyboardRemove())  
             SELLECT = msg
             return
-        elif msg == "HA목록":
+        elif msg == "HA 알림목록":
             print("ha 관심 목록 조회")
             fileKo = 'korea_watchlist.txt'
             fileMi = 'usa_watchlist.txt'
@@ -431,7 +429,7 @@ def get_name(bot, update):
 
             telbot.send_message(text="[HA 관심 목록]\n\n" + txt1 + "\n" + txt2, chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
         
-        elif SELLECT == "HA삭제":
+        elif SELLECT == "HA 목록삭제":
             if codefind(msg, "krx") != 0 :
                 fileHa = 'korea_watchlist.txt'
             elif  namefind(msg) != 0 :
@@ -448,7 +446,7 @@ def get_name(bot, update):
             elif rst == 1 :
                 print(msg + ' : HA 목록에서 삭제했습니다.')
                 telbot.send_message(text=msg + ' : HA 목록에서 삭제했습니다.', chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        elif SELLECT == "HA추가":
+        elif SELLECT == "HA 알림추가":
             if codefind(msg, "krx") != 0 :
                 fileHa = 'korea_watchlist.txt'
             elif  namefind(msg) != 0 :
@@ -470,7 +468,7 @@ def get_name(bot, update):
                 else : # 한국종목이면
                     telbot.send_message(text=msg + ' : HA 목록에 추가되었습니다.', chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
 
-############## 뉴스
+    ############## 뉴스
     elif COMMAND == "/NEWS":
         if msg == "뉴스추가":
             telbot.send_message(text="추가할 검색어를 입력해주세요", chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
@@ -510,7 +508,7 @@ def get_name(bot, update):
                 return
             naver_news.get_send_link(msg, telbot2, chat_id)
         
-############## 지수
+    ############## 지수
     elif COMMAND == "/JISU":
         if msg == "전부" :
             telbot.send_message(chat_id=chat_id, text = "로딩중...")
@@ -1169,17 +1167,6 @@ async def signal_maker_time():
     
     ############## 5분마다 실행할 코드들 ############################
 
-    global aoaLastTime
-    try :
-        txtList = Whales_Position()
-        if txtList[2] != aoaLastTime:
-            if txtList[1] == "SHORT":
-                telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_binance)
-            elif txtList[1] == "LONG":
-                telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_binance)
-            aoaLastTime = txtList[2]
-    except Exception:
-        pass
     
     naver_news.send_new_links(telbot2, group_id_naver_news)
 
@@ -1394,9 +1381,8 @@ async def krx_ha_check():
         df_HA = heiken_ashi_jusik(token, "krx", count)
         await buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
         await sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
-    telbot.sendMessage(text=naver_weather.rainday("순천"), chat_id=channel_id_feedback)    # 날씨 알림!!
+    
 # 매일 정해진 시간에
-schedule.every().day.at("08:52").do(lambda:asyncio.run(krx_ha_check()))
 schedule.every().day.at("15:02").do(lambda:asyncio.run(krx_ha_check()))
 schedule.every().day.at("20:02").do(lambda:asyncio.run(krx_ha_check()))
 
@@ -1405,56 +1391,131 @@ async def us_ha_check():
     for token in jongmok2: #us
         print(token)
         df_HA = heiken_ashi_jusik(token, "us", count)
-        await buy_signal(token, "day", df_HA, channel_id=channel_id_usa)
-        await sell_signal(token, "day", df_HA, channel_id=channel_id_usa)
+        await buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
+        await sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
 # 매일 정해진 시간에
-schedule.every().day.at("16:31").do(lambda:asyncio.run(us_ha_check())) 
-schedule.every().day.at("22:31").do(lambda:asyncio.run(us_ha_check()))
+schedule.every().day.at("16:33").do(lambda:asyncio.run(us_ha_check())) 
+schedule.every().day.at("22:33").do(lambda:asyncio.run(us_ha_check()))
 
 
 ########### upbit ####################
 coin = "KRW-BTC"
+coin2 = "KRW-ETH"
 
-    # 60분봉
+# 60분봉
 async def coin_ha_check_60min():
     interval_60 = "minute60"
+    #비트
     df_HA_h = heiken_ashi_coin("upbit",coin, interval_60, count)
-    await buy_signal(coin, interval_60, df_HA_h, channel_id=channel_id)
-    await sell_signal(coin, interval_60, df_HA_h, channel_id=channel_id)
+    await buy_signal(coin, interval_60, df_HA_h, channel_id=channel_id_feedback)
+    await sell_signal(coin, interval_60, df_HA_h, channel_id=channel_id_feedback)
+    #이더
+    df_HA_h2 = heiken_ashi_coin("upbit",coin2, interval_60, count)
+    await buy_signal(coin2, interval_60, df_HA_h2, channel_id=channel_id_feedback)
+    await sell_signal(coin2, interval_60, df_HA_h2, channel_id=channel_id_feedback)
+
+    ############## 워뇨띠 포지션
+    global aoaLastTime
+    try :
+        txtList = Whales_Position()
+        if txtList[2] != aoaLastTime:
+            if txtList[1] == "SHORT":
+                telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_feedback)
+            elif txtList[1] == "LONG":
+                telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_feedback)
+            aoaLastTime = txtList[2]
+    except Exception:
+        pass
 # 60분에 한번씩 실행
 schedule.every().hour.at("59:00").do(lambda:asyncio.run(coin_ha_check_60min()))
-    # 1일봉
+
+# 4시간봉
+async def coin_ha_check_240min():
+    interval_240 = "minute240"
+    #비트
+    df_HA_h = heiken_ashi_coin("upbit",coin, interval_240, count)
+    await buy_signal(coin, interval_240, df_HA_h, channel_id=channel_id_feedback)
+    await sell_signal(coin, interval_240, df_HA_h, channel_id=channel_id_feedback)
+    #이더
+    df_HA_h2 = heiken_ashi_coin("upbit",coin2, interval_240, count)
+    await buy_signal(coin2, interval_240, df_HA_h2, channel_id=channel_id_feedback)
+    await sell_signal(coin2, interval_240, df_HA_h2, channel_id=channel_id_feedback)
+# 4시간에 한번씩 실행
+schedule.every().day.at("23:57").do(lambda:asyncio.run(coin_ha_check_240min()))
+schedule.every().day.at("03:57").do(lambda:asyncio.run(coin_ha_check_240min()))
+schedule.every().day.at("07:57").do(lambda:asyncio.run(coin_ha_check_240min()))
+schedule.every().day.at("11:57").do(lambda:asyncio.run(coin_ha_check_240min()))
+schedule.every().day.at("15:57").do(lambda:asyncio.run(coin_ha_check_240min()))
+schedule.every().day.at("19:57").do(lambda:asyncio.run(coin_ha_check_240min()))
+
+ # 1일봉
 async def coin_ha_check_day():
     interval_day = "day"
+    #비트
     df_HA_d = heiken_ashi_coin("upbit",coin, interval_day, count)
-    await buy_signal(coin, interval_day, df_HA_d, channel_id=channel_id)
-    await sell_signal(coin, interval_day, df_HA_d, channel_id=channel_id)
+    await buy_signal(coin, interval_day, df_HA_d, channel_id=channel_id_feedback)
+    await sell_signal(coin, interval_day, df_HA_d, channel_id=channel_id_feedback)
+    #이더
+    df_HA_h2 = heiken_ashi_coin("upbit",coin2, interval_day, count)
+    await buy_signal(coin2, interval_day, df_HA_h2, channel_id=channel_id_feedback)
+    await sell_signal(coin2, interval_day, df_HA_h2, channel_id=channel_id_feedback)
+    # 날씨 알림!!
+    telbot.sendMessage(text=naver_weather.rainday("순천"), chat_id=channel_id_feedback)    
 schedule.every().day.at("08:50").do(lambda:asyncio.run(coin_ha_check_day()))
 schedule.every().day.at("23:50").do(lambda:asyncio.run(coin_ha_check_day()))
 
 ############## binance ####################
 
 btc = 'BTC/USDT'
+eth = 'ETH/USDT'
 
-    # 60분봉
+# 60분봉
 async def binance_ha_check_60min():
     interval_60 = "1h"
+    #비트
     df_HA_h = heiken_ashi_coin("binance",btc, interval_60, count)
-    await buy_signal(btc, interval_60, df_HA_h, channel_id=channel_id_binance)
-    await sell_signal(btc, interval_60, df_HA_h, channel_id=channel_id_binance)
-
+    await buy_signal(btc, interval_60, df_HA_h, channel_id=channel_id_feedback)
+    await sell_signal(btc, interval_60, df_HA_h, channel_id=channel_id_feedback)
+    #이더
+    df_HA_h2 = heiken_ashi_coin("binance",eth, interval_60, count)
+    await buy_signal(eth, interval_60, df_HA_h2, channel_id=channel_id_feedback)
+    await sell_signal(eth, interval_60, df_HA_h2, channel_id=channel_id_feedback)
 # 60분에 한번씩 실행
 schedule.every().hour.at("58:00").do(lambda:asyncio.run(binance_ha_check_60min()))
-    # 1일봉
+
+# 4시간봉
+async def binance_ha_check_240min():
+    interval_240 = "4h"
+    #비트
+    df_HA_h = heiken_ashi_coin("binance",btc, interval_240, count)
+    await buy_signal(btc, interval_240, df_HA_h, channel_id=channel_id_feedback)
+    await sell_signal(btc, interval_240, df_HA_h, channel_id=channel_id_feedback)
+    #이더
+    df_HA_h2 = heiken_ashi_coin("binance",eth, interval_240, count)
+    await buy_signal(eth, interval_240, df_HA_h2, channel_id=channel_id_feedback)
+    await sell_signal(eth, interval_240, df_HA_h2, channel_id=channel_id_feedback)
+# 4시간에 한번씩 실행
+schedule.every().day.at("23:57").do(lambda:asyncio.run(binance_ha_check_240min()))
+schedule.every().day.at("03:57").do(lambda:asyncio.run(binance_ha_check_240min()))
+schedule.every().day.at("07:57").do(lambda:asyncio.run(binance_ha_check_240min()))
+schedule.every().day.at("11:57").do(lambda:asyncio.run(binance_ha_check_240min()))
+schedule.every().day.at("15:57").do(lambda:asyncio.run(binance_ha_check_240min()))
+schedule.every().day.at("19:57").do(lambda:asyncio.run(binance_ha_check_240min()))
+
+# 1일봉
 async def binance_ha_check_day():
     interval_day = "1d"
+    #비트
     df_HA_d = heiken_ashi_coin("binance",btc, interval_day, count)
-    await buy_signal(btc, interval_day, df_HA_d, channel_id=channel_id_binance)
-    await sell_signal(btc, interval_day, df_HA_d, channel_id=channel_id_binance)
+    await buy_signal(btc, interval_day, df_HA_d, channel_id=channel_id_feedback)
+    await sell_signal(btc, interval_day, df_HA_d, channel_id=channel_id_feedback)
+    #이더
+    df_HA_h2 = heiken_ashi_coin("binance",eth, interval_day, count)
+    await buy_signal(eth, interval_day, df_HA_h2, channel_id=channel_id_feedback)
+    await sell_signal(eth, interval_day, df_HA_h2, channel_id=channel_id_feedback)
 schedule.every().day.at("08:52").do(lambda:asyncio.run(binance_ha_check_day()))
 schedule.every().day.at("23:52").do(lambda:asyncio.run(binance_ha_check_day()))
 
-# from telegram.utils.helpers import escape_markdown escape_markdown(,version=2)
 telbot.sendMessage(chat_id=channel_id_feedback, text=updateText,parse_mode='Markdown',disable_web_page_preview=True) # 메세지 보내기
 
 # 작동 테스트
@@ -1478,7 +1539,6 @@ def alarmi():
             print(e)
             telbot.sendMessage(chat_id=channel_id_feedback, text=(e)) # 메세지 보내기
             telbot.sendMessage(chat_id=channel_id_feedback, text=("스레드 에러발생!")) # 메세지 보내기
-
 
 
 try :
