@@ -1492,8 +1492,8 @@ try :
     # 명령어 받아오는 곳
     message_handler2 = MessageHandler(Filters.command, get_command)
     updater.dispatcher.add_handler(message_handler2)
-    # 버튼 콜백
-    updater.dispatcher.add_handler(CallbackQueryHandler(callback_get))
+    # # 버튼 콜백
+    # updater.dispatcher.add_handler(CallbackQueryHandler(callback_get))
     updater.start_polling(timeout=3)
     updater.idle()
 except Exception as e:               # 에러 발생시 예외 발생
