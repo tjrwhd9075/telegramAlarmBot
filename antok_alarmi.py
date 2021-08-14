@@ -87,10 +87,10 @@ def send_new():
             pass
 
     # 저장된 행이 300줄 이상이면, 절반 삭제
-    if len(oldLinks) >= 300:
+    if len(oldLinks) >= 500:
         with open(fileAntok, 'w', encoding = 'UTF-8') as f:
             for i, line in enumerate(oldLinks):
-                if i > 150 :
+                if i > 250 :
                     f.write(line + "\n")
 
     return newlines
@@ -111,18 +111,18 @@ def send_new():
     #     title = news.select_one('#board-list > div:nth-child(2) > table > tbody > tr > td.title > a > span.title-link').get_text()
     #     # print(title)
 
-# import schedule
-# from apscheduler.schedulers.blocking import BlockingScheduler
-# sched = BlockingScheduler()
+import schedule
+from apscheduler.schedulers.blocking import BlockingScheduler
+sched = BlockingScheduler()
 
-# try:
-#     try :
-#         send_new()
-#         sched.add_job(send_new, 'interval', minutes=1)
-#         sched.start()
-#     except Exception as e:
-#         print(e)
-#         # bot.sendMessage(chat_id=chat_id, text=e)
-# except KeyboardInterrupt:
-#     print("ctrl + C")
-#     bot.sendMessage(chat_id=chat_id, text="ctrl + C")
+try:
+    try :
+        send_new()
+        sched.add_job(send_new, 'interval', minutes=2)
+        sched.start()
+    except Exception as e:
+        print(e)
+        # bot.sendMessage(chat_id=chat_id, text=e)
+except KeyboardInterrupt:
+    print("ctrl + C")
+    bot.sendMessage(chat_id=chat_id, text="ctrl + C")
