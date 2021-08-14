@@ -388,7 +388,7 @@ def get_name(bot, update):
                                     \n\t\t = " + str(format(round(biWon),',')) +"₩"
                                     + "\n\n김프 : " + str(format(round(kimpWon),',')) +"₩ ("+ str(format(round(kimpPer,2),',')) + "%)"
                                     ,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        elif msg == "워뇨띠":
+        elif msg == "고래 포지션":
             global aoaLastTime
             global aoaLastPosi
             

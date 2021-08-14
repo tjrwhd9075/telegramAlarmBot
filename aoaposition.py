@@ -24,8 +24,8 @@ chrome_options.add_argument("disable-dev-shm-usage")
 # chrome_options.add_argument("--disableWarnings")
 
 
-path = 'chromedriver'
-# path = '/home/ubuntu/Downloads/chromedriver' 
+#path = 'chromedriver'
+path = '/home/ubuntu/Downloads/chromedriver' 
 # driver = webdriver.Chrome(path, options=chrome_options)
 
 import asyncio
@@ -164,12 +164,12 @@ async def get_aoaPosition():
             txt.append(aoaPosition2.text.replace("\u3000", " "))            # print(txt) # 업데이트 시간
             break
     
-    # print(txt)
+    print(txt)
     
     driver.close()
     return txt
 
-# asyncio.run(get_aoaPosition())
+asyncio.run(get_aoaPosition())
 
 
 from bs4 import BeautifulSoup
