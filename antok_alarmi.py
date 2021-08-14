@@ -95,18 +95,34 @@ def send_new():
 
     return newlines
 
-import schedule
-from apscheduler.schedulers.blocking import BlockingScheduler
-sched = BlockingScheduler()
 
-try:
-    try :
-        send_new()
-        sched.add_job(send_new, 'interval', minutes=1)
-        sched.start()
-    except Exception as e:
-        print(e)
-        # bot.sendMessage(chat_id=chat_id, text=e)
-except KeyboardInterrupt:
-    print("ctrl + C")
-    bot.sendMessage(chat_id=chat_id, text="ctrl + C")
+    # lines = []
+    # for news in news_list:
+    #     link = kaiLink + news.select_one('#board-list > div:nth-child(2) > table > tbody > tr > td.title > a')['href'].split('/')[2]
+    
+    #     print(link)
+
+
+    # news_list = soup.select('#board-list > div:nth-child(2) > table > tbody > tr')
+    # lines = []
+    # for news in news_list:
+    #     link = kaiLink + news.select_one('#board-list > div:nth-child(2) > table > tbody > tr > td.title > a')['href'].split('/')[2]
+    #     # print(link)
+    #     title = news.select_one('#board-list > div:nth-child(2) > table > tbody > tr > td.title > a > span.title-link').get_text()
+    #     # print(title)
+
+# import schedule
+# from apscheduler.schedulers.blocking import BlockingScheduler
+# sched = BlockingScheduler()
+
+# try:
+#     try :
+#         send_new()
+#         sched.add_job(send_new, 'interval', minutes=1)
+#         sched.start()
+#     except Exception as e:
+#         print(e)
+#         # bot.sendMessage(chat_id=chat_id, text=e)
+# except KeyboardInterrupt:
+#     print("ctrl + C")
+#     bot.sendMessage(chat_id=chat_id, text="ctrl + C")

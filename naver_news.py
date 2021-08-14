@@ -1,4 +1,3 @@
-
 #정적 수집을 위한 패키지
 import time
 import requests
@@ -103,12 +102,12 @@ def send_new_links(bot, chat_id):
 
     # 검색어 갯수 * 50 개보다 저장된 뉴스 갯수가 더 많으면 반퉁 지움
     lenQ = len(get_querys())
-    if (lenQ * 50) < len(oldLinks):
+    if (lenQ * 100) < len(oldLinks):
         with open(fileNews,'rt', encoding = 'UTF-8') as f: 
             oldLinks=f.read().splitlines() 
         with open(fileNews, 'w', encoding = 'UTF-8') as f:
             for i, line in enumerate(oldLinks):
-                if i > (lenQ*20) :
+                if i > (lenQ*50) :
                     f.write(line + "\n")
 
     return newLinks

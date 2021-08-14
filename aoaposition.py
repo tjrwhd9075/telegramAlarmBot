@@ -11,43 +11,125 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 # from pyvirtualdisplay import Display
 
-print("start")
 
 # display = Display(visible=0, size=(1024, 768)) 
 # display.start()
 
 chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('--headless')
-chrome_options.add_argument('--no-sandbox')
-chrome_options.add_argument("--single-process")
-chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument('headless')    # 창 띄우지 X
+chrome_options.add_argument('disable-gpu')  # gpu 사용 X
+chrome_options.add_argument('no-sandbox')
+chrome_options.add_argument("single-process")
+chrome_options.add_argument("disable-dev-shm-usage")
+# chrome_options.add_argument("--disableWarnings")
 
-url = "https://sigbtc.pro/"
 
+path = 'chromedriver'
 # path = '/home/ubuntu/Downloads/chromedriver' 
 # driver = webdriver.Chrome(path, options=chrome_options)
 
+import asyncio
 
-driver = webdriver.Chrome('chromedriver')
-driver.maximize_window()
-# driver.implicitly_wait(30)
-driver.get(url)
+async def get_kaiPrice():
+    driver = webdriver.Chrome(path, options=chrome_options)
+    driver.maximize_window()
+    # driver.implicitly_wait(30)
+    url = "https://kaiprotocol.fi/"
+    driver.get(url)
+    
+    while True:
+        kaiPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/body/div/div/section[2]/div/div/div[1]/div/div[1]/h6[2]")))
+        if kaiPrice.text != "--" :
+            txt1 = "KAI : "+kaiPrice.text
+            print(txt1) # 이름
+            break
+    while True:
+        skaiPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/body/div/div/section[2]/div/div/div[2]/div/div[1]/h6[2]")))
+        if skaiPrice.text != "--":
+            txt2 = "sKAI : "+skaiPrice.text
+            print(txt2) # 이름
+            break
 
-aoaPosition = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-highlight']")))
-# aoaPosition = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-highlight']")
-print(aoaPosition.text) # 이름
+    driver.close()
 
-aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-info mt-2 type1update']")))
-# aoaPosition2 = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-info mt-2 type1update']")
-print(aoaPosition2.text) # 업데이트 시간
+    return txt1 + "\n"+ txt2
 
-aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='d-flex align-items-center text-hover-success']/a[@class='text-muted']")))
-# aoaPosition3 = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/a[@class='text-muted']")
-print(aoaPosition3.text) # 포지션
+# asyncio.run( get_kaiPrice())
 
-driver.close()
 
-print("end")
+async def get_klayPrice():
+    driver = webdriver.Chrome(path, options=chrome_options)
+    driver.maximize_window()
+    # driver.implicitly_wait(30)
+    url = "https://klayswap.com/dashboard"
+    driver.get(url)
+    
+    while True:
+        kspPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='main-view']/section/article[1]/div[2]/section[3]/div[1]/dl[1]/dd/span[2]")))
+        if kspPrice.text != "--" :
+            txt1 = "KSP : $ "+kspPrice.text
+            print(txt1) # 이름
+            break
+    while True:
+        klayPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='main-view']/section/article[1]/div[2]/section[3]/div[2]/dl[1]/dd")))
+        if klayPrice.text != "--":
+            txt2 = "KLAY : "+klayPrice.text
+            print(txt2) # 이름
+            break
+
+    driver.close()
+    return txt1 + "\n" + txt2
+
+# asyncio.run( get_klayPrice())
+
+async def get_kfiPrice():
+    driver = webdriver.Chrome(path, options=chrome_options)
+    driver.maximize_window()
+    # driver.implicitly_wait(30)
+    url = "https://klayfi.finance/"
+    driver.get(url)
+    
+    while True:
+        kfiPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/div/div[1]/div[2]/div[1]/span")))
+        if kfiPrice.text != "--" :
+            txt1 = "KFI : "+kfiPrice.text
+            print(txt1) # 이름
+            break
+
+    driver.close()
+    return txt1
+
+# asyncio.run( get_kfiPrice())
+
+
+
+
+
+
+
+
+
+def get_aoaPosition():
+    driver = webdriver.Chrome(path, options=chrome_options)
+    driver.maximize_window()
+    # driver.implicitly_wait(30)
+    url = "https://sigbtc.pro/"
+    driver.get(url)
+
+    aoaPosition = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-highlight']")))
+    # aoaPosition = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-highlight']")
+    print(aoaPosition.text) # 이름
+
+    aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-info mt-2 type1update']")))
+    # aoaPosition2 = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-info mt-2 type1update']")
+    print(aoaPosition2.text) # 업데이트 시간
+
+    aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='d-flex align-items-center text-hover-success']/a[@class='text-muted']")))
+    # aoaPosition3 = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/a[@class='text-muted']")
+    print(aoaPosition3.text) # 포지션
+
+    driver.close()
+
 
 
 # iframes = driver.find_elements_by_css_selector('iframe') #iframe이 여러개 있을 경우를 대비

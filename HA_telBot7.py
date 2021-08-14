@@ -38,12 +38,14 @@ import plotly.graph_objs as pltygo
 import naver_weather
 import naver_news
 import watchlist
+import aoaposition
 import asyncio
 
 plotly.__version__
 
 version = "사용법은 /help\n\
         \n\[version]\
+        \n 1.1.1 채널, 그룹 정리\
         \n 1.1.0 명령어 수정\
         \n\n[바이낸스, 업비트 비트코인, 이더리움 HA 추세전환 알림](t.me/ha_alarm_feedback)\
         \n[채팅방](t.me/signalmaker_chat)\
@@ -391,7 +393,13 @@ def get_name(bot, update):
                 telbot.send_message(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2]  + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
             elif txtList[1] == "LONG":
                 telbot.send_message(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        
+        elif msg == "클레이튼":
+            txt1 = asyncio.run(aoaposition.get_klayPrice())
+            txt2 = asyncio.run(aoaposition.get_kfiPrice())
+            txt3 = asyncio.run(aoaposition.get_kaiPrice())
+            txt = txt1 + "\n" + txt2 + "\n"+ txt3
+            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+
         elif SELLECT == "오늘내일 날씨":
             txt = naver_weather.search(msg)
             print(txt)
@@ -593,7 +601,7 @@ def get_command(bot, update):
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, input_field_placeholder='what the fox say?'))
     
     elif msg == "/FUN":
-        reply_keyboard = [['오늘내일 날씨', '1주일 내 비소식'],['김프', '워뇨띠'],['한강 수온 체크'],['취소']]
+        reply_keyboard = [['오늘내일 날씨', '1주일 내 비소식'],['김프', '워뇨띠'],['클레이튼'],['한강 수온 체크'],['취소']]
         telbot.send_message(text="메뉴를 선택해 주세요.",
                             chat_id=chat_id,
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, input_field_placeholder='what the fox say?'))
@@ -1566,14 +1574,3 @@ except Exception as e:               # 에러 발생시 예외 발생
 
 
 
-
-
-
-
-
-
-
-
-
-
-# 관심종목 텍스트파일로 저장 -> 추가, 삭제 기능
