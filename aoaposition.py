@@ -104,34 +104,99 @@ async def get_kfiPrice():
 
 
 
-
-
-
-
-
-def get_aoaPosition():
+async def get_aoaPosition():
     driver = webdriver.Chrome(path, options=chrome_options)
     driver.maximize_window()
     # driver.implicitly_wait(30)
     url = "https://sigbtc.pro/"
     driver.get(url)
 
-    aoaPosition = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-highlight']")))
-    # aoaPosition = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-highlight']")
-    print(aoaPosition.text) # 이름
+    txt = []
 
-    aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-info mt-2 type1update']")))
-    # aoaPosition2 = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/div[@class='px-4 flex']/div[@class='text-info mt-2 type1update']")
-    print(aoaPosition2.text) # 업데이트 시간
+    while True: # 워뇨띠
+        aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[6]/div/div/div/a/span")))
+        if aoaPosition3.text != "" :
+            txt.append(aoaPosition3.text)
+            # print(txt) # 포지션
+            break
+    while True:
+        aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[6]/div/div/div/div[2]/div[2]")))
+        if aoaPosition2.text != "" :
+            txt.append(aoaPosition2.text.replace("\u3000", " "))
+            # print(txt) # 업데이트 시간
+            break
 
-    aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='d-flex align-items-center text-hover-success']/a[@class='text-muted']")))
-    # aoaPosition3 = driver.find_element_by_xpath("//div[@class='d-flex align-items-center text-hover-success']/a[@class='text-muted']")
-    print(aoaPosition3.text) # 포지션
+    while True: # skitter
+        aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[7]/div/div/div/a/span")))
+        if aoaPosition3.text != "" :
+            txt.append(aoaPosition3.text)
+            # print(txt) # 포지션
+            break
+    while True:
+        aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[7]/div/div/div/div[2]/div[2]")))
+        if aoaPosition2.text != "" :
+            txt.append(aoaPosition2.text.replace("\u3000", " "))
+            # print(txt) # 업데이트 시간
+            break
 
+    while True: # snapdragon
+        aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[8]/div/div/div/a/span")))
+        if aoaPosition3.text != "" :
+            txt.append(aoaPosition3.text)
+            # print(txt) # 포지션
+            break
+    while True:
+        aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[8]/div/div/div/div[2]/div[2]")))
+        if aoaPosition2.text != "" :
+            txt.append(aoaPosition2.text.replace("\u3000", " "))
+            # print(txt) # 업데이트 시간
+            break
+
+    while True: # 박호두
+        aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[9]/div/div/div/a/span")))
+        if aoaPosition3.text != "" :
+            txt.append(aoaPosition3.text)
+            # print(txt) # 포지두
+            break
+    while True:
+        aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[9]/div/div/div/div[2]/div[2]")))
+        if aoaPosition2.text != "" :
+            txt.append(aoaPosition2.text.replace("\u3000", " "))            # print(txt) # 업데이트 시간
+            break
+    
+    # print(txt)
+    
     driver.close()
+    return txt
+
+# asyncio.run(get_aoaPosition())
 
 
+from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 
+def Whales_Position():
+    '''
+    aoa, aoaPosition, aoaTime
+    '''
+    ua = UserAgent()
+    header = {'user-agent':ua.chrome}
+
+    try:
+        Whales_URL = requests.get('https://kimpya.site/apps/leaderboard.php', headers=header)
+        Whales = BeautifulSoup(Whales_URL.content, 'html.parser')
+        AOA = Whales.find('div', class_="tbl darklight")
+    except Exception:
+        return "kimpya.site 접속에러"
+    aoa = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.get_text() # aoa
+    aoaPosition = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.get_text() # position
+    aoaTime = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.get_text() # 업데이트 날짜
+    # 
+    txt = []
+    txt.append(aoa)
+    txt.append(aoaPosition)
+    txt.append(aoaTime)
+    return txt 
 # iframes = driver.find_elements_by_css_selector('iframe') #iframe이 여러개 있을 경우를 대비
 # for iframe in iframes:
 #     print(iframe.get_attribute('name')) #iframe들의 이름을 프린트

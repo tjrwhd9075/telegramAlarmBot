@@ -45,6 +45,7 @@ plotly.__version__
 
 version = "사용법은 /help\n\
         \n\[version]\
+        \n 1.1.2 고래포지션, 클레이튼 코인 가격 추가\
         \n 1.1.1 채널, 그룹 정리\
         \n 1.1.0 명령어 수정\
         \n\n[바이낸스, 업비트 비트코인, 이더리움 HA 추세전환 알림](t.me/ha_alarm_feedback)\
@@ -388,11 +389,25 @@ def get_name(bot, update):
                                     + "\n\n김프 : " + str(format(round(kimpWon),',')) +"₩ ("+ str(format(round(kimpPer,2),',')) + "%)"
                                     ,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
         elif msg == "워뇨띠":
-            txtList = Whales_Position()
-            if txtList[1] == "SHORT":
-                telbot.send_message(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2]  + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-            elif txtList[1] == "LONG":
-                telbot.send_message(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php",  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+            global aoaLastTime
+            global aoaLastPosi
+            
+            txtList = asyncio.run(aoaposition.get_aoaPosition())
+            for i in range(len(txtList)):
+                if txtList[i] == "Long" : txtList[i] = "Long🔴"
+                elif txtList[i] == "Short" : txtList[i] = "Short🔵"
+                elif txtList[i] == "없음" : txtList[i] = "없음😴"
+
+            txt = "[현재 고래 포지션]\n\
+                    \n\n1️⃣ 워뇨띠 : " + txtList[0] + "\n" + txtList[1] +\
+                    "\n\n2️⃣ skitter : " + txtList[2] + "\n" + txtList[3] +\
+                    "\n\n3️⃣ snapdragon : " + txtList[4] + "\n" + txtList[5] +\
+                    "\n\n4️⃣ 박호두 : " + txtList[6] + "\n" + txtList[7]
+            aoaLastTime = txtList[1]
+            aoaLastPosi = txtList[0]
+
+            telbot.send_message(text= txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+            
         elif msg == "클레이튼":
             txt1 = asyncio.run(aoaposition.get_klayPrice())
             txt2 = asyncio.run(aoaposition.get_kfiPrice())
@@ -601,7 +616,7 @@ def get_command(bot, update):
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, input_field_placeholder='what the fox say?'))
     
     elif msg == "/FUN":
-        reply_keyboard = [['오늘내일 날씨', '1주일 내 비소식'],['김프', '워뇨띠'],['클레이튼'],['한강 수온 체크'],['취소']]
+        reply_keyboard = [['오늘내일 날씨', '1주일 내 비소식'],['김프', '고래 포지션'],['클레이튼','한강 수온 체크'],['취소']]
         telbot.send_message(text="메뉴를 선택해 주세요.",
                             chat_id=chat_id,
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, input_field_placeholder='what the fox say?'))
@@ -1192,32 +1207,6 @@ schedule.every().hour.at("49:45").do(lambda:asyncio.run(signal_maker_time()))
 schedule.every().hour.at("54:45").do(lambda:asyncio.run(signal_maker_time()))
 schedule.every().hour.at("59:45").do(lambda:asyncio.run(signal_maker_time()))
 
-from bs4 import BeautifulSoup
-from fake_useragent import UserAgent
-ua = UserAgent()
-header = {'user-agent':ua.chrome}
-
-aoaLastTime =""
-
-def Whales_Position():
-    '''
-    aoa, aoaPosition, aoaTime
-    '''
-    try:
-        Whales_URL = requests.get('https://kimpya.site/apps/leaderboard.php', headers=header)
-        Whales = BeautifulSoup(Whales_URL.content, 'html.parser')
-        AOA = Whales.find('div', class_="tbl darklight")
-    except Exception:
-        return "kimpya.site 접속에러"
-    aoa = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.get_text() # aoa
-    aoaPosition = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.get_text() # position
-    aoaTime = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.get_text() # 업데이트 날짜
-    # 
-    txt = []
-    txt.append(aoa)
-    txt.append(aoaPosition)
-    txt.append(aoaTime)
-    return txt 
 
 def heiken_ashi_coin(country, coin='BTC/USDT', interval='1d', count=60):
     if country == "binance":
@@ -1392,7 +1381,7 @@ async def krx_ha_check():
     
 # 매일 정해진 시간에
 schedule.every().day.at("15:02").do(lambda:asyncio.run(krx_ha_check()))
-schedule.every().day.at("20:02").do(lambda:asyncio.run(krx_ha_check()))
+schedule.every().day.at("08:33").do(lambda:asyncio.run(krx_ha_check()))
 
 async def us_ha_check():
     jongmok2 = watchlist.get_querys('usa_watchlist.txt')        
@@ -1402,8 +1391,8 @@ async def us_ha_check():
         await buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
         await sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
 # 매일 정해진 시간에
-schedule.every().day.at("16:33").do(lambda:asyncio.run(us_ha_check())) 
-schedule.every().day.at("22:33").do(lambda:asyncio.run(us_ha_check()))
+schedule.every().day.at("08:03").do(lambda:asyncio.run(us_ha_check())) 
+schedule.every().day.at("19:03").do(lambda:asyncio.run(us_ha_check()))
 
 
 ########### upbit ####################
@@ -1411,6 +1400,8 @@ coin = "KRW-BTC"
 coin2 = "KRW-ETH"
 
 # 60분봉
+aoaLastTime = ""
+aoaLastPosi = ""
 async def coin_ha_check_60min():
     interval_60 = "minute60"
     #비트
@@ -1424,14 +1415,26 @@ async def coin_ha_check_60min():
 
     ############## 워뇨띠 포지션
     global aoaLastTime
+    global aoaLastPosi
+
     try :
-        txtList = Whales_Position()
-        if txtList[2] != aoaLastTime:
-            if txtList[1] == "SHORT":
-                telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬇️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_feedback)
-            elif txtList[1] == "LONG":
-                telbot.sendMessage(text=txtList[0] + " (워뇨띠) 현재 포지션 : " + txtList[1] + "⬆️\n업데이트 시간 : " + txtList[2] + "\nhttps://kimpya.site/page/readerboard.php", chat_id=channel_id_feedback)
-            aoaLastTime = txtList[2]
+        txtList = asyncio.run(aoaposition.get_aoaPosition())
+
+        if  txtList[0] != aoaLastPosi and txtList[1] != aoaLastTime: 
+            
+            for i in range(len(txtList)):
+                if txtList[i] == "Long" : txtList[i] = "Long🔴"
+                elif txtList[i] == "Short" : txtList[i] = "Short🔵"
+                elif txtList[i] == "없음" : txtList[i] = "없음😴"
+
+            txt = "[고래 포지션 알림]\
+                    \n\n1️⃣ 워뇨띠 : " + txtList[0] + "\n" + txtList[1] +\
+                    "\n\n2️⃣ skitter : " + txtList[2] + "\n" + txtList[3] +\
+                    "\n\n3️⃣ snapdragon : " + txtList[4] + "\n" + txtList[5] +\
+                    "\n\n4️⃣ 박호두 : " + txtList[6] + "\n" + txtList[7]
+            aoaLastPosi = txtList[0]
+            aoaLastTime = txtList[1]
+            telbot.send_message(text= txt,  chat_id=channel_id_feedback)
     except Exception:
         pass
 # 60분에 한번씩 실행
