@@ -45,6 +45,7 @@ plotly.__version__
 
 version = "사용법은 /help\n\
         \n\[version]\
+        \n 1.1.3 ...\
         \n 1.1.2 고래포지션, 클레이튼 코인 가격 추가\
         \n 1.1.1 채널, 그룹 정리\
         \n 1.1.0 명령어 수정\
@@ -238,6 +239,8 @@ def get_name(bot, update):
     global EXCHANGE
     global SELLECT
 
+    telbot.send_chat_action(chat_id=chat_id, action=telegram.ChatAction.TYPING)
+
     if msg == "취소" or msg == "CANCEL":
         telbot.send_message(chat_id=chat_id, text = '취소되었습니다.', reply_markup=ReplyKeyboardRemove())
         SELLECT = ''
@@ -261,7 +264,8 @@ def get_name(bot, update):
         else:
             telbot.send_message(chat_id=chat_id, text = msg + " : 검색되지 않는 종목명입니다.")
             return 
-        
+
+        telbot.send_chat_action(chat_id=chat_id, action=telegram.ChatAction.TYPING)
         df = Macd(df)
         df = BolingerBand(df)
         df = Rsi(df)
@@ -343,9 +347,6 @@ def get_name(bot, update):
                 elif interval == '1d' : interval = "1day"
                 coin = "KRW-ETH"
                 df = ichimoku(Heiken_ashi(Ema(Rsi(BolingerBand(Macd(pyupbit.get_ohlcv(coin, interval, count)))))))
-            
-            print(coin)
-            print(df)
 
             txt = signal_maker(df)
             temp = ""
@@ -427,13 +428,13 @@ def get_name(bot, update):
     ################ HA
     elif COMMAND == "/HA":
         if msg == "HA 알림추가":
-            print('추가할 종목의 이름 or 티커를 입력해주세요')
-            telbot.send_message(text='추가할 종목의 이름 or 티커를 입력해주세요', chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+            print('목록에 추가할 종목의 이름 or 티커를 입력해주세요')
+            telbot.send_message(text='목록에 추가할 종목의 이름 or 티커를 입력해주세요', chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
             SELLECT = msg
             return
         elif msg == "HA 목록삭제":
-            print('추가할 종목의 이름 or 티커를 입력해주세요')
-            telbot.send_message(text='추가할 종목의 이름 or 티커를 입력해주세요', chat_id=chat_id, reply_markup=ReplyKeyboardRemove())  
+            print('목록에서 삭제할 종목의 이름 or 티커를 입력해주세요')
+            telbot.send_message(text='목록에서 삭제할 종목의 이름 or 티커를 입력해주세요', chat_id=chat_id, reply_markup=ReplyKeyboardRemove())  
             SELLECT = msg
             return
         elif msg == "HA 알림목록":
@@ -534,7 +535,6 @@ def get_name(bot, update):
     ############## 지수
     elif COMMAND == "/JISU":
         if msg == "전부" :
-            telbot.send_message(chat_id=chat_id, text = "로딩중...")
             plot_candle_chart_jisu(fetch_jisu('ks11',300),'ks11')
             telbot.send_photo(chat_id=chat_id, photo=open('jusik.png', 'rb'))
             plot_candle_chart_jisu(fetch_jisu('kq11',300),'kq11')
@@ -586,6 +586,8 @@ def get_command(bot, update):
         return
 
     print("get command : " + msg)
+
+    telbot.send_chat_action(chat_id=chat_id, action=telegram.ChatAction.TYPING)
 
     global COMMAND
     if msg == "/BTC":
@@ -1122,6 +1124,7 @@ async def signal_maker_time():
     rsiSet = {}
     bbSet ={}
 
+    telbot.send_chat_action(chat_id=channel_id_binance, action=telegram.ChatAction.TYPING)
     for interval in intervalSet:    
         df = ichimoku(Heiken_ashi(Ema(Rsi(BolingerBand(Macd(fetch_ohlcvs(coin, interval, count)))))))
         txt = signal_maker(df)
@@ -1272,6 +1275,7 @@ def heiken_ashi_jusik(token, region, count):
     return df_HA       
 
 async def buy_signal(token, interval, df_HA, channel_id=None):
+    telbot.send_chat_action(chat_id=channel_id, action=telegram.ChatAction.TYPING)
     # ha음봉(ha_open > ha_close) -> ha양봉(ha_open < ha_close)  # 양전
     if df_HA["open"].iloc[-2] > df_HA["close"].iloc[-2] and df_HA["open"].iloc[-1] < df_HA["close"].iloc[-1] :
         # 8ema < 20ma   # 하락추세중 추세반전
@@ -1310,6 +1314,7 @@ async def buy_signal(token, interval, df_HA, channel_id=None):
     return 0
 
 async def sell_signal(token, interval, df_HA, channel_id=None):
+    telbot.send_chat_action(chat_id=channel_id, action=telegram.ChatAction.TYPING)
     # ha양봉(ha_open < ha_close) -> ha양봉(ha_open < ha_close)  # 양봉연속
     if df_HA["open"].iloc[-2] < df_HA["close"].iloc[-2] and df_HA["open"].iloc[-1] < df_HA["close"].iloc[-1]:
         # ha양봉 and 캔들양봉 : 10% 매도
@@ -1400,8 +1405,6 @@ coin = "KRW-BTC"
 coin2 = "KRW-ETH"
 
 # 60분봉
-aoaLastTime = ""
-aoaLastPosi = ""
 async def coin_ha_check_60min():
     interval_60 = "minute60"
     #비트
@@ -1413,32 +1416,9 @@ async def coin_ha_check_60min():
     await buy_signal(coin2, interval_60, df_HA_h2, channel_id=channel_id_feedback)
     await sell_signal(coin2, interval_60, df_HA_h2, channel_id=channel_id_feedback)
 
-    ############## 워뇨띠 포지션
-    global aoaLastTime
-    global aoaLastPosi
-
-    try :
-        txtList = asyncio.run(aoaposition.get_aoaPosition())
-
-        if  txtList[0] != aoaLastPosi and txtList[1] != aoaLastTime: 
-            
-            for i in range(len(txtList)):
-                if txtList[i] == "Long" : txtList[i] = "Long🔴"
-                elif txtList[i] == "Short" : txtList[i] = "Short🔵"
-                elif txtList[i] == "없음" : txtList[i] = "없음😴"
-
-            txt = "[고래 포지션 알림]\
-                    \n\n1️⃣ 워뇨띠 : " + txtList[0] + "\n" + txtList[1] +\
-                    "\n\n2️⃣ skitter : " + txtList[2] + "\n" + txtList[3] +\
-                    "\n\n3️⃣ snapdragon : " + txtList[4] + "\n" + txtList[5] +\
-                    "\n\n4️⃣ 박호두 : " + txtList[6] + "\n" + txtList[7]
-            aoaLastPosi = txtList[0]
-            aoaLastTime = txtList[1]
-            telbot.send_message(text= txt,  chat_id=channel_id_feedback)
-    except Exception:
-        pass
+    
 # 60분에 한번씩 실행
-schedule.every().hour.at("59:00").do(lambda:asyncio.run(coin_ha_check_60min()))
+schedule.every().hour.at(":59").do(lambda:asyncio.run(coin_ha_check_60min()))
 
 # 4시간봉
 async def coin_ha_check_240min():
@@ -1492,7 +1472,7 @@ async def binance_ha_check_60min():
     await buy_signal(eth, interval_60, df_HA_h2, channel_id=channel_id_feedback)
     await sell_signal(eth, interval_60, df_HA_h2, channel_id=channel_id_feedback)
 # 60분에 한번씩 실행
-schedule.every().hour.at("58:00").do(lambda:asyncio.run(binance_ha_check_60min()))
+schedule.every().hour.at(":58").do(lambda:asyncio.run(binance_ha_check_60min()))
 
 # 4시간봉
 async def binance_ha_check_240min():
@@ -1527,6 +1507,40 @@ async def binance_ha_check_day():
 schedule.every().day.at("08:52").do(lambda:asyncio.run(binance_ha_check_day()))
 schedule.every().day.at("23:52").do(lambda:asyncio.run(binance_ha_check_day()))
 
+################## 앤톡새글알리미 #################################
+import antok_alarmi
+schedule.every(2).minutes.do(lambda:asyncio.run(antok_alarmi.send_new()))
+
+################## 고래 포지션 #################################
+aoaLastTime = ""
+aoaLastPosi = ""
+async def aoa_position():
+    global aoaLastTime
+    global aoaLastPosi
+
+    try :
+        txtList = asyncio.run(aoaposition.get_aoaPosition())
+
+        if  txtList[0] != aoaLastPosi and txtList[1] != aoaLastTime: 
+            
+            for i in range(len(txtList)):
+                if txtList[i] == "Long" : txtList[i] = "Long🔴"
+                elif txtList[i] == "Short" : txtList[i] = "Short🔵"
+                elif txtList[i] == "없음" : txtList[i] = "없음😴"
+
+            txt = "[고래 포지션 알림]\
+                    \n\n1️⃣ 워뇨띠 : " + txtList[0] + "\n" + txtList[1] +\
+                    "\n\n2️⃣ skitter : " + txtList[2] + "\n" + txtList[3] +\
+                    "\n\n3️⃣ snapdragon : " + txtList[4] + "\n" + txtList[5] +\
+                    "\n\n4️⃣ 박호두 : " + txtList[6] + "\n" + txtList[7]
+            aoaLastPosi = txtList[0]
+            aoaLastTime = txtList[1]
+            telbot.send_message(text= txt,  chat_id=channel_id_feedback)
+    except Exception:
+        pass
+schedule.every().hours.at(":02").do(lambda:asyncio.run(aoa_position()))
+
+telbot.send_chat_action(chat_id=channel_id_feedback, action=telegram.ChatAction.TYPING)
 telbot.sendMessage(chat_id=channel_id_feedback, text=updateText,parse_mode='Markdown',disable_web_page_preview=True) # 메세지 보내기
 
 # 작동 테스트
@@ -1548,7 +1562,7 @@ def alarmi():
 
         except Exception as e:   # 에러 발생시 예외 발생
             print(e)
-            telbot.sendMessage(chat_id=channel_id_feedback, text=(e)) # 메세지 보내기
+            # telbot.sendMessage(chat_id=channel_id_feedback, text=(e)) # 메세지 보내기
             telbot.sendMessage(chat_id=channel_id_feedback, text=("스레드 에러발생!")) # 메세지 보내기
 
 
@@ -1569,8 +1583,8 @@ try :
     updater.idle()
 except Exception as e:               # 에러 발생시 예외 발생
     print(e)
-    telbot.sendMessage(chat_id=channel_id_feedback, text=(e)) # 메세지 보내기
-    telbot.sendMessage(chat_id=channel_id_feedback, text=("텔레그램발생!")) # 메세지 보내기
+    # telbot.sendMessage(chat_id=channel_id_feedback, text=(e)) # 메세지 보내기
+    telbot.sendMessage(chat_id=channel_id_feedback, text=("에러 발생!")) # 메세지 보내기
 
 
 

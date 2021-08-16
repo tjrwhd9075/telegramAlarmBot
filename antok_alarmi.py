@@ -3,6 +3,7 @@ import time
 from numpy import pi
 import requests
 from bs4 import BeautifulSoup as bs
+import asyncio
 
 import telegram
 
@@ -21,7 +22,7 @@ antokUm = "https://antok.co.kr/free/"
 fileAntok = 'antok_news.txt'
 
 # def send_new(bot, chat_id):
-def send_new():
+async def send_new():
 
     # 기존 데이터 불러오기
     with open(fileAntok, 'rt', encoding = 'UTF-8') as f:
@@ -111,18 +112,18 @@ def send_new():
     #     title = news.select_one('#board-list > div:nth-child(2) > table > tbody > tr > td.title > a > span.title-link').get_text()
     #     # print(title)
 
-import schedule
-from apscheduler.schedulers.blocking import BlockingScheduler
-sched = BlockingScheduler()
+# import schedule
+# from apscheduler.schedulers.blocking import BlockingScheduler
+# sched = BlockingScheduler()
 
-try:
-    try :
-        send_new()
-        sched.add_job(send_new, 'interval', minutes=2)
-        sched.start()
-    except Exception as e:
-        print(e)
-        # bot.sendMessage(chat_id=chat_id, text=e)
-except KeyboardInterrupt:
-    print("ctrl + C")
-    bot.sendMessage(chat_id=chat_id, text="ctrl + C")
+# try:
+#     try :
+#         send_new()
+#         sched.add_job(send_new, 'interval', minutes=2)
+#         sched.start()
+#     except Exception as e:
+#         print(e)
+#         # bot.sendMessage(chat_id=chat_id, text=e)
+# except KeyboardInterrupt:
+#     print("ctrl + C")
+#     bot.sendMessage(chat_id=chat_id, text="ctrl + C")

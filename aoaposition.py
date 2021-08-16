@@ -24,8 +24,8 @@ chrome_options.add_argument("disable-dev-shm-usage")
 # chrome_options.add_argument("--disableWarnings")
 
 
-#path = 'chromedriver'
-path = '/home/ubuntu/Downloads/chromedriver' 
+path = 'chromedriver'
+# path = '/home/ubuntu/Downloads/chromedriver' 
 # driver = webdriver.Chrome(path, options=chrome_options)
 
 import asyncio
@@ -169,34 +169,34 @@ async def get_aoaPosition():
     driver.close()
     return txt
 
-asyncio.run(get_aoaPosition())
+# asyncio.run(get_aoaPosition())
 
 
-from bs4 import BeautifulSoup
-from fake_useragent import UserAgent
+# from bs4 import BeautifulSoup
+# from fake_useragent import UserAgent
 
-def Whales_Position():
-    '''
-    aoa, aoaPosition, aoaTime
-    '''
-    ua = UserAgent()
-    header = {'user-agent':ua.chrome}
+# def Whales_Position():
+#     '''
+#     aoa, aoaPosition, aoaTime
+#     '''
+#     ua = UserAgent()
+#     header = {'user-agent':ua.chrome}
 
-    try:
-        Whales_URL = requests.get('https://kimpya.site/apps/leaderboard.php', headers=header)
-        Whales = BeautifulSoup(Whales_URL.content, 'html.parser')
-        AOA = Whales.find('div', class_="tbl darklight")
-    except Exception:
-        return "kimpya.site 접속에러"
-    aoa = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.get_text() # aoa
-    aoaPosition = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.get_text() # position
-    aoaTime = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.get_text() # 업데이트 날짜
-    # 
-    txt = []
-    txt.append(aoa)
-    txt.append(aoaPosition)
-    txt.append(aoaTime)
-    return txt 
+#     try:
+#         Whales_URL = requests.get('https://kimpya.site/apps/leaderboard.php', headers=header)
+#         Whales = BeautifulSoup(Whales_URL.content, 'html.parser')
+#         AOA = Whales.find('div', class_="tbl darklight")
+#     except Exception:
+#         return "kimpya.site 접속에러"
+#     aoa = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.get_text() # aoa
+#     aoaPosition = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.get_text() # position
+#     aoaTime = AOA.table.tbody.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.get_text() # 업데이트 날짜
+#     # 
+#     txt = []
+#     txt.append(aoa)
+#     txt.append(aoaPosition)
+#     txt.append(aoaTime)
+#     return txt 
 # iframes = driver.find_elements_by_css_selector('iframe') #iframe이 여러개 있을 경우를 대비
 # for iframe in iframes:
 #     print(iframe.get_attribute('name')) #iframe들의 이름을 프린트
