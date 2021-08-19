@@ -883,6 +883,7 @@ http://yna.kr/AKR20210819047351002?did=1195m
 http://www.startuptoday.co.kr/news/articleView.html?idxno=82818
 https://www.dailian.co.kr/news/view/1023985/?sc=Naver
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 https://biz.chosun.com/industry/company/2021/08/19/KXX56JXC3BCBXDKS6Z2KOAIN24/?utm_source=naver&utm_medium=original&utm_campaign=biz
 http://yna.kr/PYH20210819174500060?did=1196m
 http://www.sportsseoul.com/news/read/1058658?ref=naver
@@ -907,6 +908,8 @@ https://biz.chosun.com/international/international_economy/2021/08/19/NC2HA7EAFZ
 https://economist.co.kr/2021/08/19/stock/stockNormal/20210819164500439.html
 https://www.chosun.com/economy/stock-finance/2021/08/19/55XN7LPRNFECVNUWMSJW3ZTDYM/?utm_source=naver&utm_medium=referral&utm_campaign=naver-news
 =======
+=======
+>>>>>>> Stashed changes
 https://www.businesspost.co.kr/BP?command=article_view&num=246323
 http://news.mk.co.kr/newsRead.php?no=803467&year=2021
 https://www.sedaily.com/NewsView/22Q909RL4Y
@@ -937,4 +940,7 @@ https://www.hankyung.com/finance/article/2021081953947
 https://www.news1.kr/articles/?4407714
 http://www.gukjenews.com/news/articleView.html?idxno=2290862
 https://www.news1.kr/articles/?4408349
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
