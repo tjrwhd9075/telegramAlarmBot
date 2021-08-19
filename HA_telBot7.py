@@ -363,21 +363,27 @@ def get_name(bot, update):
             telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'),
                             caption="💲💲 "+ EXCHANGE + " "+ COMMAND[1:] +" " + interval +" 💲💲\n" +temp , reply_markup=ReplyKeyboardRemove())     
     elif COMMAND == "/KLAYTN":
+        txt = " "
         if msg == "KLAY, KSP":
             txt = asyncio.run(aoaposition.get_klayPrice())
-        elif msg == "KAI, sKAI":
+            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+        elif msg == "KAI, SKAI":
             txt = asyncio.run(aoaposition.get_kaiPrice())
+            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
         elif msg == "KFI":
             txt = asyncio.run(aoaposition.get_kfiPrice())
+            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
         elif msg == "HOUSE":
             txt = asyncio.run(aoaposition.get_housePrice())
+            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
         elif msg == "ALL":
             txt1 = asyncio.run(aoaposition.get_klayPrice())
             txt2 = asyncio.run(aoaposition.get_kfiPrice())
             txt3 = asyncio.run(aoaposition.get_kaiPrice())
             txt4 = asyncio.run(aoaposition.get_housePrice())
             txt = txt1 + "\n" + txt2 + "\n"+ txt3 + "\n" + txt4
-        telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+        
     ############### 기타
     elif COMMAND == "/FUN":
         if msg == "오늘내일 날씨":
