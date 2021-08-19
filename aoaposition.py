@@ -24,8 +24,8 @@ chrome_options.add_argument("disable-dev-shm-usage")
 # chrome_options.add_argument("--disableWarnings")
 
 
-#path = 'chromedriver'
-path = '/home/ubuntu/Downloads/chromedriver' 
+path = 'chromedriver'
+# path = '/home/ubuntu/Downloads/chromedriver' 
 # driver = webdriver.Chrome(path, options=chrome_options)
 
 import asyncio
@@ -37,24 +37,28 @@ async def get_kaiPrice():
     url = "https://kaiprotocol.fi/"
     driver.get(url)
     
-    while True:
+    a= 0
+    while a<20:
         kaiPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/body/div/div/section[2]/div/div/div[1]/div/div[1]/h6[2]")))
         if kaiPrice.text != "--" :
-            txt1 = "KAI : "+kaiPrice.text
-            print(txt1) # 이름
             break
-    while True:
+        a +=1
+    txt1 = "KAI : "+kaiPrice.text
+    print(txt1) # 이름
+
+    a=0
+    while a<20:
         skaiPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/body/div/div/section[2]/div/div/div[2]/div/div[1]/h6[2]")))
         if skaiPrice.text != "--":
-            txt2 = "sKAI : "+skaiPrice.text
-            print(txt2) # 이름
             break
+        a+=1
+    txt2 = "sKAI : "+skaiPrice.text
+    print(txt2) # 이름
 
     driver.close()
 
     return txt1 + "\n"+ txt2
 
-# asyncio.run( get_kaiPrice())
 
 
 async def get_klayPrice():
@@ -64,23 +68,28 @@ async def get_klayPrice():
     url = "https://klayswap.com/dashboard"
     driver.get(url)
     
-    while True:
+    a=0
+    while a<20:
         kspPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='main-view']/section/article[1]/div[2]/section[3]/div[1]/dl[1]/dd/span[2]")))
         if kspPrice.text != "--" :
-            txt1 = "KSP : $ "+kspPrice.text
-            print(txt1) # 이름
             break
-    while True:
+        a+=1
+    txt1 = "KSP : $ "+kspPrice.text
+    print(txt1) # 이름
+
+    a=0
+    while a<20:
         klayPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='main-view']/section/article[1]/div[2]/section[3]/div[2]/dl[1]/dd")))
-        if klayPrice.text != "--":
-            txt2 = "KLAY : "+klayPrice.text
-            print(txt2) # 이름
+        if klayPrice.text != "--":            
             break
+        a+=1
+    txt2 = "KLAY : "+klayPrice.text
+    print(txt2) # 이름
 
     driver.close()
     return txt1 + "\n" + txt2
 
-# asyncio.run( get_klayPrice())
+
 
 async def get_kfiPrice():
     driver = webdriver.Chrome(path, options=chrome_options)
@@ -88,18 +97,44 @@ async def get_kfiPrice():
     # driver.implicitly_wait(30)
     url = "https://klayfi.finance/"
     driver.get(url)
-    
-    while True:
+
+    a=0    
+    while a<20:
         kfiPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/div/div[1]/div[2]/div[1]/span")))
         if kfiPrice.text != "--" :
-            txt1 = "KFI : "+kfiPrice.text
-            print(txt1) # 이름
             break
+        a+=1
+    txt1 = "KFI : "+kfiPrice.text
+    print(txt1) # 이름
 
     driver.close()
     return txt1
 
+
+async def get_housePrice():
+    driver = webdriver.Chrome(path, options=chrome_options)
+    driver.maximize_window()
+    # driver.implicitly_wait(30)
+    url = "https://klaystake.house/"
+    driver.get(url)
+    
+    a=0
+    while a<20:
+        housePrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='app']/section/div[2]/div[2]/div[2]/p/span[1]")))
+        if housePrice.text != "--" :
+            break
+        a+=1
+    txt1 = "HOUSE : $ "+housePrice.text
+    print(txt1) # 이름
+
+    driver.close()
+    return txt1
+
+
+# asyncio.run( get_kaiPrice())
+# asyncio.run( get_klayPrice())
 # asyncio.run( get_kfiPrice())
+# asyncio.run( get_housePrice())
 
 
 

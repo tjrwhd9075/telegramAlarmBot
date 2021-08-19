@@ -45,7 +45,7 @@ plotly.__version__
 
 version = "사용법은 /help\n\
         \n\[version]\
-        \n 1.1.3 ...\
+        \n 1.1.3 명령어 수정, 클레이튼 코인 수정\
         \n 1.1.2 고래포지션, 클레이튼 코인 가격 추가\
         \n 1.1.1 채널, 그룹 정리\
         \n 1.1.0 명령어 수정\
@@ -362,7 +362,22 @@ def get_name(bot, update):
             telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))                        
             telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'),
                             caption="💲💲 "+ EXCHANGE + " "+ COMMAND[1:] +" " + interval +" 💲💲\n" +temp , reply_markup=ReplyKeyboardRemove())     
-
+    elif COMMAND == "/KLAYTN":
+        if msg == "KLAY, KSP":
+            txt = asyncio.run(aoaposition.get_klayPrice())
+        elif msg == "KAI, sKAI":
+            txt = asyncio.run(aoaposition.get_kaiPrice())
+        elif msg == "KFI":
+            txt = asyncio.run(aoaposition.get_kfiPrice())
+        elif msg == "HOUSE":
+            txt = asyncio.run(aoaposition.get_housePrice())
+        elif msg == "ALL":
+            txt1 = asyncio.run(aoaposition.get_klayPrice())
+            txt2 = asyncio.run(aoaposition.get_kfiPrice())
+            txt3 = asyncio.run(aoaposition.get_kaiPrice())
+            txt4 = asyncio.run(aoaposition.get_housePrice())
+            txt = txt1 + "\n" + txt2 + "\n"+ txt3 + "\n" + txt4
+        telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
     ############### 기타
     elif COMMAND == "/FUN":
         if msg == "오늘내일 날씨":
@@ -408,13 +423,6 @@ def get_name(bot, update):
             aoaLastPosi = txtList[0]
 
             telbot.send_message(text= txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-            
-        elif msg == "클레이튼":
-            txt1 = asyncio.run(aoaposition.get_klayPrice())
-            txt2 = asyncio.run(aoaposition.get_kfiPrice())
-            txt3 = asyncio.run(aoaposition.get_kaiPrice())
-            txt = txt1 + "\n" + txt2 + "\n"+ txt3
-            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
 
         elif SELLECT == "오늘내일 날씨":
             txt = naver_weather.search(msg)
@@ -596,6 +604,11 @@ def get_command(bot, update):
     elif msg == "/ETH":
         reply_keyboard = [['binance.', 'upbit.', 'cancel.']]
         telbot.send_message(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, input_field_placeholder='what the fox say?'), chat_id=chat_id)
+    elif msg == "/KLAYTN":
+        reply_keyboard = [['KLAY, KSP', 'KAI, sKAI'],['KFI', 'HOUSE'],['ALL','취소']]
+        telbot.send_message(text="메뉴를 선택해 주세요.",
+                            chat_id=chat_id,
+                            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, input_field_placeholder='what the fox say?'))
     
     elif msg == "/SHOWCHART": 
          telbot.send_message(text = "한국주식 이름 or 미국주식 티커를 입력하세요.\
@@ -618,7 +631,7 @@ def get_command(bot, update):
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, input_field_placeholder='what the fox say?'))
     
     elif msg == "/FUN":
-        reply_keyboard = [['오늘내일 날씨', '1주일 내 비소식'],['김프', '고래 포지션'],['클레이튼','한강 수온 체크'],['취소']]
+        reply_keyboard = [['오늘내일 날씨', '1주일 내 비소식'],['김프', '고래 포지션'],['한강 수온 체크'],['취소']]
         telbot.send_message(text="메뉴를 선택해 주세요.",
                             chat_id=chat_id,
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, input_field_placeholder='what the fox say?'))
@@ -1385,8 +1398,8 @@ async def krx_ha_check():
         await sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
     
 # 매일 정해진 시간에
-schedule.every().day.at("15:02").do(lambda:asyncio.run(krx_ha_check()))
-schedule.every().day.at("08:33").do(lambda:asyncio.run(krx_ha_check()))
+schedule.every().day.at("15:00").do(lambda:asyncio.run(krx_ha_check()))
+schedule.every().day.at("08:30").do(lambda:asyncio.run(krx_ha_check()))
 
 async def us_ha_check():
     jongmok2 = watchlist.get_querys('usa_watchlist.txt')        
@@ -1396,8 +1409,8 @@ async def us_ha_check():
         await buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
         await sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
 # 매일 정해진 시간에
-schedule.every().day.at("08:03").do(lambda:asyncio.run(us_ha_check())) 
-schedule.every().day.at("19:03").do(lambda:asyncio.run(us_ha_check()))
+schedule.every().day.at("08:00").do(lambda:asyncio.run(us_ha_check())) 
+schedule.every().day.at("19:00").do(lambda:asyncio.run(us_ha_check()))
 
 
 ########### upbit ####################
@@ -1519,7 +1532,7 @@ async def aoa_position():
     global aoaLastPosi
 
     try :
-        txtList = asyncio.run(aoaposition.get_aoaPosition())
+        txtList = await aoaposition.get_aoaPosition()
 
         if  txtList[0] != aoaLastPosi and txtList[1] != aoaLastTime: 
             
@@ -1538,7 +1551,7 @@ async def aoa_position():
             telbot.send_message(text= txt,  chat_id=channel_id_feedback)
     except Exception:
         pass
-schedule.every().hours.at(":02").do(lambda:asyncio.run(aoa_position()))
+schedule.every().hours.at(":03").do(lambda:asyncio.run(aoa_position()))
 
 telbot.send_chat_action(chat_id=channel_id_feedback, action=telegram.ChatAction.TYPING)
 telbot.sendMessage(chat_id=channel_id_feedback, text=updateText,parse_mode='Markdown',disable_web_page_preview=True) # 메세지 보내기
