@@ -24,8 +24,8 @@ chrome_options.add_argument("disable-dev-shm-usage")
 # chrome_options.add_argument("--disableWarnings")
 
 
-path = 'chromedriver'
-# path = '/home/ubuntu/Downloads/chromedriver' 
+#path = 'chromedriver'
+path = '/home/ubuntu/Downloads/chromedriver' 
 # driver = webdriver.Chrome(path, options=chrome_options)
 
 import asyncio
