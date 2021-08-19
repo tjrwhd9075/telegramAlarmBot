@@ -60,7 +60,6 @@ async def get_kaiPrice():
     return txt1 + "\n"+ txt2
 
 
-
 async def get_klayPrice():
     driver = webdriver.Chrome(path, options=chrome_options)
     driver.maximize_window()
@@ -88,7 +87,6 @@ async def get_klayPrice():
 
     driver.close()
     return txt1 + "\n" + txt2
-
 
 
 async def get_kfiPrice():
@@ -148,56 +146,75 @@ async def get_aoaPosition():
 
     txt = []
 
-    while True: # 워뇨띠
+    a=0
+    while a<20: # 워뇨띠
         aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[6]/div/div/div/a/span")))
         if aoaPosition3.text != "" :
             txt.append(aoaPosition3.text)
             # print(txt) # 포지션
             break
-    while True:
+        a+=1
+    
+    a=0
+    while a<20:
         aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[6]/div/div/div/div[2]/div[2]")))
         if aoaPosition2.text != "" :
             txt.append(aoaPosition2.text.replace("\u3000", " "))
             # print(txt) # 업데이트 시간
             break
+        a+=1
 
-    while True: # skitter
+    a=0
+    while a<20: # skitter
         aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[7]/div/div/div/a/span")))
         if aoaPosition3.text != "" :
             txt.append(aoaPosition3.text)
             # print(txt) # 포지션
             break
-    while True:
+        a+=1
+
+    a=0
+    while a<20:
         aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[7]/div/div/div/div[2]/div[2]")))
         if aoaPosition2.text != "" :
             txt.append(aoaPosition2.text.replace("\u3000", " "))
             # print(txt) # 업데이트 시간
             break
-
-    while True: # snapdragon
+        a+=1
+    a=0
+    while a<20: # snapdragon
         aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[8]/div/div/div/a/span")))
         if aoaPosition3.text != "" :
             txt.append(aoaPosition3.text)
             # print(txt) # 포지션
             break
-    while True:
+        a+=1
+
+    a=0
+    while a<20:
         aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[8]/div/div/div/div[2]/div[2]")))
         if aoaPosition2.text != "" :
             txt.append(aoaPosition2.text.replace("\u3000", " "))
             # print(txt) # 업데이트 시간
             break
+        a+=1
 
-    while True: # 박호두
+    a=0
+    while a<20: # 박호두
         aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[9]/div/div/div/a/span")))
         if aoaPosition3.text != "" :
             txt.append(aoaPosition3.text)
             # print(txt) # 포지두
             break
-    while True:
+        a+=1
+
+    a=0
+    while a<20:
         aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[9]/div/div/div/div[2]/div[2]")))
         if aoaPosition2.text != "" :
             txt.append(aoaPosition2.text.replace("\u3000", " "))            # print(txt) # 업데이트 시간
             break
+        a+=1
     
     print(txt)
     
