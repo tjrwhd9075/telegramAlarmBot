@@ -882,6 +882,7 @@ https://www.news1.kr/photos/view/?4931136
 http://yna.kr/AKR20210819047351002?did=1195m
 http://www.startuptoday.co.kr/news/articleView.html?idxno=82818
 https://www.dailian.co.kr/news/view/1023985/?sc=Naver
+<<<<<<< Updated upstream
 https://biz.chosun.com/industry/company/2021/08/19/KXX56JXC3BCBXDKS6Z2KOAIN24/?utm_source=naver&utm_medium=original&utm_campaign=biz
 http://yna.kr/PYH20210819174500060?did=1196m
 http://www.sportsseoul.com/news/read/1058658?ref=naver
@@ -905,3 +906,35 @@ http://www.gukjenews.com/news/articleView.html?idxno=2290822
 https://biz.chosun.com/international/international_economy/2021/08/19/NC2HA7EAFZAAZP2BSQAPOGF744/?utm_source=naver&utm_medium=original&utm_campaign=biz
 https://economist.co.kr/2021/08/19/stock/stockNormal/20210819164500439.html
 https://www.chosun.com/economy/stock-finance/2021/08/19/55XN7LPRNFECVNUWMSJW3ZTDYM/?utm_source=naver&utm_medium=referral&utm_campaign=naver-news
+=======
+https://www.businesspost.co.kr/BP?command=article_view&num=246323
+http://news.mk.co.kr/newsRead.php?no=803467&year=2021
+https://www.sedaily.com/NewsView/22Q909RL4Y
+http://yna.kr/AKR20210819085351002?did=1195m
+http://www.osen.co.kr/article/G1111637942
+https://view.asiae.co.kr/article/2021081916001257984
+https://www.sedaily.com/NewsView/22Q9094YL0
+http://www.munhwa.com/news/view.html?no=20210819MW163144156605
+http://news.kmib.co.kr/article/view.asp?arcid=0016183467&code=61121111&cp=nv
+https://economist.co.kr/2021/08/19/stock/stockNormal/20210819164500439.html
+http://www.sportsseoul.com/news/read/1058658?ref=naver
+https://www.hankyung.com/economy/article/202108194154i
+http://www.kwnews.co.kr/nview.asp?aid=221081800171
+http://yna.kr/PYH20210819174500060?did=1196m
+https://www.news1.kr/articles/?4408286
+http://yna.kr/PYH20210819174900060?did=1196m
+http://www.gukjenews.com/news/articleView.html?idxno=2290803
+https://biz.chosun.com/industry/company/2021/08/19/KXX56JXC3BCBXDKS6Z2KOAIN24/?utm_source=naver&utm_medium=original&utm_campaign=biz
+http://www.osen.co.kr/article/G1111637996
+https://www.seoul.co.kr/news/newsView.php?id=20210819500118&wlog_tag3=naver
+http://www.newsis.com/view/?id=NISI20210819_0017858302
+http://yna.kr/AKR20210819141900002?did=1195m
+http://news.heraldcorp.com/view.php?ud=20210819000954
+https://biz.chosun.com/international/international_economy/2021/08/19/NC2HA7EAFZAAZP2BSQAPOGF744/?utm_source=naver&utm_medium=original&utm_campaign=biz
+http://sports.chosun.com/news/ntype.htm?id=202108200100145860009368&servicedate=20210819
+https://www.chosun.com/politics/assembly/2021/08/19/NAUWUZVMA5EETL37NKX2VYDEQE/?utm_source=naver&utm_medium=referral&utm_campaign=naver-news
+https://www.hankyung.com/finance/article/2021081953947
+https://www.news1.kr/articles/?4407714
+http://www.gukjenews.com/news/articleView.html?idxno=2290862
+https://www.news1.kr/articles/?4408349
+>>>>>>> Stashed changes
