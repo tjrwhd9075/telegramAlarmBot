@@ -2,25 +2,1313 @@
 
 The default value of regex will change from True to False in a future version.
 
-  0%|          | 0/4052 [00:00<?, ?it/s]  6%|▌         | 240/4052 [00:00<00:02, 1813.64it/s] 12%|█▏        | 480/4052 [00:00<00:02, 1680.42it/s] 16%|█▋        | 660/4052 [00:00<00:02, 1545.05it/s] 21%|██        | 840/4052 [00:00<00:02, 1458.40it/s] 25%|██▌       | 1020/4052 [00:00<00:02, 1358.76it/s] 30%|██▉       | 1200/4052 [00:00<00:02, 1278.55it/s] 34%|███▍      | 1380/4052 [00:01<00:02, 1199.42it/s] 38%|███▊      | 1560/4052 [00:01<00:02, 1128.70it/s] 41%|████▏     | 1680/4052 [00:01<00:02, 1102.49it/s] 44%|████▍     | 1800/4052 [00:01<00:02, 1054.15it/s] 47%|████▋     | 1920/4052 [00:01<00:02, 1007.86it/s] 50%|█████     | 2040/4052 [00:01<00:02, 972.18it/s]  53%|█████▎    | 2160/4052 [00:01<00:02, 934.07it/s] 56%|█████▋    | 2280/4052 [00:02<00:01, 898.31it/s] 59%|█████▉    | 2400/4052 [00:02<00:01, 866.42it/s] 62%|██████▏   | 2520/4052 [00:02<00:01, 833.63it/s] 65%|██████▌   | 2640/4052 [00:02<00:01, 709.83it/s] 68%|██████▊   | 2760/4052 [00:02<00:01, 714.42it/s] 71%|███████   | 2880/4052 [00:02<00:01, 717.71it/s] 74%|███████▍  | 3000/4052 [00:03<00:01, 712.77it/s] 77%|███████▋  | 3120/4052 [00:03<00:01, 697.38it/s] 80%|███████▉  | 3240/4052 [00:03<00:01, 683.75it/s] 83%|████████▎ | 3360/4052 [00:03<00:01, 674.66it/s] 86%|████████▌ | 3480/4052 [00:03<00:00, 657.15it/s] 89%|████████▉ | 3600/4052 [00:03<00:00, 641.37it/s] 92%|█████████▏| 3720/4052 [00:04<00:00, 621.23it/s] 95%|█████████▍| 3840/4052 [00:04<00:00, 610.98it/s] 98%|█████████▊| 3960/4052 [00:04<00:00, 594.75it/s] 99%|█████████▉| 4020/4052 [00:04<00:00, 589.96it/s]100%|██████████| 4052/4052 [00:04<00:00, 824.43it/s]
-  0%|          | 0/3319 [00:00<?, ?it/s]  5%|▌         | 180/3319 [00:00<00:01, 1763.15it/s] 11%|█         | 360/3319 [00:00<00:01, 1647.74it/s] 16%|█▋        | 540/3319 [00:00<00:01, 1573.67it/s] 22%|██▏       | 720/3319 [00:00<00:01, 1511.57it/s] 27%|██▋       | 900/3319 [00:00<00:01, 1444.11it/s] 33%|███▎      | 1080/3319 [00:00<00:01, 1375.20it/s] 38%|███▊      | 1260/3319 [00:00<00:01, 1292.35it/s] 43%|████▎     | 1440/3319 [00:01<00:01, 1200.37it/s] 49%|████▉     | 1620/3319 [00:01<00:01, 1123.57it/s] 52%|█████▏    | 1740/3319 [00:01<00:01, 1086.22it/s] 56%|█████▌    | 1860/3319 [00:01<00:01, 1030.80it/s] 60%|█████▉    | 1980/3319 [00:01<00:01, 986.07it/s]  63%|██████▎   | 2100/3319 [00:01<00:01, 949.66it/s] 67%|██████▋   | 2220/3319 [00:01<00:01, 910.01it/s] 71%|███████   | 2340/3319 [00:02<00:01, 853.91it/s] 74%|███████▍  | 2460/3319 [00:02<00:01, 831.71it/s] 78%|███████▊  | 2580/3319 [00:02<00:00, 803.84it/s] 81%|████████▏ | 2700/3319 [00:02<00:00, 778.01it/s] 85%|████████▍ | 2820/3319 [00:02<00:00, 766.28it/s] 89%|████████▊ | 2940/3319 [00:02<00:00, 743.36it/s] 92%|█████████▏| 3060/3319 [00:03<00:00, 720.67it/s] 96%|█████████▌| 3180/3319 [00:03<00:00, 699.36it/s] 99%|█████████▉| 3300/3319 [00:03<00:00, 682.92it/s]100%|██████████| 3319/3319 [00:03<00:00, 915.17it/s]
-No error handlers are registered, logging exception.
-Traceback (most recent call last):
-  File "/home/ubuntu/.local/lib/python3.8/site-packages/telegram/ext/dispatcher.py", line 555, in process_update
-    handler.handle_update(update, self, check, context)
-  File "/home/ubuntu/.local/lib/python3.8/site-packages/telegram/ext/handler.py", line 198, in handle_update
-    return self.callback(update, context)
-  File "HA_telBot7.py", line 375, in get_name
-    txt1 = asyncio.run(aoaposition.get_klayPrice())
-  File "/usr/lib/python3.8/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "/usr/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
-    return future.result()
-  File "/home/ubuntu/aoaposition.py", line 73, in get_klayPrice
-    kspPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='main-view']/section/article[1]/div[2]/section[3]/div[1]/dl[1]/dd/span[2]")))
-  File "/home/ubuntu/.local/lib/python3.8/site-packages/selenium/webdriver/support/wait.py", line 80, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
+  0%|          | 0/4053 [00:00<?, ?it/s]  1%|▏         | 60/4053 [00:00<00:09, 416.91it/s]  3%|▎         | 120/4053 [00:00<00:10, 366.71it/s]  4%|▍         | 180/4053 [00:00<00:10, 353.35it/s]  6%|▌         | 240/4053 [00:00<00:09, 391.20it/s]  7%|▋         | 300/4053 [00:00<00:10, 369.55it/s]  9%|▉         | 360/4053 [00:00<00:10, 347.61it/s] 10%|█         | 420/4053 [00:01<00:10, 358.73it/s] 12%|█▏        | 480/4053 [00:01<00:10, 351.18it/s] 13%|█▎        | 540/4053 [00:01<00:10, 345.49it/s] 15%|█▍        | 600/4053 [00:01<00:09, 359.62it/s] 16%|█▋        | 660/4053 [00:01<00:09, 345.21it/s] 18%|█▊        | 720/4053 [00:02<00:09, 349.44it/s] 19%|█▉        | 780/4053 [00:02<00:09, 357.37it/s] 21%|██        | 840/4053 [00:02<00:09, 356.42it/s] 22%|██▏       | 900/4053 [00:02<00:09, 349.91it/s] 24%|██▎       | 960/4053 [00:02<00:08, 360.70it/s] 25%|██▌       | 1020/4053 [00:02<00:08, 346.11it/s] 27%|██▋       | 1080/4053 [00:03<00:08, 338.48it/s] 28%|██▊       | 1140/4053 [00:03<00:08, 331.91it/s] 30%|██▉       | 1200/4053 [00:03<00:08, 344.90it/s] 31%|███       | 1260/4053 [00:03<00:07, 351.48it/s] 33%|███▎      | 1320/4053 [00:03<00:08, 331.53it/s] 34%|███▍      | 1380/4053 [00:03<00:07, 343.32it/s] 36%|███▌      | 1440/4053 [00:04<00:07, 339.70it/s] 37%|███▋      | 1500/4053 [00:04<00:07, 331.60it/s] 38%|███▊      | 1560/4053 [00:04<00:06, 367.20it/s] 40%|███▉      | 1620/4053 [00:04<00:06, 370.54it/s] 41%|████▏     | 1680/4053 [00:04<00:07, 338.80it/s] 43%|████▎     | 1740/4053 [00:04<00:07, 327.01it/s] 44%|████▍     | 1800/4053 [00:05<00:06, 327.37it/s] 46%|████▌     | 1860/4053 [00:05<00:06, 343.35it/s] 47%|████▋     | 1920/4053 [00:05<00:06, 352.87it/s] 49%|████▉     | 1980/4053 [00:05<00:06, 343.39it/s] 50%|█████     | 2040/4053 [00:05<00:05, 353.10it/s] 52%|█████▏    | 2100/4053 [00:06<00:05, 340.80it/s] 53%|█████▎    | 2160/4053 [00:06<00:05, 320.95it/s] 55%|█████▍    | 2220/4053 [00:06<00:05, 354.59it/s] 56%|█████▋    | 2280/4053 [00:06<00:04, 359.80it/s] 58%|█████▊    | 2340/4053 [00:06<00:04, 365.15it/s] 59%|█████▉    | 2400/4053 [00:06<00:04, 368.82it/s] 61%|██████    | 2460/4053 [00:07<00:04, 356.72it/s] 62%|██████▏   | 2520/4053 [00:07<00:04, 350.00it/s] 64%|██████▎   | 2580/4053 [00:07<00:04, 329.71it/s] 65%|██████▌   | 2640/4053 [00:07<00:04, 348.41it/s] 67%|██████▋   | 2700/4053 [00:07<00:03, 339.41it/s] 68%|██████▊   | 2760/4053 [00:07<00:04, 320.15it/s] 70%|██████▉   | 2820/4053 [00:08<00:03, 335.27it/s] 71%|███████   | 2880/4053 [00:08<00:03, 320.50it/s] 73%|███████▎  | 2940/4053 [00:08<00:03, 340.53it/s] 74%|███████▍  | 3000/4053 [00:08<00:03, 336.66it/s] 75%|███████▌  | 3060/4053 [00:08<00:02, 332.35it/s] 77%|███████▋  | 3120/4053 [00:09<00:02, 318.69it/s] 78%|███████▊  | 3180/4053 [00:09<00:02, 314.15it/s] 80%|███████▉  | 3240/4053 [00:09<00:02, 343.73it/s] 81%|████████▏ | 3300/4053 [00:09<00:02, 331.01it/s] 83%|████████▎ | 3360/4053 [00:09<00:02, 318.07it/s] 84%|████████▍ | 3420/4053 [00:09<00:02, 308.31it/s] 86%|████████▌ | 3480/4053 [00:10<00:01, 310.47it/s] 87%|████████▋ | 3540/4053 [00:10<00:01, 301.82it/s] 89%|████████▉ | 3600/4053 [00:10<00:01, 285.25it/s] 90%|█████████ | 3660/4053 [00:10<00:01, 300.37it/s] 92%|█████████▏| 3720/4053 [00:11<00:01, 295.28it/s] 93%|█████████▎| 3780/4053 [00:11<00:00, 282.08it/s] 95%|█████████▍| 3840/4053 [00:11<00:00, 277.01it/s] 96%|█████████▌| 3900/4053 [00:11<00:00, 299.30it/s] 98%|█████████▊| 3960/4053 [00:11<00:00, 301.54it/s] 99%|█████████▉| 4020/4053 [00:12<00:00, 267.84it/s]100%|██████████| 4053/4053 [00:12<00:00, 246.59it/s]100%|██████████| 4053/4053 [00:12<00:00, 325.42it/s]
+  0%|          | 0/3322 [00:00<?, ?it/s]  2%|▏         | 60/3322 [00:00<00:08, 369.35it/s]  4%|▎         | 120/3322 [00:00<00:09, 324.26it/s]  5%|▌         | 180/3322 [00:00<00:09, 346.65it/s]  7%|▋         | 240/3322 [00:00<00:09, 340.34it/s]  9%|▉         | 300/3322 [00:00<00:08, 349.57it/s] 11%|█         | 360/3322 [00:01<00:08, 358.54it/s] 13%|█▎        | 420/3322 [00:01<00:09, 319.95it/s] 14%|█▍        | 480/3322 [00:01<00:08, 333.78it/s] 16%|█▋        | 540/3322 [00:01<00:08, 334.37it/s] 18%|█▊        | 600/3322 [00:01<00:08, 334.64it/s] 20%|█▉        | 660/3322 [00:02<00:08, 310.57it/s] 22%|██▏       | 720/3322 [00:02<00:07, 331.86it/s] 23%|██▎       | 780/3322 [00:02<00:07, 323.40it/s] 25%|██▌       | 840/3322 [00:02<00:07, 352.45it/s] 27%|██▋       | 900/3322 [00:02<00:07, 335.37it/s] 29%|██▉       | 960/3322 [00:02<00:06, 340.20it/s] 31%|███       | 1020/3322 [00:03<00:06, 334.23it/s] 33%|███▎      | 1080/3322 [00:03<00:07, 312.77it/s] 34%|███▍      | 1140/3322 [00:03<00:06, 349.96it/s] 36%|███▌      | 1200/3322 [00:03<00:06, 334.28it/s] 38%|███▊      | 1260/3322 [00:03<00:06, 337.27it/s] 40%|███▉      | 1320/3322 [00:03<00:06, 326.19it/s] 42%|████▏     | 1380/3322 [00:04<00:06, 303.07it/s] 43%|████▎     | 1440/3322 [00:04<00:05, 326.54it/s] 45%|████▌     | 1500/3322 [00:04<00:05, 334.14it/s] 47%|████▋     | 1560/3322 [00:04<00:05, 334.57it/s] 49%|████▉     | 1620/3322 [00:04<00:04, 346.27it/s] 51%|█████     | 1680/3322 [00:05<00:04, 336.55it/s] 52%|█████▏    | 1740/3322 [00:05<00:05, 307.60it/s] 54%|█████▍    | 1800/3322 [00:05<00:04, 333.78it/s] 56%|█████▌    | 1860/3322 [00:05<00:04, 341.53it/s] 58%|█████▊    | 1920/3322 [00:05<00:04, 347.10it/s] 60%|█████▉    | 1980/3322 [00:05<00:04, 331.01it/s] 61%|██████▏   | 2040/3322 [00:06<00:03, 335.14it/s] 63%|██████▎   | 2100/3322 [00:06<00:04, 295.49it/s] 65%|██████▌   | 2160/3322 [00:06<00:03, 323.51it/s] 67%|██████▋   | 2220/3322 [00:06<00:03, 329.60it/s] 69%|██████▊   | 2280/3322 [00:06<00:03, 314.89it/s] 70%|███████   | 2340/3322 [00:07<00:03, 318.91it/s] 72%|███████▏  | 2400/3322 [00:07<00:02, 327.92it/s] 74%|███████▍  | 2460/3322 [00:07<00:02, 304.94it/s] 76%|███████▌  | 2520/3322 [00:07<00:02, 329.48it/s] 78%|███████▊  | 2580/3322 [00:07<00:02, 309.99it/s] 79%|███████▉  | 2640/3322 [00:07<00:01, 348.38it/s] 81%|████████▏ | 2700/3322 [00:08<00:01, 355.98it/s] 83%|████████▎ | 2760/3322 [00:08<00:01, 345.16it/s] 85%|████████▍ | 2820/3322 [00:08<00:01, 354.66it/s] 87%|████████▋ | 2880/3322 [00:08<00:01, 328.71it/s] 89%|████████▊ | 2940/3322 [00:08<00:01, 350.96it/s] 90%|█████████ | 3000/3322 [00:09<00:00, 347.28it/s] 92%|█████████▏| 3060/3322 [00:09<00:00, 358.23it/s] 94%|█████████▍| 3120/3322 [00:09<00:00, 357.08it/s] 96%|█████████▌| 3180/3322 [00:09<00:00, 352.81it/s] 98%|█████████▊| 3240/3322 [00:09<00:00, 330.71it/s] 99%|█████████▉| 3300/3322 [00:09<00:00, 308.63it/s]100%|██████████| 3322/3322 [00:10<00:00, 321.59it/s]쓰레딩이이잉
+get_name  업데이트 완료 : 사용법은 /HELP
+        
+[VERSION]        
+ 1.1.3 명령어 수정, 클레이튼 코인 수정        
+ 1.1.2 고래포지션, 클레이튼 코인 가격 추가        
+ 1.1.1 채널, 그룹 정리        
+ 1.1.0 명령어 수정        
+
+바이낸스, 업비트 비트코인, 이더리움 HA 추세전환 알림        
+채팅방        
+HA 추세전환 알림 한국, 미국 주식        
+바이낸스 비트코인 종합시그널        
+앤톡 새글 알리미        
+네이버 뉴스 알리미
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 03 : 00', 'Long', '2021-08-20 03 : 00', 'Long', '2021-08-20 03 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 03 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 03 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 03 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 04 : 00', 'Long', '2021-08-20 04 : 00', 'Long', '2021-08-20 04 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 04 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 04 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 04 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 05 : 00', 'Long', '2021-08-20 05 : 00', 'Long', '2021-08-20 05 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 05 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 05 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 05 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 06 : 00', 'Long', '2021-08-20 06 : 00', 'Long', '2021-08-20 06 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 06 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 06 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 06 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 07 : 00', 'Long', '2021-08-20 07 : 00', 'Long', '2021-08-20 07 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 07 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 07 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 07 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/ustock/278593', '[뉴욕마감]지수별 혼조…S&P-나스닥 0.1%↑ 다우 0.2%↓', '프로입털러']
+['https://antok.co.kr/kstock/278595', '"반도체 호황 덕에"…상반기 대기업 투자 3.6조원 늘었다', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+AAPL
+ABNB
+ADBE
+ADSK
+AMD
+AMZN
+ASML
+ATVI
+AXP
+BA
+BAC
+BLK
+BRK
+CCL
+COIN
+CPNG
+CRWD
+DD
+DIS
+DISCK
+DOW
+DPZ
+F
+FB
+FITB
+GLW
+GM
+GOOGL
+GPS
+GS
+INTC
+IRM
+JNJ
+JPM
+KEY
+KO
+LMT
+MET
+MO
+MRK
+MRNA
+MSFT
+MU
+NEM
+NET
+NFLX
+NKE
+NVDA
+O
+ODP
+ORCL
+PFE
+PINS
+PLD
+PVH
+PYPL
+QCOM
+RBLX
+REAL
+RL
+SHOP
+SNAP
+SNOW
+SNY
+SPCE
+TSLA
+TSM
+TWTR
+U
+UAL
+UBER
+V
+VIAC
+Z
+ZM
+MCD
+LULU
+LUV
+SBUX
+VLDR
+['Long', '2021-08-20 08 : 00', 'Long', '2021-08-20 08 : 00', 'Long', '2021-08-20 08 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 08 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 08 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 08 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278597', '"반도체 겨울은 오지 않았다"…전문가·업계 \'수요 견조\' 이구동성', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/ustock/278599', '\'아마존 백화점\' 생기나…"백화점 비슷한 대형매장 열 계획"', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+BGF
+CJ CGV
+CJ ENM
+CJ대한통운
+CJ제일제당
+DB하이텍
+F&F
+HK이노엔
+HMM
+JYP Ent.
+KBSTAR Fn수소경제테마
+KG ETS
+KODEX 200
+KODEX 200 중소형
+KODEX 200ESG
+KODEX 200동일가중
+KODEX 바이오
+KODEX 자동차
+KT
+LG디스플레이
+LG전자
+LG화학
+NAVER
+SK바이오사이언스
+SK이노베이션
+SK케미칼
+SK하이닉스
+TIGER KRX BBIG K-뉴딜
+TIGER KRX2차전지K-뉴딜
+TIGER KRX바이오K-뉴딜
+TIGER TOP10
+TIGER 경기방어
+TIGER 금은선물(H)
+TIGER 여행레저
+TIGER 우량가치
+강원랜드
+고려신용정보
+골프존
+기아
+네비게이터 친환경자동차밸류체인액티브
+다날
+대원미디어
+대한항공
+더네이쳐홀딩스
+데브시스터즈
+두산퓨얼셀
+롯데칠성
+빙그레
+삼성SDI
+삼성바이오로직스
+삼성에스디에스
+삼성엔지니어링
+삼성전자
+삼성제약
+서린바이오
+셀트리온
+셀트리온제약
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 45824 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 54620 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 53685 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50868 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 45824 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 54620 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 53685 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50868 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 44256 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 47140 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 49888 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50857 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 51221 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 48372 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 44256 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 47140 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 49888 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50857 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 51221 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 48372 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 49340 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 49457 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 48148 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 51060 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50724 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 47196 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 51649 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 49828 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 49340 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 49457 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 48148 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 51060 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50724 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 47196 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 51649 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 49828 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 49888 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 54413 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 51228 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50557 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 49888 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 54413 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 51228 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50557 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50640 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 49828 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50656 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50640 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 49828 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50656 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50857 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 54217 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 47532 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 51312 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 53944 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50857 missing from current font.
+
+셀트리온헬스케어
+스튜디오드래곤
+신세계
+신일제약
+신풍제약
+씨에스베어링
+씨에스윈드
+씨젠
+아이진
+에스디바이오센서
+에스엠
+와이지엔터테인먼트
+용평리조트
+우리바이오
+위메이드
+이마트
+진매트릭스
+천보
+카카오
+카카오뱅크
+코오롱인더
+펄어비스
+프로스테믹스
+하이브
+한국전력
+한미반도체
+한전KPS
+한화솔루션
+현대모비스
+현대바이오
+현대차
+휴마시스
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/ustock/278601', '실적 하락·주가 반토막···‘규제 폭탄’에 中알리바바·텐센트 시름 깊어진다', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+get_name  20%(흐림) 🌙 오후 강수확률: 60% 구름많고 한때 소나기
+오늘(8.20.) 🌙 오후 강수확률: 60% 구름많고 한때 소나기
+내일(8.21.) 🌞 오전 강수확률: 70% 흐리고 가끔 비
+내일(8.21.) 🌙 오후 강수확률: 90% 흐리고 비 🌦
+일(8.22.) 🌞 오전 강수확률: 60% 흐리고 가끔 비
+화(8.24.) 🌞 오전 강수확률: 60% 흐리고 비 🌦
+화(8.24.) 🌙 오후 강수확률: 60% 흐리고 비 🌦
+수(8.25.) 🌞 오전 강수확률: 60% 흐리고 비 🌦
+['https://antok.co.kr/kstock/278603', "2분기 최대 실적에도…시장은 '피크아웃' 공포", '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 09 : 00', 'Long', '2021-08-20 09 : 00', 'Long', '2021-08-20 09 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 09 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 09 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 09 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/coin/278605', '으악 에이다 점마 어디가노?', '비트이더']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+get command : /HA
+get_name  HA 알림추가
+목록에 추가할 종목의 이름 or 티커를 입력해주세요
+get_name  카카오뱅크
+카카오뱅크 : 이미 HA 목록에 있습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 10 : 00', 'Long', '2021-08-20 10 : 00', 'Long', '2021-08-20 10 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 10 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 10 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 10 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278615', '오늘은 흠', '한별아빠']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278617', '포스코', 'scarlet']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278622', '음 거의 3월 이래로 이정도는 오랫만인거 같네요', '더블텐']
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/free/278626', 'K-조기교육.JPG', '일본개미']
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/free/278634', '연애안하는 30대 특징.JPG', '일본개미']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 11 : 00', 'Long', '2021-08-20 11 : 00', 'Long', '2021-08-20 11 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 11 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 11 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 11 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 12 : 00', 'Long', '2021-08-20 12 : 00', 'Long', '2021-08-20 12 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 12 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 12 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 12 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/finance/278697', '큰아버지와 사촌형이 토스만보기를 시작했네요', '전문되팔이']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 13 : 00', 'Long', '2021-08-20 13 : 00', 'Long', '2021-08-20 13 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 13 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 13 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 13 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278727', '삼전우 68000원에서 매수존버중..', '갑이']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 14 : 00', 'Long', '2021-08-20 14 : 00', 'Long', '2021-08-20 14 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 14 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 14 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 14 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/ustock/278749', '머스크 "휴머노이드 로봇 \'테슬라 봇\' 만들겠다"', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/free/278750', '버핏옹..', '슈카왈드']
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 54217 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 47532 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 51312 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 53944 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 51060 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 47560 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 53944 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 51060 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 47560 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 53944 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 52380 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 48372 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 52380 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 48372 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 52852 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50724 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 52852 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50724 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 54148 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50612 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 48708 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 49828 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 54148 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50612 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 48708 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 49828 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 44552 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 51008 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 49440 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 47932 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 44552 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 51008 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 49440 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 47932 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 49472 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 53944 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 47532 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50728 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 51228 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50557 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 49472 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 53944 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 47532 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50728 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 51228 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50557 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 49888 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 54413 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 51228 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50557 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 49888 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 54413 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 51228 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50557 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 50857 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 54217 missing from current font.
+
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278757', '"삼성, 10년 안에 TSMC 못 이긴다"던 대만 매체, 또 도발', '프로입털러']
+['https://antok.co.kr/kstock/278755', '삼전', '삼전15만원']
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278767', '형들 살아있지..?', '트레비자몽']
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278769', '\'PER 300배\' 카뱅, 현대차 제치고 시총 8위…증권사 "너무 비싸"', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+BGF
+CJ CGV
+CJ ENM
+CJ대한통운
+CJ제일제당
+DB하이텍
+F&F
+HK이노엔
+HMM
+JYP Ent.
+KBSTAR Fn수소경제테마
+KG ETS
+KODEX 200
+KODEX 200 중소형
+KODEX 200ESG
+KODEX 200동일가중
+KODEX 바이오
+KODEX 자동차
+KT
+LG디스플레이
+LG전자
+LG화학
+NAVER
+SK바이오사이언스
+SK이노베이션
+SK케미칼
+SK하이닉스
+TIGER KRX BBIG K-뉴딜
+TIGER KRX2차전지K-뉴딜
+TIGER KRX바이오K-뉴딜
+TIGER TOP10
+TIGER 경기방어
+TIGER 금은선물(H)
+TIGER 여행레저
+TIGER 우량가치
+강원랜드
+고려신용정보
+골프존
+기아
+네비게이터 친환경자동차밸류체인액티브
+다날
+대원미디어
+대한항공
+더네이쳐홀딩스
+데브시스터즈
+두산퓨얼셀
+롯데칠성
+빙그레
+삼성SDI
+삼성바이오로직스
+삼성에스디에스
+삼성엔지니어링
+삼성전자
+삼성제약
+서린바이오
+셀트리온
+셀트리온제약
+셀트리온헬스케어
+스튜디오드래곤
+신세계
+신일제약
+신풍제약
+씨에스베어링
+씨에스윈드
+씨젠
+아이진
+에스디바이오센서
+에스엠
+와이지엔터테인먼트
+용평리조트
+우리바이오
+위메이드
+이마트
+진매트릭스
+천보
+카카오
+카카오뱅크
+코오롱인더
+펄어비스
+프로스테믹스
+하이브
+한국전력
+한미반도체
+한전KPS
+한화솔루션
+현대모비스
+현대바이오
+현대차
+휴마시스
+['https://antok.co.kr/ustock/278771', '골드만, 3분기 美 성장 전망 반토막…델타변이 위험 공유', '프로입털러']
+['Long', '2021-08-20 15 : 00', 'Long', '2021-08-20 15 : 00', 'Long', '2021-08-20 15 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 15 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 15 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 15 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278777', '와…잠시 방심햇다니 사정없이 뚜들겨 패내어ㅜㅜ', '한별아빠']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/free/278803', '우라늄', '하랑']
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/ustock/278810', '2021. 08. 20.', '하랑']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278817', '현대그린푸드', '하랑']
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 16 : 00', 'Long', '2021-08-20 16 : 00', 'Long', '2021-08-20 16 : 00', '없음', '2021-08-20 02 : 27']
+['https://antok.co.kr/kstock/278828', '2021. 08. 23.', '하랑']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 16 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 16 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 16 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278834', 'LG디스플레이', '하랑']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278875', '코스피 3,060대로 밀려…코스닥지수 2.3% 급락(종합)', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 17 : 00', 'Long', '2021-08-20 17 : 00', 'Long', '2021-08-20 17 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 17 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 17 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 17 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278889', '이번 기회에 미장으로 간다 vs  국장을 물탄다', '어디로가야하오']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 18 : 00', 'Long', '2021-08-20 18 : 00', 'Long', '2021-08-20 18 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 18 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 18 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 18 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+urllib3 HTTPError ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+get_name  스레드 에러발생!
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/278935', '드러 누운 시장과 관전 포인트', '슈카찐팬']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/free/278938', '2021-08-19.20일에 본 기사들', 'LOVE슈카']
+['https://antok.co.kr/kstock/278942', '"코스피 3000 반납 가능성…현금 늘리고 저가매수 노려라"', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/ustock/278957', '아무도 미래를 모르긴 하지만 ㅎ', '어디로가야하오']
+뉴스 기사 크롤링이 시작 되었습니다
+AAPL
+ABNB
+ADBE
+ADSK
+AMD
+AMZN
+ASML
+ATVI
+AXP
+BA
+BAC
+BLK
+BRK
+CCL
+COIN
+CPNG
+CRWD
+DD
+DIS
+DISCK
+DOW
+DPZ
+F
+FB
+FITB
+GLW
+GM
+GOOGL
+GPS
+GS
+INTC
+IRM
+JNJ
+JPM
+KEY
+KO
+LMT
+MET
+MO
+MRK
+MRNA
+MSFT
+MU
+NEM
+NET
+NFLX
+NKE
+NVDA
+O
+ODP
+ORCL
+PFE
+PINS
+PLD
+PVH
+PYPL
+QCOM
+RBLX
+REAL
+RL
+SHOP
+SNAP
+SNOW
+SNY
+SPCE
+TSLA
+TSM
+TWTR
+U
+UAL
+UBER
+V
+VIAC
+Z
+ZM
+MCD
+LULU
+LUV
+SBUX
+VLDR
+['https://antok.co.kr/free/278962', '슈카형 머리 무슨일이야~~~~', 'Ahfuh']
+['Long', '2021-08-20 19 : 00', 'Long', '2021-08-20 19 : 00', 'Long', '2021-08-20 19 : 00', '없음', '2021-08-20 02 : 27']
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 47532 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 51312 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:240: RuntimeWarning:
+
+Glyph 53944 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 50857 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 54217 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 47532 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 51312 missing from current font.
+
+/home/ubuntu/.local/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:203: RuntimeWarning:
+
+Glyph 53944 missing from current font.
 
 No error handlers are registered, logging exception.
 Traceback (most recent call last):
@@ -28,42 +1316,743 @@ Traceback (most recent call last):
     handler.handle_update(update, self, check, context)
   File "/home/ubuntu/.local/lib/python3.8/site-packages/telegram/ext/handler.py", line 198, in handle_update
     return self.callback(update, context)
-  File "HA_telBot7.py", line 380, in get_name
-    telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-UnboundLocalError: local variable 'txt' referenced before assignment
-No error handlers are registered, logging exception.
-Traceback (most recent call last):
-  File "/home/ubuntu/.local/lib/python3.8/site-packages/telegram/ext/dispatcher.py", line 555, in process_update
-    handler.handle_update(update, self, check, context)
-  File "/home/ubuntu/.local/lib/python3.8/site-packages/telegram/ext/handler.py", line 198, in handle_update
-    return self.callback(update, context)
-  File "HA_telBot7.py", line 375, in get_name
-    txt1 = asyncio.run(aoaposition.get_klayPrice())
+  File "HA_telBot7.py", line 374, in get_name
+    txt = asyncio.run(aoaposition.get_kfiPrice())
   File "/usr/lib/python3.8/asyncio/runners.py", line 44, in run
     return loop.run_until_complete(main)
   File "/usr/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
     return future.result()
-  File "/home/ubuntu/aoaposition.py", line 73, in get_klayPrice
-    kspPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='main-view']/section/article[1]/div[2]/section[3]/div[1]/dl[1]/dd/span[2]")))
+  File "/home/ubuntu/aoaposition.py", line 101, in get_kfiPrice
+    kfiPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/div/div[1]/div[2]/div[1]/span")))
   File "/home/ubuntu/.local/lib/python3.8/site-packages/selenium/webdriver/support/wait.py", line 80, in until
     raise TimeoutException(message, screen, stacktrace)
 selenium.common.exceptions.TimeoutException: Message: 
 
-No error handlers are registered, logging exception.
-Traceback (most recent call last):
-  File "/home/ubuntu/.local/lib/python3.8/site-packages/telegram/ext/dispatcher.py", line 555, in process_update
-    handler.handle_update(update, self, check, context)
-  File "/home/ubuntu/.local/lib/python3.8/site-packages/telegram/ext/handler.py", line 198, in handle_update
-    return self.callback(update, context)
-  File "HA_telBot7.py", line 375, in get_name
-    txt1 = asyncio.run(aoaposition.get_klayPrice())
-  File "/usr/lib/python3.8/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "/usr/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
-    return future.result()
-  File "/home/ubuntu/aoaposition.py", line 73, in get_klayPrice
-    kspPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='main-view']/section/article[1]/div[2]/section[3]/div[1]/dl[1]/dd/span[2]")))
-  File "/home/ubuntu/.local/lib/python3.8/site-packages/selenium/webdriver/support/wait.py", line 80, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
+get_name  [고래 포지션 알림]                    
 
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 19 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 19 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 19 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/free/278968', "은행 줄줄이 '대출 중단'..막내린 '빚투·영끌' 시대", 'Ahfuh']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+get command : /HA
+get_name  HA 목록삭제
+목록에서 삭제할 종목의 이름 or 티커를 입력해주세요
+get_name  PLD
+PLD : HA 목록에서 삭제했습니다.
+뉴스 기사 크롤링이 시작 되었습니다
+get command : /KLAYTN
+get_name  KFI
+get_name  취소
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 20 : 00', 'Long', '2021-08-20 20 : 00', 'Long', '2021-08-20 20 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 20 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 20 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 20 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/ustock/278980', '이 와중에 "애플 목표주가 상향"…고민 깊어지는 서학개미들', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/free/278986', 'ㅊ...치...치익...안에 사람이 있다고?', ' ']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/ustock/278996', '모더나 ㅠ', '어디로가야하오']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Short', '2021-08-20 21 : 00', 'Short', '2021-08-20 21 : 00', 'Short', '2021-08-20 21 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : SHORT🔵
+2021-08-20 21 : 00
+
+2️⃣ SKITTER : SHORT🔵
+2021-08-20 21 : 00
+
+3️⃣ SNAPDRAGON : SHORT🔵
+2021-08-20 21 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/free/279013', '8/20 슈카 박제(글로벌라이브)', 'scarlet']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-20 22 : 00', 'Long', '2021-08-20 22 : 00', 'Long', '2021-08-20 22 : 00', '없음', '2021-08-20 02 : 27']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 22 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 22 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 22 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-20 02 : 27
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/free/279039', '이제부터', 'scarlet']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/279046', '[마켓인사이트] "남양유업 3100억에 못 판다"…소송 대비하는 홍원식 전 회장', 'Ahfuh']
+['Long', '2021-08-20 23 : 00', 'Long', '2021-08-20 23 : 00', 'Long', '2021-08-20 23 : 00', 'Short', '2021-08-20 22 : 51']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-20 23 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-20 23 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-20 23 : 00
+
+4️⃣ 박호두 : SHORT🔵
+2021-08-20 22 : 51
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+get_name  20%(흐림) 🌙 오후 강수확률: 60% 구름많고 한때 소나기 곳
+오늘(8.20.) 🌙 오후 강수확률: 60% 구름많고 한때 소나기 곳
+내일(8.21.) 🌞 오전 강수확률: 70% 흐리고 가끔 비
+내일(8.21.) 🌙 오후 강수확률: 60% 흐리고 가끔 비
+일(8.22.) 🌞 오전 강수확률: 60% 흐리고 한때 비
+화(8.24.) 🌞 오전 강수확률: 60% 흐리고 비 🌦
+화(8.24.) 🌙 오후 강수확률: 60% 흐리고 비 🌦
+수(8.25.) 🌞 오전 강수확률: 60% 흐리고 비 🌦
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-21 00 : 00', 'Long', '2021-08-21 00 : 00', 'Long', '2021-08-21 00 : 00', 'Short', '2021-08-20 23 : 48']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 00 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 00 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 00 : 00
+
+4️⃣ 박호두 : SHORT🔵
+2021-08-20 23 : 48
+['https://antok.co.kr/ustock/279066', '2021.08.21', '물질만능주의']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/free/279072', '오늘부로 종목 정리 완료', '메갈로돈']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-21 01 : 00', 'Long', '2021-08-21 01 : 00', 'Long', '2021-08-21 01 : 00', 'Short', '2021-08-20 23 : 48']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 01 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 01 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 01 : 00
+
+4️⃣ 박호두 : SHORT🔵
+2021-08-20 23 : 48
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-21 02 : 00', 'Long', '2021-08-21 02 : 00', 'Long', '2021-08-21 02 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 02 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 02 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 02 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-21 03 : 00', 'Long', '2021-08-21 03 : 00', 'Long', '2021-08-21 03 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 03 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 03 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 03 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-21 04 : 00', 'Long', '2021-08-21 04 : 00', 'Long', '2021-08-21 04 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 04 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 04 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 04 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-21 05 : 00', 'Long', '2021-08-21 05 : 00', 'Long', '2021-08-21 05 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 05 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 05 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 05 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-21 06 : 00', 'Long', '2021-08-21 06 : 00', 'Long', '2021-08-21 06 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 06 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 06 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 06 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+['https://antok.co.kr/ustock/279074', '황비디아형 +5퍼ㄷㄷㄷ', '슈바라시']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-21 07 : 00', 'Long', '2021-08-21 07 : 00', 'Long', '2021-08-21 07 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 07 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 07 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 07 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+AAPL
+ABNB
+ADBE
+ADSK
+AMD
+AMZN
+ASML
+ATVI
+AXP
+BA
+BAC
+BLK
+BRK
+CCL
+COIN
+CPNG
+CRWD
+DD
+DIS
+DISCK
+DOW
+DPZ
+F
+FB
+FITB
+GLW
+GM
+GOOGL
+GPS
+GS
+INTC
+IRM
+JNJ
+JPM
+KEY
+KO
+LMT
+LULU
+LUV
+MCD
+MET
+MO
+MRK
+MRNA
+MSFT
+MU
+NEM
+NET
+NFLX
+NKE
+NVDA
+O
+ODP
+ORCL
+PFE
+PINS
+PVH
+PYPL
+QCOM
+RBLX
+REAL
+RL
+SBUX
+SHOP
+SNAP
+SNOW
+SNY
+SPCE
+TSLA
+TSM
+TWTR
+U
+UAL
+UBER
+V
+VIAC
+VLDR
+Z
+ZM
+['Long', '2021-08-21 08 : 00', 'Long', '2021-08-21 08 : 00', 'Long', '2021-08-21 08 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 08 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 08 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 08 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+BGF
+CJ CGV
+CJ ENM
+CJ대한통운
+CJ제일제당
+DB하이텍
+F&F
+HK이노엔
+HMM
+JYP Ent.
+KBSTAR Fn수소경제테마
+KG ETS
+KODEX 200
+KODEX 200 중소형
+KODEX 200ESG
+KODEX 200동일가중
+KODEX 바이오
+KODEX 자동차
+KT
+LG디스플레이
+LG전자
+LG화학
+NAVER
+SK바이오사이언스
+SK이노베이션
+SK케미칼
+SK하이닉스
+TIGER KRX BBIG K-뉴딜
+TIGER KRX2차전지K-뉴딜
+TIGER KRX바이오K-뉴딜
+TIGER TOP10
+TIGER 경기방어
+TIGER 금은선물(H)
+TIGER 여행레저
+TIGER 우량가치
+강원랜드
+고려신용정보
+골프존
+기아
+네비게이터 친환경자동차밸류체인액티브
+다날
+대원미디어
+대한항공
+더네이쳐홀딩스
+데브시스터즈
+두산퓨얼셀
+롯데칠성
+빙그레
+삼성SDI
+삼성바이오로직스
+삼성에스디에스
+삼성엔지니어링
+삼성전자
+삼성제약
+서린바이오
+셀트리온
+셀트리온제약
+셀트리온헬스케어
+스튜디오드래곤
+신세계
+신일제약
+신풍제약
+씨에스베어링
+씨에스윈드
+씨젠
+아이진
+에스디바이오센서
+에스엠
+와이지엔터테인먼트
+용평리조트
+우리바이오
+위메이드
+이마트
+진매트릭스
+천보
+카카오
+카카오뱅크
+코오롱인더
+펄어비스
+프로스테믹스
+하이브
+한국전력
+한미반도체
+한전KPS
+한화솔루션
+현대모비스
+현대바이오
+현대차
+휴마시스
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+get_name  최고 기준(오늘) 🌞 오전 강수확률: 80% 흐리고 비 🌦
+80%(흐리고 비) 🌙 오후 강수확률: 90% 흐리고 가끔 비
+오늘(8.21.) 🌞 오전 강수확률: 80% 흐리고 비 🌦
+오늘(8.21.) 🌙 오후 강수확률: 90% 흐리고 가끔 비
+내일(8.22.) 🌞 오전 강수확률: 60% 흐리고 한때 비
+화(8.24.) 🌞 오전 강수확률: 60% 흐리고 비 🌦
+화(8.24.) 🌙 오후 강수확률: 60% 흐리고 비 🌦
+수(8.25.) 🌞 오전 강수확률: 60% 흐리고 비 🌦
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-21 09 : 00', 'Long', '2021-08-21 09 : 00', 'Long', '2021-08-21 09 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 09 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 09 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 09 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/ustock/279082', '[뉴욕마감]나스닥 1.2% 상승…기술주 주도 저가매수 유입', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/279084', "대출규제·테이퍼링·주가 하락…영끌 빚투 '사면초가'", '프로입털러']
+['Long', '2021-08-21 10 : 00', 'Long', '2021-08-21 10 : 00', 'Long', '2021-08-21 10 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 10 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 10 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 10 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/279086', '증권가 전망 비웃듯 쭉쭉 오르는 카뱅, 그 이유는', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/279096', '땡큐 루마니아', '어디로가야하오']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/free/279106', '대출중단', 'scarlet']
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-21 11 : 00', 'Long', '2021-08-21 11 : 00', 'Long', '2021-08-21 11 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 11 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 11 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 11 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/free/279116', '[Youtube 스크랩] 미래를 위한 기후와 전기. 단련된 우리나라는 모르는데 전세계가 호들갑 떠는 이유 [최준영 박사]', ' ']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/ustock/279118', '\'매파\' 카플란 총재 "델타 변이 영향…테이퍼링 늦출 수도"', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+get command : /FUN
+get_name  고래 포지션
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-21 11 : 00', 'Long', '2021-08-21 12 : 00', 'Long', '2021-08-21 12 : 00', '없음', '2021-08-21 01 : 18']
+get command : /BTC
+['Long', '2021-08-21 12 : 00', 'Long', '2021-08-21 12 : 00', 'Long', '2021-08-21 12 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 12 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 12 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 12 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/279120', '코스피 7개월만에 주간 최대 낙폭…코스닥은 11개월만에 최대', '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/279122', "아티스트 세대교체…SM·JYP '엔터주 2위' 경쟁 치열", '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/ustock/279124', '2021. 08. 23.', '하랑']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/279129', '[관망일지] 2021. 08. 23.', '하랑']
+['Long', '2021-08-21 13 : 00', 'Long', '2021-08-21 13 : 00', 'Long', '2021-08-21 13 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 13 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 13 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 13 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['https://antok.co.kr/kstock/279136', "'빚내서' 산 주식 반대매매 급증…4일간 1천500억원", '프로입털러']
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+['Long', '2021-08-21 14 : 00', 'Long', '2021-08-21 14 : 00', 'Long', '2021-08-21 14 : 00', '없음', '2021-08-21 01 : 18']
+get_name  [고래 포지션 알림]                    
+
+1️⃣ 워뇨띠 : LONG🔴
+2021-08-21 14 : 00
+
+2️⃣ SKITTER : LONG🔴
+2021-08-21 14 : 00
+
+3️⃣ SNAPDRAGON : LONG🔴
+2021-08-21 14 : 00
+
+4️⃣ 박호두 : 없음😴
+2021-08-21 01 : 18
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
+뉴스 기사 크롤링이 시작 되었습니다
