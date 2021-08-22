@@ -3,17 +3,14 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import time
+import asyncio
 
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-# from pyvirtualdisplay import Display
-
-
-# display = Display(visible=0, size=(1024, 768)) 
-# display.start()
+from selenium.webdriver.support.ui import Select
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('headless')    # 창 띄우지 X
@@ -24,104 +21,142 @@ chrome_options.add_argument("disable-dev-shm-usage")
 # chrome_options.add_argument("--disableWarnings")
 
 
-# path = 'chromedriver'
-path = '/home/ubuntu/Downloads/chromedriver' 
-# driver = webdriver.Chrome(path, options=chrome_options)
+path = 'chromedriver'
+# path = '/home/ubuntu/Downloads/chromedriver' 
 
-import asyncio
 
-async def get_kaiPrice():
+
+async def get_skaiPrice():
     driver = webdriver.Chrome(path, options=chrome_options)
-    driver.maximize_window()
-    # driver.implicitly_wait(30)
+    driver.maximize_window()    
     url = "https://kaiprotocol.fi/"
     driver.get(url)
-    
-    a= 0
-    while a<20:
-        kaiPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/body/div/div/section[2]/div/div/div[1]/div/div[1]/h6[2]")))
-        if kaiPrice.text != "--" :
-            break
-        a +=1
-    txt1 = "KAI : "+kaiPrice.text
-    print(txt1) # 이름
 
-    a=0
-    while a<20:
+    count = 0
+    while True:
         skaiPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/body/div/div/section[2]/div/div/div[2]/div/div[1]/h6[2]")))
         if skaiPrice.text != "--":
             break
-        a+=1
+        count += 1
+        print("count : " + str(count)) 
+
     txt2 = "sKAI : "+skaiPrice.text
     print(txt2) # 이름
+    
+    driver.close()
+    return txt2
+
+async def get_kaiPrice():
+    driver = webdriver.Chrome(path, options=chrome_options)
+    driver.maximize_window()  
+    url = "https://kaiprotocol.fi/"
+    driver.get(url)
+    
+    count = 0
+    while True:
+        kaiPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/body/div/div/section[2]/div/div/div[1]/div/div[1]/h6[2]")))
+        if kaiPrice.text != "--":
+            break
+        count += 1
+        print("count : " + str(count))
+
+    txt1 = "KAI : "+kaiPrice.text
+    print(txt1) # 이름
+    
+    driver.close()
+    return txt1
+
+# 접속이 안되누.. ㅠㅠ
+async def get_kspPrice():
+    driver = webdriver.Chrome(path, options=chrome_options)
+    driver.maximize_window()
+    url = "https://klayswap.com/dashboard"
+    driver.get(url)
+
+    txt1 = ""
+    try:
+        kspPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='main-view']/section/article[1]/div[2]/section[3]/div[1]/dl[1]/dd/span[2]")))
+        txt1 = "KSP : $ "+kspPrice.text
+        print(txt1) # 이름
+    except Exception as e:
+        print(e)
+        txt1 = "KSP : error"
+        print(txt1) # 이름
 
     driver.close()
-
-    return txt1 + "\n"+ txt2
-
+    return txt1
 
 async def get_klayPrice():
     driver = webdriver.Chrome(path, options=chrome_options)
     driver.maximize_window()
-    # driver.implicitly_wait(30)
     url = "https://klayswap.com/dashboard"
     driver.get(url)
-    
-    a=0
-    while a<20:
-        kspPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='main-view']/section/article[1]/div[2]/section[3]/div[1]/dl[1]/dd/span[2]")))
-        if kspPrice.text != "--" :
-            break
-        a+=1
-    txt1 = "KSP : $ "+kspPrice.text
-    print(txt1) # 이름
 
-    a=0
-    while a<20:
+    txt1 = ""
+    try:
         klayPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='main-view']/section/article[1]/div[2]/section[3]/div[2]/dl[1]/dd")))
-        if klayPrice.text != "--":            
-            break
-        a+=1
-    txt2 = "KLAY : "+klayPrice.text
-    print(txt2) # 이름
+
+        txt2 = "KLAY : "+klayPrice.text
+        print(txt2) # 이름
+    except Exception as e:
+        print(e)
+        txt2 = "KLAY : error"
+        print(txt2) # 이름
 
     driver.close()
-    return txt1 + "\n" + txt2
+    return txt2
 
+# 아직 미구현
+async def get_aklayPrice():
+    driver = webdriver.Chrome(path, options=chrome_options)
+    driver.maximize_window()
+    url = "https://klayswap.com/exchange/pool/detail/0xE74C8D8137541C0EE2C471cdAF4DCf03C383Cd22"
+    driver.get(url)
+
+    txt1 = ""
+    try:
+        klayPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='exchange-page']/div/section[2]/article[1]/ul[1]/li/div[2]/span")))
+
+        txt2 = klayPrice.text
+        print(txt2) # 이름
+    except Exception as e:
+        print(e)
+        txt2 = "aKLAY : error"
+        print(txt2) # 이름
+
+    driver.close()
+    return txt2
 
 async def get_kfiPrice():
     driver = webdriver.Chrome(path, options=chrome_options)
     driver.maximize_window()
-    # driver.implicitly_wait(30)
     url = "https://klayfi.finance/"
     driver.get(url)
 
-    a=0    
-    while a<20:
-        kfiPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/div/div[1]/div[2]/div[1]/span")))
-        if kfiPrice.text != "--" :
-            break
-        a+=1
+    kfiPrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/div/div[1]/div[2]/div[1]/span")))
+
     txt1 = "KFI : "+kfiPrice.text
     print(txt1) # 이름
 
     driver.close()
     return txt1
 
-
 async def get_housePrice():
     driver = webdriver.Chrome(path, options=chrome_options)
     driver.maximize_window()
-    # driver.implicitly_wait(30)
     url = "https://klaystake.house/"
     driver.get(url)
     
-    a=0
-    while a<20:
+    element = driver.find_element_by_xpath("//*[@id='app']/div[1]/div/div[2]/div/div/div/button")
+    driver.execute_script("(arguments[0]).click();", element)
+
+    count = 0
+    while True:
         housePrice = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='app']/section/div[2]/div[2]/div[2]/p/span[1]")))
-        if housePrice.text != "--" :
+        if housePrice.text != "":
             break
-        a+=1
+        count += 1
+        print("count : " + str(count)) 
     txt1 = "HOUSE : $ "+housePrice.text
     print(txt1) # 이름
 
@@ -129,10 +164,31 @@ async def get_housePrice():
     return txt1
 
 
+# 수정필요
+async def kaiChart():
+    driver = webdriver.Chrome(path, options=chrome_options)
+    driver.maximize_window()
+    url = "https://kaiprotocol.fi/"
+    driver.get(url)
+    # 
+    button = driver.find_element_by_xpath("//*[@id='root']/body/div/div/section[2]/div/div/div[1]/h5/button[1]")
+    button.click()
+
+    element = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='reactgooglegraph-10']/div/div[1]/div")))
+    element_png = element.screenshot_as_png 
+    with open("test1.png", "wb") as file: 
+        file.write(element_png)
+
+    driver.close()
+
+# asyncio.run( get_skaiPrice())
 # asyncio.run( get_kaiPrice())
+# asyncio.run( get_kspPrice())
 # asyncio.run( get_klayPrice())
+# asyncio.run( get_aklayPrice())
 # asyncio.run( get_kfiPrice())
 # asyncio.run( get_housePrice())
+# asyncio.run( kaiChart())
 
 
 
@@ -146,82 +202,91 @@ async def get_aoaPosition():
 
     txt = []
 
-    a=0
-    while a<20: # 워뇨띠
-        aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[6]/div/div/div/a/span")))
-        if aoaPosition3.text != "" :
+    count = 0
+    while True: # 워뇨띠
+        aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[6]/div/div/div/a/span"))) # //*[@id="mainMenu"]/div/div[6]/div/div/div/a/span
+        if aoaPosition3.text != "" : 
             txt.append(aoaPosition3.text)
             # print(txt) # 포지션
             break
-        a+=1
+        count+=1
+        # print("count : " + str(count))
     
-    a=0
-    while a<20:
+    count = 0
+    while True:
         aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[6]/div/div/div/div[2]/div[2]")))
         if aoaPosition2.text != "" :
             txt.append(aoaPosition2.text.replace("\u3000", " "))
             # print(txt) # 업데이트 시간
             break
-        a+=1
+        count+=1
+        # print("count : " + str(count))
 
-    a=0
-    while a<20: # skitter
+    count = 0
+    while True: # skitter
         aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[7]/div/div/div/a/span")))
         if aoaPosition3.text != "" :
             txt.append(aoaPosition3.text)
             # print(txt) # 포지션
             break
-        a+=1
+        count+=1
+        # print("count : " + str(count))
 
-    a=0
-    while a<20:
+    count = 0
+    while True: 
         aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[7]/div/div/div/div[2]/div[2]")))
         if aoaPosition2.text != "" :
             txt.append(aoaPosition2.text.replace("\u3000", " "))
             # print(txt) # 업데이트 시간
             break
-        a+=1
-    a=0
-    while a<20: # snapdragon
+        count+=1
+        # print("count : " + str(count))
+
+    count = 0
+    while True:  # snapdragon
         aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[8]/div/div/div/a/span")))
         if aoaPosition3.text != "" :
             txt.append(aoaPosition3.text)
             # print(txt) # 포지션
             break
-        a+=1
+        count+=1
+        # print("count : " + str(count))
 
-    a=0
-    while a<20:
+    count = 0
+    while True:
         aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[8]/div/div/div/div[2]/div[2]")))
         if aoaPosition2.text != "" :
             txt.append(aoaPosition2.text.replace("\u3000", " "))
             # print(txt) # 업데이트 시간
             break
-        a+=1
+        count+=1
+        # print("count : " + str(count))
 
-    a=0
-    while a<20: # 박호두
+    count = 0
+    while True: # 박호두
         aoaPosition3 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[9]/div/div/div/a/span")))
         if aoaPosition3.text != "" :
             txt.append(aoaPosition3.text)
             # print(txt) # 포지두
             break
-        a+=1
+        count+=1
+        # print("count : " + str(count))
 
-    a=0
-    while a<20:
+    count = 0
+    while True:
         aoaPosition2 = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[@id='page-content']/div/div/div[9]/div/div/div/div[2]/div[2]")))
         if aoaPosition2.text != "" :
             txt.append(aoaPosition2.text.replace("\u3000", " "))            # print(txt) # 업데이트 시간
             break
-        a+=1
+        count+=1
+        # print("count : " + str(count))
     
     print(txt)
     
     driver.close()
     return txt
 
-# asyncio.run(get_aoaPosition())
+asyncio.run(get_aoaPosition())
 
 
 # from bs4 import BeautifulSoup

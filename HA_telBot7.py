@@ -364,10 +364,16 @@ def get_name(bot, update):
                             caption="💲💲 "+ EXCHANGE + " "+ COMMAND[1:] +" " + interval +" 💲💲\n" +temp , reply_markup=ReplyKeyboardRemove())     
     elif COMMAND == "/KLAYTN":
         txt = " "
-        if msg == "KLAY, KSP":
+        if msg == "KLAY":
             txt = asyncio.run(aoaposition.get_klayPrice())
             telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        elif msg == "KAI, SKAI":
+        elif msg == "KSP":
+            txt = asyncio.run(aoaposition.get_kspPrice())
+            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+        elif msg == "SKAI":
+            txt = asyncio.run(aoaposition.get_skaiPrice())
+            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+        elif msg == "KAI":
             txt = asyncio.run(aoaposition.get_kaiPrice())
             telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
         elif msg == "KFI":
@@ -378,10 +384,13 @@ def get_name(bot, update):
             telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
         elif msg == "ALL":
             txt1 = asyncio.run(aoaposition.get_klayPrice())
-            txt2 = asyncio.run(aoaposition.get_kfiPrice())
-            txt3 = asyncio.run(aoaposition.get_kaiPrice())
-            txt4 = asyncio.run(aoaposition.get_housePrice())
-            txt = txt1 + "\n" + txt2 + "\n"+ txt3 + "\n" + txt4
+            txt2 = asyncio.run(aoaposition.get_kspPrice())
+            txt3 = asyncio.run(aoaposition.get_aklayPrice())
+            txt4 = asyncio.run(aoaposition.get_kaiPrice())
+            txt5 = asyncio.run(aoaposition.get_skaiPrice())
+            txt6 = asyncio.run(aoaposition.get_kfiPrice())
+            txt7 = asyncio.run(aoaposition.get_housePrice())
+            txt = txt1 + "\n" + txt2 + "\n"+ txt3 + "\n" + txt4 + "\n" + txt5 + "\n" + txt6 + "\n" + txt7
             telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
         
     ############### 기타
@@ -415,6 +424,9 @@ def get_name(bot, update):
             global aoaLastPosi
             
             txtList = asyncio.run(aoaposition.get_aoaPosition())
+            aoaLastTime = txtList[1]
+            aoaLastPosi = txtList[0]
+
             for i in range(len(txtList)):
                 if txtList[i] == "Long" : txtList[i] = "Long🔴"
                 elif txtList[i] == "Short" : txtList[i] = "Short🔵"
@@ -424,11 +436,10 @@ def get_name(bot, update):
                     \n\n1️⃣ 워뇨띠 : " + txtList[0] + "\n" + txtList[1] +\
                     "\n\n2️⃣ skitter : " + txtList[2] + "\n" + txtList[3] +\
                     "\n\n3️⃣ snapdragon : " + txtList[4] + "\n" + txtList[5] +\
-                    "\n\n4️⃣ 박호두 : " + txtList[6] + "\n" + txtList[7]
-            aoaLastTime = txtList[1]
-            aoaLastPosi = txtList[0]
+                    "\n\n4️⃣ 박호두 : " + txtList[6] + "\n" + txtList[7] +\
+                    "\n\n https://sigbtc.pro/"
 
-            telbot.send_message(text= txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+            telbot.send_message(text= txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove(), disable_web_page_preview=True)
 
         elif SELLECT == "오늘내일 날씨":
             txt = naver_weather.search(msg)
@@ -608,10 +619,10 @@ def get_command(bot, update):
         reply_keyboard = [['binance', 'upbit', 'cancel']]
         telbot.send_message(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, input_field_placeholder='what the fox say?'), chat_id=chat_id)
     elif msg == "/ETH":
-        reply_keyboard = [['binance.', 'upbit.', 'cancel.']]
+        reply_keyboard = [['binance.', 'upbit.', 'cancel']]
         telbot.send_message(text = msg + " 선택됨. 거래소를 선택하세요.", reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, input_field_placeholder='what the fox say?'), chat_id=chat_id)
     elif msg == "/KLAYTN":
-        reply_keyboard = [['KLAY, KSP', 'KAI, sKAI'],['KFI', 'HOUSE'],['ALL','취소']]
+        reply_keyboard = [['KLAY', 'KSP', 'KAI', 'sKAI'],['KFI', 'aKLAY','HOUSE'],['ALL','취소']]
         telbot.send_message(text="메뉴를 선택해 주세요.",
                             chat_id=chat_id,
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, input_field_placeholder='what the fox say?'))
@@ -1541,6 +1552,8 @@ async def aoa_position():
         txtList = await aoaposition.get_aoaPosition()
 
         if  txtList[0] != aoaLastPosi and txtList[1] != aoaLastTime: 
+            aoaLastPosi = txtList[0]
+            aoaLastTime = txtList[1]
             
             for i in range(len(txtList)):
                 if txtList[i] == "Long" : txtList[i] = "Long🔴"
@@ -1551,10 +1564,10 @@ async def aoa_position():
                     \n\n1️⃣ 워뇨띠 : " + txtList[0] + "\n" + txtList[1] +\
                     "\n\n2️⃣ skitter : " + txtList[2] + "\n" + txtList[3] +\
                     "\n\n3️⃣ snapdragon : " + txtList[4] + "\n" + txtList[5] +\
-                    "\n\n4️⃣ 박호두 : " + txtList[6] + "\n" + txtList[7]
-            aoaLastPosi = txtList[0]
-            aoaLastTime = txtList[1]
-            telbot.send_message(text= txt,  chat_id=channel_id_feedback)
+                    "\n\n4️⃣ 박호두 : " + txtList[6] + "\n" + txtList[7] +\
+                    "\n\n https://sigbtc.pro/"
+            
+            telbot.send_message(text= txt,  chat_id=channel_id_feedback, disable_web_page_preview=True)
     except Exception:
         pass
 schedule.every().hours.at(":03").do(lambda:asyncio.run(aoa_position()))
@@ -1604,6 +1617,29 @@ except Exception as e:               # 에러 발생시 예외 발생
     print(e)
     # telbot.sendMessage(chat_id=channel_id_feedback, text=(e)) # 메세지 보내기
     telbot.sendMessage(chat_id=channel_id_feedback, text=("에러 발생!")) # 메세지 보내기
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #######
+
+    # 내 클립주소 : 0x89730F1e0416762eb65c77F86259e1bA00d3C529
+    # 거래내역 : https://klaywatch.com/history/0x89730F1e0416762eb65c77F86259e1bA00d3C529
+    # -> 스왑, 예치, 인출, 보상 데이터 저장하기..
+
+
+
 
 
 
