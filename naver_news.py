@@ -100,14 +100,14 @@ def send_new_links(bot, chat_id):
     else:
         pass
 
-    # 검색어 갯수 * 50 개보다 저장된 뉴스 갯수가 더 많으면 반퉁 지움
+    # 검색어 갯수 * 500 개보다 저장된 뉴스 갯수가 더 많으면 반퉁 지움
     lenQ = len(get_querys())
-    if (lenQ * 100) < len(oldLinks):
+    if (lenQ * 500) < len(oldLinks):
         with open(fileNews,'rt', encoding = 'UTF-8') as f: 
             oldLinks=f.read().splitlines() 
         with open(fileNews, 'w', encoding = 'UTF-8') as f:
             for i, line in enumerate(oldLinks):
-                if i > (lenQ*50) :
+                if i > (lenQ*250) :
                     f.write(line + "\n")
 
     return newLinks

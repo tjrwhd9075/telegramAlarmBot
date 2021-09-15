@@ -224,6 +224,7 @@ def build_button(text_list, callback_header = "") : # make button list
 
     return button_list
 
+COMMAND = ''
 def get_name(bot, update):
     if bot.channel_post is not None : tp = "channel_post"   #채널일 경우
     elif bot.message is not None : tp = "message"           #그룹일 경우
@@ -505,13 +506,13 @@ def get_command(bot, update):
 
         telbot.send_message(text="[HA 관심 목록]\n\n" + txt1 + "\n" + txt2, chat_id=chat_id)
 
-    elif msg.split(' ')[0] == "날씨":
+    elif msg.split(' ')[0] == "/WEATHER":
         if len(msg.split(' ')) == 2:
             txt = naver_weather.search(msg.split(' ')[1])
             telbot.send_message(text=txt, chat_id=chat_id)
         else:
             telbot.send_message(text="도시명도 같이 입력해주세요", chat_id=chat_id)
-    elif msg.split(' ')[0] == "비":
+    elif msg.split(' ')[0] == "/RAIN":
         if len(msg.split(' ')) == 2:
             txt = naver_weather.rainday(msg.split(' ')[1])
             telbot.send_message(text=txt, chat_id=chat_id)
@@ -521,7 +522,7 @@ def get_command(bot, update):
     elif msg == "/HANGANG":
         telbot.send_message(text="🌊 현재 한강 수온 🌡 "+naver_weather.temperature()+ "\n\n"+ naver_weather.wise_saying()+"\n[한강수온](https://hangang.life/)",parse_mode="Markdown", chat_id=chat_id)
     
-    elif msg.split(' ')[0] == "뉴스추가":
+    elif msg.split(' ')[0] == "/NEWSADD":
         if len(msg.split(' ')) >= 2 : 
             rst = naver_news.add_query(msg[5:])
             if rst == 1:
@@ -530,7 +531,7 @@ def get_command(bot, update):
                 telbot.send_message(text=msg[5:] + " : 뉴스 검색어 목록에 있습니다." , chat_id=chat_id)
         else:
             telbot.send_message(text="추가할 검색어를 입력해주세요", chat_id=chat_id)
-    elif msg.split(' ')[0] == "뉴스삭제":
+    elif msg.split(' ')[0] == "/NEWSDEL":
         if len(msg.split(' ')) >= 2:
             rst = naver_news.del_query(msg[5:])
             if rst == 1:
@@ -539,7 +540,7 @@ def get_command(bot, update):
                 telbot.send_message(text=msg[5:] + " : 뉴스 검색어 목록에 없습니다." , chat_id=chat_id)
         else:
             telbot.send_message(text="삭제할 검색어를 입력해주세요", chat_id=chat_id)
-    elif msg.split(' ')[0] == "뉴스검색":
+    elif msg.split(' ')[0] == "/NEWSSEARCH":
         if len(msg.split(' ')) >= 2:
             query = msg[5:]
             naver_news.get_send_link(query, telbot2, chat_id)
@@ -551,8 +552,6 @@ def get_command(bot, update):
         for query in querys:
             txt = txt + query + ", "
         telbot.send_message(text="[뉴스 검색어 목록]\n\n" + txt, chat_id=chat_id)
-        return 123
-
 
     elif codefind(msg.lower().capitalize(), "us") != 0: # 미국종목이름 검색 결과
         df = fetch_jusik(codefind(msg.lower().capitalize(), "us"), "us", 120)
@@ -1555,7 +1554,6 @@ try :
     updater.dispatcher.add_handler(message_handler)
     # 명령어 받아오는 곳
     message_handler2 = MessageHandler(Filters.command, get_command)
-    print(message_handler2)
     updater.dispatcher.add_handler(message_handler2)
     # 버튼 콜백
     updater.dispatcher.add_handler(CallbackQueryHandler(callback_get))

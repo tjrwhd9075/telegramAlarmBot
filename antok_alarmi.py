@@ -88,10 +88,10 @@ async def send_new():
             pass
 
     # 저장된 행이 300줄 이상이면, 절반 삭제
-    if len(oldLinks) >= 500:
+    if len(oldLinks) >= 1000:
         with open(fileAntok, 'w', encoding = 'UTF-8') as f:
             for i, line in enumerate(oldLinks):
-                if i > 250 :
+                if i > 500 :
                     f.write(line + "\n")
 
     return newlines
