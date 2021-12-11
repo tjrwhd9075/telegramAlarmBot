@@ -1,0 +1,10 @@
+# RSI
+# MACD
+# HIST
+# stock
+# MOM
+# VWMACD
+# MFI
+# OBV
+# CCI
+# CMF

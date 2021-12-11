@@ -369,41 +369,41 @@ def get_name(bot, update):
             telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))                        
             telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'),
                             caption="💲💲 "+ EXCHANGE + " "+ COMMAND[1:] +" " + interval +" 💲💲\n" +temp , reply_markup=ReplyKeyboardRemove())     
-    elif COMMAND == "/KLAYTN":
-        txt = " "
-        if msg == "KLAY":
-            txt = asyncio.run(aoaposition.get_klayPrice())
-            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        elif msg == "KSP":
-            txt = asyncio.run(aoaposition.get_kspPrice())
-            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        elif msg == "SKAI":
-            txt = asyncio.run(aoaposition.get_skaiPrice())
-            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        elif msg == "KAI":
-            txt = asyncio.run(aoaposition.get_kaiPrice())
-            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        elif msg == "KFI":
-            txt = asyncio.run(aoaposition.get_kfiPrice())
-            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        elif msg == "HOUSE":
-            txt = asyncio.run(aoaposition.get_housePrice())
-            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        elif msg == "AKLAY":
-            txt1 = asyncio.run(aoaposition.get_aklayPrice())
-            r = asyncio.run(aoaposition.get_aklayRatio())
-            txt = txt1 + "\n" + "1 klay = " + str(r) + " aklay"
-            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        elif msg == "ALL":
-            txt1 = asyncio.run(aoaposition.get_klayPrice())
-            txt2 = asyncio.run(aoaposition.get_kspPrice())
-            txt3 = asyncio.run(aoaposition.get_aklayPrice())
-            txt4 = asyncio.run(aoaposition.get_kaiPrice())
-            txt5 = asyncio.run(aoaposition.get_skaiPrice())
-            txt6 = asyncio.run(aoaposition.get_kfiPrice())
-            txt7 = asyncio.run(aoaposition.get_housePrice())
-            txt = txt1 + "\n" + txt2 + "\n"+ txt3 + "\n" + txt4 + "\n" + txt5 + "\n" + txt6 + "\n" + txt7
-            telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+    # elif COMMAND == "/KLAYTN":
+    #     txt = " "
+    #     if msg == "KLAY":
+    #         txt = asyncio.run(aoaposition.get_klayPrice())
+    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+    #     elif msg == "KSP":
+    #         txt = asyncio.run(aoaposition.get_kspPrice())
+    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+    #     elif msg == "SKAI":
+    #         txt = asyncio.run(aoaposition.get_skaiPrice())
+    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+    #     elif msg == "KAI":
+    #         txt = asyncio.run(aoaposition.get_kaiPrice())
+    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+    #     elif msg == "KFI":
+    #         txt = asyncio.run(aoaposition.get_kfiPrice())
+    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+    #     elif msg == "HOUSE":
+    #         txt = asyncio.run(aoaposition.get_housePrice())
+    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+    #     elif msg == "AKLAY":
+    #         txt1 = asyncio.run(aoaposition.get_aklayPrice())
+    #         r = asyncio.run(aoaposition.get_aklayRatio())
+    #         txt = txt1 + "\n" + "1 klay = " + str(r) + " aklay"
+    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+    #     elif msg == "ALL":
+    #         txt1 = asyncio.run(aoaposition.get_klayPrice())
+    #         txt2 = asyncio.run(aoaposition.get_kspPrice())
+    #         txt3 = asyncio.run(aoaposition.get_aklayPrice())
+    #         txt4 = asyncio.run(aoaposition.get_kaiPrice())
+    #         txt5 = asyncio.run(aoaposition.get_skaiPrice())
+    #         txt6 = asyncio.run(aoaposition.get_kfiPrice())
+    #         txt7 = asyncio.run(aoaposition.get_housePrice())
+    #         txt = txt1 + "\n" + txt2 + "\n"+ txt3 + "\n" + txt4 + "\n" + txt5 + "\n" + txt6 + "\n" + txt7
+    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
         
     ############### 기타
     elif COMMAND == "/FUN":
@@ -431,27 +431,27 @@ def get_name(bot, update):
                                     \n\t\t = " + str(format(round(biWon),',')) +"₩"
                                     + "\n\n김프 : " + str(format(round(kimpWon),',')) +"₩ ("+ str(format(round(kimpPer,2),',')) + "%)"
                                     ,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        elif msg == "고래 포지션":
-            global aoaLastTime
-            global aoaLastPosi
+        # elif msg == "고래 포지션":
+        #     global aoaLastTime
+        #     global aoaLastPosi
             
-            txtList = asyncio.run(aoaposition.Whales_Position())
-            aoaLastPosi = txtList[1]
-            aoaLastTime = txtList[3]
+        #     txtList = asyncio.run(aoaposition.Whales_Position())
+        #     aoaLastPosi = txtList[1]
+        #     aoaLastTime = txtList[3]
             
-            for i in range(len(txtList)):
-                if txtList[i] == "LONG" : txtList[i] = "Long🔴"
-                elif txtList[i] == "SHORT" : txtList[i] = "Short🔵"
-                elif txtList[i] == "-" : txtList[i] = "없음😴"
+        #     for i in range(len(txtList)):
+        #         if txtList[i] == "LONG" : txtList[i] = "Long🔴"
+        #         elif txtList[i] == "SHORT" : txtList[i] = "Short🔵"
+        #         elif txtList[i] == "-" : txtList[i] = "없음😴"
 
-            txt = "[고래 포지션 알림]\
-                    \n\n1️⃣ " + txtList[0] + " : " + txtList[1] + "\n24시간 변동 : " + txtList[2] +" BTC\n" + txtList[3] +\
-                    "\n\n2️⃣ " + txtList[4] + " : " + txtList[5] + "\n24시간 변동 : " + txtList[6] +" BTC\n" + txtList[7] +\
-                    "\n\n3️⃣ " + txtList[8] + " : " + txtList[9] + "\n24시간 변동 : " + txtList[10] +" BTC\n" + txtList[11] +\
-                    "\n\nhttps://sigbtc.pro/\
-                    \nhttps://kimpya.site/apps/leaderboard.php"
+        #     txt = "[고래 포지션 알림]\
+        #             \n\n1️⃣ " + txtList[0] + " : " + txtList[1] + "\n24시간 변동 : " + txtList[2] +" BTC\n" + txtList[3] +\
+        #             "\n\n2️⃣ " + txtList[4] + " : " + txtList[5] + "\n24시간 변동 : " + txtList[6] +" BTC\n" + txtList[7] +\
+        #             "\n\n3️⃣ " + txtList[8] + " : " + txtList[9] + "\n24시간 변동 : " + txtList[10] +" BTC\n" + txtList[11] +\
+        #             "\n\nhttps://sigbtc.pro/\
+        #             \nhttps://kimpya.site/apps/leaderboard.php"
 
-            telbot.send_message(text= txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove(), disable_web_page_preview=True)
+        #     telbot.send_message(text= txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove(), disable_web_page_preview=True)
 
         elif SELLECT == "오늘내일 날씨":
             txt = naver_weather.search(msg)
@@ -1638,68 +1638,67 @@ schedule.every(2).minutes.do(lambda:asyncio.run(antok_alarmi.send_new()))
 
 rr = 0
 
-async def aklay_ration():
-    global rr
-    print("rr : " + str(rr))
+# async def aklay_ration():
+#     global rr
+#     print("rr : " + str(rr))
 
-    r = await aoaposition.get_aklayRatio()
+#     r = await aoaposition.get_aklayRatio()
 
-    if r < 1.009 and (r < rr or rr==0) :  # 1.009 이하로 계속 낮아지면
-        rr=r
-        if r < 0.97:
-            telbot.send_message(text= "1 klay = " + str(r) + " aklay\
-                                    \n swap aklay -> klay and steak klay and over and over",  chat_id=group_id_kak)
-        else:
-            telbot.send_message(text= "1 klay = " + str(r) + " aklay\
-                                \n swap aklay -> klay and k-ak pool withdraw",  chat_id=group_id_kak)
-    elif rr < 1.009 and r > 1.009 and rr != 0 :  # 1.009 이하 찍고 올라갈때.
-        rr=r
-        telbot.send_message(text= "1 klay = " + str(r) + " aklay\
-                                    \n swap aklay -> klay and k-ak pool withdraw @@@@ the end",  chat_id=group_id_kak)
+#     if r < 1.009 and (r < rr or rr==0) :  # 1.009 이하로 계속 낮아지면
+#         rr=r
+#         if r < 0.97:
+#             telbot.send_message(text= "1 klay = " + str(r) + " aklay\
+#                                     \n swap aklay -> klay and steak klay and over and over",  chat_id=group_id_kak)
+#         else:
+#             telbot.send_message(text= "1 klay = " + str(r) + " aklay\
+#                                 \n swap aklay -> klay and k-ak pool withdraw",  chat_id=group_id_kak)
+#     elif rr < 1.009 and r > 1.009 and rr != 0 :  # 1.009 이하 찍고 올라갈때.
+#         rr=r
+#         telbot.send_message(text= "1 klay = " + str(r) + " aklay\
+#                                     \n swap aklay -> klay and k-ak pool withdraw @@@@ the end",  chat_id=group_id_kak)
     
-    elif r > 1.04 and (r > rr or rr==0):  # 1.04 이상 계속 올라가면
-        rr=r
-        telbot.send_message(text= "1 klay = " + str(r) + " aklay\
-                                   \n swap klay -> aklay and steak aklay",  chat_id=group_id_kak)
-    elif rr > 1.04 and r < 1.04: # 1.04 이상 찍고 내려갈때.
-        rr=r
-        telbot.send_message(text= "1 klay = " + str(r) + " aklay\
-                                   \n swap klay -> aklay and steak aklay @@@@ the end",  chat_id=group_id_kak)
+#     elif r > 1.04 and (r > rr or rr==0):  # 1.04 이상 계속 올라가면
+#         rr=r
+#         telbot.send_message(text= "1 klay = " + str(r) + " aklay\
+#                                    \n swap klay -> aklay and steak aklay",  chat_id=group_id_kak)
+#     elif rr > 1.04 and r < 1.04: # 1.04 이상 찍고 내려갈때.
+#         rr=r
+#         telbot.send_message(text= "1 klay = " + str(r) + " aklay\
+#                                    \n swap klay -> aklay and steak aklay @@@@ the end",  chat_id=group_id_kak)
 
-        
     
-schedule.every(3).minutes.do(lambda:asyncio.run(aklay_ration()))
+# schedule.every(3).minutes.do(lambda:asyncio.run(aklay_ration()))
 
 ################## 고래 포지션 #################################
 aoaLastTime = ""
 aoaLastPosi = ""
-async def whales_position():
-    global aoaLastTime
-    global aoaLastPosi
+# async def whales_position():
+#     global aoaLastTime
+#     global aoaLastPosi
 
-    try :
-        txtList = await aoaposition.Whales_Position()
+#     try :
+#         txtList = await aoaposition.Whales_Position()
 
-        if  txtList[1] != aoaLastPosi and txtList[3] != aoaLastTime: 
-            aoaLastPosi = txtList[1]
-            aoaLastTime = txtList[3]
+#         if  txtList[1] != aoaLastPosi and txtList[3] != aoaLastTime: 
+#             aoaLastPosi = txtList[1]
+#             aoaLastTime = txtList[3]
             
-            for i in range(len(txtList)):
-                if txtList[i] == "LONG" : txtList[i] = "Long🔴"
-                elif txtList[i] == "SHORT" : txtList[i] = "Short🔵"
-                elif txtList[i] == "-" : txtList[i] = "없음😴"
+#             for i in range(len(txtList)):
+#                 if txtList[i] == "LONG" : txtList[i] = "Long🔴"
+#                 elif txtList[i] == "SHORT" : txtList[i] = "Short🔵"
+#                 elif txtList[i] == "-" : txtList[i] = "없음😴"
 
-            txt = "[고래 포지션 알림]\
-                    \n\n1️⃣ " + txtList[0] + " : " + txtList[1] + "\n24시간 변동 : " + txtList[2] +" BTC\n" + txtList[3] +\
-                    "\n\n2️⃣ " + txtList[4] + " : " + txtList[5] + "\n24시간 변동 : " + txtList[6] +" BTC\n" + txtList[7] +\
-                    "\n\n3️⃣ " + txtList[8] + " : " + txtList[9] + "\n24시간 변동 : " + txtList[10] +" BTC\n" + txtList[11] +\
-                    "\n\nhttps://sigbtc.pro/\
-                    \nhttps://kimpya.site/apps/leaderboard.php"
+#             txt = "[고래 포지션 알림]\
+#                     \n\n1️⃣ " + txtList[0] + " : " + txtList[1] + "\n24시간 변동 : " + txtList[2] +" BTC\n" + txtList[3] +\
+#                     "\n\n2️⃣ " + txtList[4] + " : " + txtList[5] + "\n24시간 변동 : " + txtList[6] +" BTC\n" + txtList[7] +\
+#                     "\n\n3️⃣ " + txtList[8] + " : " + txtList[9] + "\n24시간 변동 : " + txtList[10] +" BTC\n" + txtList[11] +\
+#                     "\n\nhttps://sigbtc.pro/\
+#                     \nhttps://kimpya.site/apps/leaderboard.php"
             
-            telbot.send_message(text= txt,  chat_id=channel_id_feedback, disable_web_page_preview=True)
-    except Exception:
-        pass
-schedule.every().hours.at(":30").do(lambda:asyncio.run(whales_position()))
+#             telbot.send_message(text= txt,  chat_id=channel_id_feedback, disable_web_page_preview=True)
+#     except Exception:
+#         pass
+# schedule.every().hours.at(":30").do(lambda:asyncio.run(whales_position()))
 
 
 

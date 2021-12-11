@@ -27,8 +27,8 @@ chrome_options.add_argument("disable-dev-shm-usage")
 chrome_options.add_argument('--log-level=1')   # 에러메시지 안뜨게?
 # permissions-policy: interest-cohort=()
 
-# path = 'chromedriver'
-path = '/home/ubuntu/Downloads/chromedriver' 
+path = 'chromedriver'
+# path = '/home/ubuntu/Downloads/chromedriver' 
 
 async def get_skaiPrice():
     driver = webdriver.Chrome(path, options=chrome_options)
@@ -276,10 +276,10 @@ async def Whales_Position():
     text.append(AOA_24BTC[0].get_text())
     text.append(AOA_UPDATETIME[0].get_text())
 
-    SNAP_NAME= Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(9) > td:nth-child(2)")
-    SNAP_POSI= Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(9) > td:nth-child(3) > span")
-    SNAP_24BTC =  Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(9) > td:nth-child(5) > span")
-    SNAP_UPDATETIME =  Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(9) > td:nth-child(8)")
+    SNAP_NAME= Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(11) > td:nth-child(2)")
+    SNAP_POSI= Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(11) > td:nth-child(3) > span")
+    SNAP_24BTC =  Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(11) > td:nth-child(5) > span")
+    SNAP_UPDATETIME =  Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(11) > td:nth-child(8)")
 
     
     text.append(SNAP_NAME[0].get_text().split("-")[0])
@@ -287,10 +287,10 @@ async def Whales_Position():
     text.append(SNAP_24BTC[0].get_text())
     text.append(SNAP_UPDATETIME[0].get_text())
 
-    SKIT_NAME= Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(17) > td:nth-child(2)")
-    SKIT_POSI= Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(17) > td:nth-child(3) > span")
-    SKIT_24BTC =  Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(17) > td:nth-child(5) > span")
-    SKIT_UPDATETIME =  Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(17) > td:nth-child(8)")
+    SKIT_NAME= Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(19) > td:nth-child(2)")
+    SKIT_POSI= Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(19) > td:nth-child(3) > span")
+    SKIT_24BTC =  Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(19) > td:nth-child(5) > span")
+    SKIT_UPDATETIME =  Whales.select("body > main > div > main > div > div.tbl.darklight > table > tbody > tr:nth-child(19) > td:nth-child(8)")
 
     text.append(SKIT_NAME[0].get_text().split("-")[0])
     text.append(SKIT_POSI[0].get_text())

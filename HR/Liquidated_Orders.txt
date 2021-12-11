@@ -1,0 +1,1 @@
+[{'id': 612571, 'qty': 0.25, 'side': 'Sell', 'time': 1628111652426, 'symbol': 'BTCUSDT', 'price': 40100.5}]
