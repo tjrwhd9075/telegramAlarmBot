@@ -197,7 +197,7 @@ multipledispatch==0.6.0
 multitasking==0.0.10
 munkres==1.1.4
 mypy-extensions==0.4.3
-navigator-updater==0.2.1
+# navigator-updater==0.2.1
 # nbclassic @ file:///opt/conda/conda-bld/nbclassic_1644943264176/work
 # nbclient @ file:///C:/ci/nbclient_1650290386732/work
 # nbconvert @ file:///C:/ci/nbconvert_1649741005454/work
