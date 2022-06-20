@@ -290,8 +290,8 @@ pytz-deprecation-shim==0.1.0.post0
 pyupbit==0.2.23
 # pyviz-comms @ file:///tmp/build/80754af9/pyviz_comms_1623747165329/work
 # PyWavelets @ file:///C:/ci/pywavelets_1648728087988/work
-pywin32==302
-pywin32-ctypes==0.2.0
+# pywin32==302
+# pywin32-ctypes==0.2.0
 # pywinpty @ file:///C:/ci_310/pywinpty_1644230983541/work/target/wheels/pywinpty-2.0.2-cp38-none-win_amd64.whl
 PyYAML==5.3.1
 # pyzmq @ file:///C:/ci/pyzmq_1638435185959/work
