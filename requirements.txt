@@ -76,7 +76,7 @@ cytoolz==0.11.0
 # daal4py==2021.5.0
 # dask @ file:///opt/conda/conda-bld/dask-core_1647268715755/work
 # datashader @ file:///tmp/build/80754af9/datashader_1623782308369/work
-datashape==0.5.2
+# datashape==0.5.2
 # debugpy @ file:///C:/ci/debugpy_1637073815078/work
 # decorator @ file:///opt/conda/conda-bld/decorator_1643638310831/work
 # defusedxml @ file:///tmp/build/80754af9/defusedxml_1615228127516/work
@@ -118,7 +118,7 @@ h11==0.9.0
 h2==3.2.0
 h5py==2.10.0
 # HeapDict @ file:///Users/ktietz/demo/mc3/conda-bld/heapdict_1630598515714/work
-heroku==0.1.4
+# heroku==0.1.4
 # holoviews @ file:///opt/conda/conda-bld/holoviews_1645454331194/work
 hpack==3.0.0
 hstspreload==2021.12.1
