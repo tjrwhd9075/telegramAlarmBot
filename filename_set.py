@@ -175,12 +175,41 @@ def get_pumInfo(pumnum):
     url = f'https://www.avdbs.com/menu/search.php?kwd={pumnum}&seq=0&tab=2'
     driver = webdriver.Chrome(path, options=chrome_options)
     driver.get(url)
-    # time.sleep(5)
 
     source = driver.page_source
     soup = bs(source, 'html.parser')
-    pum = soup.select("#contants > ul.container > li.page.page_2 > div > ul > li > div > div.dscr > p.title > a.lnk_dvd_dtl")[0]
-    print(pum)
+
+    #로그인
+    chk = soup.select('#contants > ul.page_tab > li.tab_2.on > a > span')[0].get_text()
+    print(chk)
+    if chk == '(-1)':
+        login = soup.select('#srch-bar > div.hdr_menu > ul > li:nth-child(1) > a')[0]['href']
+        login = avdbs + login
+        print(login)
+        driver.get(login)
+        user_id = 'tjrwhd9075'
+        user_pwd = 'ysj7953!'
+        driver.find_element(By.ID,'member_uid').send_keys(user_id)
+        driver.find_element(By.ID,'member_pwd').send_keys(user_pwd)
+        driver.find_element(By.XPATH,'/html/body/div/div[2]/form/div[2]/button[1]').click()
+
+        time.sleep(3)
+        
+        driver.get(url)
+        source = driver.page_source
+        soup = bs(source, 'html.parser')
+
+    time.sleep(5)
+
+    try : 
+        pum = soup.select("#contants > ul.container > li.page.page_2 > div > ul > li > div > div.dscr > p.title > a.lnk_dvd_dtl")[0]
+        print(pum)         
+    except Exception as e:
+        print(e)
+        pum = soup.select("#contants > ul.container > li.page.page_2 > div > ul > li:nth-child(1) > div > div.dscr > p.title > a.lnk_dvd_dtl")[0]
+        print(soup) 
+
+
     pumlink = avdbs + pum['href']
     print(pumlink)
     pumtitle = pum.get_text()
@@ -188,7 +217,7 @@ def get_pumInfo(pumnum):
 
     url = pumlink
     driver.get(url)
-    # time.sleep(5)
+    # time.sleep(100)
 
     source = driver.page_source
     soup = bs(source, 'html.parser')
@@ -231,11 +260,12 @@ def get_pumInfo_fc2(pumnum):
     source = driver.page_source
     soup = bs(source, 'html.parser')
 
+    translator = googletrans.Translator()
+
     try:
         title = soup.select('#content > div.movie_info_ditail > div.mv_title')[0].get_text()
         print("제목 : "+title)
-
-        translator = googletrans.Translator()
+        
         title = translator.translate(title, src='ja', dest='ko') #번역
         title = " " + replaceTxt(title.text) #수정
         print("수정 제목 : " + title)
@@ -365,7 +395,10 @@ def rename_file():
                 print(e)
                 print("ama : " + pumnum)
                 try :
-                    pumname = get_pumInfo_ama(pumnum)
+                    if len(pumnum.split("-")) < 3 :  #ABC 나눠진 파일 확인
+                        pumname = get_pumInfo_ama(pumnum)
+                    else :
+                         pumname = get_pumInfo_ama(pumnum[:-2])
                 except Exception as e: #검색안되면 스킵
                     print(e)
                     print("fail : " + pumnum)
