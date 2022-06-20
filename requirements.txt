@@ -348,7 +348,7 @@ statsmodels==0.13.2
 # sympy @ file:///C:/ci/sympy_1647853833464/work
 tables==3.6.1
 tabulate==0.8.9
-TBB==0.2
+TBB==2021.6.0
 # tblib @ file:///Users/ktietz/demo/mc3/conda-bld/tblib_1629402031467/work
 # tenacity @ file:///C:/ci/tenacity_1632740845368/work
 tensorboard==2.8.0
