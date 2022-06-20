@@ -2,7 +2,7 @@
 from os import close, name
 from re import S
 from threading import Thread
-from FinanceDataReader import data
+from FinanceDataReader import data 
 import matplotlib as mpl
 from matplotlib.colors import rgb2hex
 from numpy.lib.polynomial import polysub
@@ -13,7 +13,7 @@ import requests
 import time
 from requests.models import DEFAULT_REDIRECT_LIMIT
 import schedule
-import FinanceDataReader as fdr
+import FinanceDataReader as fdr #pip install finance-datareader --upgrade
 import datetime as dt
 import matplotlib.pyplot as plt
 from matplotlib import interactive, rc
@@ -24,7 +24,7 @@ import ccxt
 import sys
 import pprint
 import pandas as pd
-import telegram as tel
+import telegram as tel  # pip install python-telegram-bot --upgrade
 from telegram import chat
 import telegram
 from telegram.ext import Updater, MessageHandler, Filters, CommandHandler, CallbackQueryHandler
@@ -111,9 +111,17 @@ def codefind(name, country):
                 return krx['Symbol'][i]
     elif country == "us" :
         search = list(sp500['Name'])
+        search2 = list(nasdaq['Symbol'])
+        search3 = list(nyse['Symbol'])
         for i in range(len(sp500)):
             if (search[i]==name):
                 return sp500['Symbol'][i]
+        for i in range(len(nasdaq)):
+            if (search2[i]==name):
+                return nasdaq['Name'][i]
+        for i in range(len(nyse)):
+            if (search3[i]==name):
+                return nyse['Name'][i] 
     return 0
 def namefind(symbol):
     search = list(sp500['Symbol'])
@@ -369,42 +377,43 @@ def get_name(bot, update):
             telbot.send_photo(chat_id=chat_id, photo=open('fig2.png', 'rb'))                        
             telbot.send_photo(chat_id=chat_id, photo=open('fig3.png', 'rb'),
                             caption="💲💲 "+ EXCHANGE + " "+ COMMAND[1:] +" " + interval +" 💲💲\n" +temp , reply_markup=ReplyKeyboardRemove())     
-    # elif COMMAND == "/KLAYTN":
-    #     txt = " "
-    #     if msg == "KLAY":
-    #         txt = asyncio.run(aoaposition.get_klayPrice())
-    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-    #     elif msg == "KSP":
-    #         txt = asyncio.run(aoaposition.get_kspPrice())
-    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-    #     elif msg == "SKAI":
-    #         txt = asyncio.run(aoaposition.get_skaiPrice())
-    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-    #     elif msg == "KAI":
-    #         txt = asyncio.run(aoaposition.get_kaiPrice())
-    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-    #     elif msg == "KFI":
-    #         txt = asyncio.run(aoaposition.get_kfiPrice())
-    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-    #     elif msg == "HOUSE":
-    #         txt = asyncio.run(aoaposition.get_housePrice())
-    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-    #     elif msg == "AKLAY":
-    #         txt1 = asyncio.run(aoaposition.get_aklayPrice())
-    #         r = asyncio.run(aoaposition.get_aklayRatio())
-    #         txt = txt1 + "\n" + "1 klay = " + str(r) + " aklay"
-    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-    #     elif msg == "ALL":
-    #         txt1 = asyncio.run(aoaposition.get_klayPrice())
-    #         txt2 = asyncio.run(aoaposition.get_kspPrice())
-    #         txt3 = asyncio.run(aoaposition.get_aklayPrice())
-    #         txt4 = asyncio.run(aoaposition.get_kaiPrice())
-    #         txt5 = asyncio.run(aoaposition.get_skaiPrice())
-    #         txt6 = asyncio.run(aoaposition.get_kfiPrice())
-    #         txt7 = asyncio.run(aoaposition.get_housePrice())
-    #         txt = txt1 + "\n" + txt2 + "\n"+ txt3 + "\n" + txt4 + "\n" + txt5 + "\n" + txt6 + "\n" + txt7
-    #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        
+    elif COMMAND == "/KLAYTN":
+        telbot.send_message(text="지원하지 않습니다",  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+        #     txt = " "
+        #     if msg == "KLAY":    
+        #         txt = asyncio.run(aoaposition.get_klayPrice())
+        #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+        #     elif msg == "KSP":
+        #         txt = asyncio.run(aoaposition.get_kspPrice())
+        #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+        #     elif msg == "SKAI":
+        #         txt = asyncio.run(aoaposition.get_skaiPrice())
+        #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+        #     elif msg == "KAI":
+        #         txt = asyncio.run(aoaposition.get_kaiPrice())
+        #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+        #     elif msg == "KFI":
+        #         txt = asyncio.run(aoaposition.get_kfiPrice())
+        #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+        #     elif msg == "HOUSE":
+        #         txt = asyncio.run(aoaposition.get_housePrice())
+        #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+        #     elif msg == "AKLAY":
+        #         txt1 = asyncio.run(aoaposition.get_aklayPrice())
+        #         r = asyncio.run(aoaposition.get_aklayRatio())
+        #         txt = txt1 + "\n" + "1 klay = " + str(r) + " aklay"
+        #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+        #     elif msg == "ALL":
+        #         txt1 = asyncio.run(aoaposition.get_klayPrice())
+        #         txt2 = asyncio.run(aoaposition.get_kspPrice())
+        #         txt3 = asyncio.run(aoaposition.get_aklayPrice())
+        #         txt4 = asyncio.run(aoaposition.get_kaiPrice())
+        #         txt5 = asyncio.run(aoaposition.get_skaiPrice())
+        #         txt6 = asyncio.run(aoaposition.get_kfiPrice())
+        #         txt7 = asyncio.run(aoaposition.get_housePrice())
+        #         txt = txt1 + "\n" + txt2 + "\n"+ txt3 + "\n" + txt4 + "\n" + txt5 + "\n" + txt6 + "\n" + txt7
+        #         telbot.send_message(text=txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+            
     ############### 기타
     elif COMMAND == "/FUN":
         if msg == "오늘내일 날씨":
@@ -431,27 +440,28 @@ def get_name(bot, update):
                                     \n\t\t = " + str(format(round(biWon),',')) +"₩"
                                     + "\n\n김프 : " + str(format(round(kimpWon),',')) +"₩ ("+ str(format(round(kimpPer,2),',')) + "%)"
                                     ,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
-        # elif msg == "고래 포지션":
-        #     global aoaLastTime
-        #     global aoaLastPosi
-            
-        #     txtList = asyncio.run(aoaposition.Whales_Position())
-        #     aoaLastPosi = txtList[1]
-        #     aoaLastTime = txtList[3]
-            
-        #     for i in range(len(txtList)):
-        #         if txtList[i] == "LONG" : txtList[i] = "Long🔴"
-        #         elif txtList[i] == "SHORT" : txtList[i] = "Short🔵"
-        #         elif txtList[i] == "-" : txtList[i] = "없음😴"
+        elif msg == "고래 포지션":
+            telbot.send_message(text="지원하지않습니다",  chat_id=chat_id, reply_markup=ReplyKeyboardRemove())
+            #     global aoaLastTime
+            #     global aoaLastPosi
+                
+            #     txtList = asyncio.run(aoaposition.Whales_Position())
+            #     aoaLastPosi = txtList[1]
+            #     aoaLastTime = txtList[3]
+                
+            #     for i in range(len(txtList)):
+            #         if txtList[i] == "LONG" : txtList[i] = "Long🔴"
+            #         elif txtList[i] == "SHORT" : txtList[i] = "Short🔵"
+            #         elif txtList[i] == "-" : txtList[i] = "없음😴"
 
-        #     txt = "[고래 포지션 알림]\
-        #             \n\n1️⃣ " + txtList[0] + " : " + txtList[1] + "\n24시간 변동 : " + txtList[2] +" BTC\n" + txtList[3] +\
-        #             "\n\n2️⃣ " + txtList[4] + " : " + txtList[5] + "\n24시간 변동 : " + txtList[6] +" BTC\n" + txtList[7] +\
-        #             "\n\n3️⃣ " + txtList[8] + " : " + txtList[9] + "\n24시간 변동 : " + txtList[10] +" BTC\n" + txtList[11] +\
-        #             "\n\nhttps://sigbtc.pro/\
-        #             \nhttps://kimpya.site/apps/leaderboard.php"
+            #     txt = "[고래 포지션 알림]\
+            #             \n\n1️⃣ " + txtList[0] + " : " + txtList[1] + "\n24시간 변동 : " + txtList[2] +" BTC\n" + txtList[3] +\
+            #             "\n\n2️⃣ " + txtList[4] + " : " + txtList[5] + "\n24시간 변동 : " + txtList[6] +" BTC\n" + txtList[7] +\
+            #             "\n\n3️⃣ " + txtList[8] + " : " + txtList[9] + "\n24시간 변동 : " + txtList[10] +" BTC\n" + txtList[11] +\
+            #             "\n\nhttps://sigbtc.pro/\
+            #             \nhttps://kimpya.site/apps/leaderboard.php"
 
-        #     telbot.send_message(text= txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove(), disable_web_page_preview=True)
+            #     telbot.send_message(text= txt,  chat_id=chat_id, reply_markup=ReplyKeyboardRemove(), disable_web_page_preview=True)
 
         elif SELLECT == "오늘내일 날씨":
             txt = naver_weather.search(msg)
@@ -709,14 +719,13 @@ def fetch_jusik(name, country, count):
     today = dt.date.today()
     delta = dt.timedelta(days=count)    # count 봉 전부터
     past = today-delta
+
     if country == "krx":
         df = fdr.DataReader(codefind(name, "krx"), past, today)
     elif country == "us":
         df = fdr.DataReader(name, past, today)
 
-
     df.rename(columns = {'Open' : 'open', "Close" : "close", "High" : "high", "Low":"low"}, inplace = True)
-
     return df
 
 def fetch_jisu(name, count):
@@ -816,102 +825,113 @@ def ichimoku(df):
 
 #  - 봉 -> 해당봉의 모든 지표 표시
 def display_all_signal(df, name, interval):
-
     # df.dropna(inplace=True)         # Na 값 있는 행은 지움
 
+    df = df.rename_axis("Date").reset_index()
+    print(df.head)
+    if name == "KRW-BTC" or name == "KRW-ETH" or name == "BTC/USDT" or name == "ETH/USDT":
+        df['Date'] = df['Date'].apply(lambda x : dt.datetime.strftime(x, '%y-%m-%d %H:%M')) # Datetime to str
+    else:
+        df['Date'] = df['Date'].apply(lambda x : dt.datetime.strftime(x, '%y-%m-%d')) # Datetime to str
+    df_date = df['Date']
     
-    ha = pltygo.Candlestick(x=df.index,
+
+    ha = pltygo.Candlestick(x=df_date,
                         open=df['Open'],high=df['High'],
                         low=df['Low'], close=df['Close'],
                         name = 'HA',
                         increasing={'line': {'color': 'firebrick'}},
                         decreasing={'line': {'color': 'royalblue'}},
                         )
-    ema = pltygo.Scatter(x=df.index, y=df['ema'], name="8ema", mode='lines', line=dict(color="green", width=0.8))
+    ema = pltygo.Scatter(x=df_date, y=df['ema'], name="8ema", mode='lines', line=dict(color="green", width=0.8))
 
-    macd = pltygo.Scatter( x=df.index, y=df['macd'],  mode='lines',name="MACD") 
-    signal = pltygo.Scatter( x=df.index, y=df['macdSignal'], mode='lines', name="Signal") 
-    oscillator = pltygo.Bar( x=df.index, y=df['macdOsc'], name="oscillator") 
+    macd = pltygo.Scatter( x=df_date, y=df['macd'],  mode='lines',name="MACD") 
+    signal = pltygo.Scatter( x=df_date, y=df['macdSignal'], mode='lines', name="Signal") 
+    oscillator = pltygo.Bar( x=df_date, y=df['macdOsc'], name="oscillator") 
 
-    rsi = pltygo.Scatter(x=df.index, y=df['rsi'],  mode='lines',name="RSI")
-    line30 = pltygo.Scatter(x=df.index, y=df['line30'], name="30", mode='lines',
+    rsi = pltygo.Scatter(x=df_date, y=df['rsi'],  mode='lines',name="RSI")
+    line30 = pltygo.Scatter(x=df_date, y=df['line30'], name="30", mode='lines',
                             line=dict(color='firebrick', width=0.5))
-    line70 = pltygo.Scatter(x=df.index, y=df['line70'], name="70", mode='lines',
+    line70 = pltygo.Scatter(x=df_date, y=df['line70'], name="70", mode='lines',
                             line=dict(color='royalblue', width=0.5))
 
     # ichimoku
-    kijun = pltygo.Scatter(x=df.index, y=df['kijun'], name="kijun",  mode='lines', line=dict(color='gray', width=2))
-    tenkan = pltygo.Scatter(x=df.index, y=df['tenkan'], name="tenkan",  mode='lines',line=dict(color='red', width=2))
-    senkouSpanA = pltygo.Scatter(x=df.index, y=df['senkouSpanA'], name="spanA",  mode='lines',line=dict(color='rgba(167, 59, 206, 0.9)', width=0.8),fill=None)#'tonexty',fillcolor ='rgba(235, 233, 102, 0.5)'
-    senkouSpanB = pltygo.Scatter(x=df.index, y=df['senkouSpanB'], name="spanB",  mode='lines',line=dict(color='green', width=0.8),fill='tonexty',fillcolor ='rgba(111, 236, 203, 0.5)')
+    kijun = pltygo.Scatter(x=df_date, y=df['kijun'], name="kijun",  mode='lines', line=dict(color='gray', width=2))
+    tenkan = pltygo.Scatter(x=df_date, y=df['tenkan'], name="tenkan",  mode='lines',line=dict(color='red', width=2))
+    senkouSpanA = pltygo.Scatter(x=df_date, y=df['senkouSpanA'], name="spanA",  mode='lines',line=dict(color='rgba(167, 59, 206, 0.9)', width=0.8),fill=None)#'tonexty',fillcolor ='rgba(235, 233, 102, 0.5)'
+    senkouSpanB = pltygo.Scatter(x=df_date, y=df['senkouSpanB'], name="spanB",  mode='lines',line=dict(color='green', width=0.8),fill='tonexty',fillcolor ='rgba(111, 236, 203, 0.5)')
 
 
-    ohlc = pltygo.Candlestick(x=df.index,
+    ohlc = pltygo.Candlestick(x=df_date,
                         open=df['open'],high=df['high'],
                         low=df['low'], close=df['close'],
                         name = 'OHLC',
                         increasing={'line': {'color': 'firebrick'}},
                         decreasing={'line': {'color': 'royalblue'}},
                         )
-    bolUp = pltygo.Scatter(x=df.index, y=df['bolUpper'], name="bolUpper",  mode='lines', line=dict(color='black', width=1))
-    bolLow = pltygo.Scatter(x=df.index, y=df['bolLower'], name="bolLower",  mode='lines',line=dict(color='black', width=1))
-    ma20 = pltygo.Scatter(x=df.index, y=df['20ma'], name="20ma",  mode='lines',line=dict(color='orange', width=0.8))
+    bolUp = pltygo.Scatter(x=df_date, y=df['bolUpper'], name="bolUpper",  mode='lines', line=dict(color='black', width=1))
+    bolLow = pltygo.Scatter(x=df_date, y=df['bolLower'], name="bolLower",  mode='lines',line=dict(color='black', width=1))
+    ma20 = pltygo.Scatter(x=df_date, y=df['20ma'], name="20ma",  mode='lines',line=dict(color='orange', width=0.8))
 
-    # OHLC,볼밴 + RSI + MACD 차트
-    fig1 = subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.05,
-                                row_width=[0.4, 0.4,1], shared_xaxes=True, 
-                                subplot_titles=('Candle Chart, close : '+str(format(round(df['close'].iloc[-1],2),',')), 'RSI : '+str(round(df['rsi'].iloc[-1],2)), 'MACD' ))       # row : 행 , col : 열
+
+    # OHLC,일목 차트
+    fig1 = subplots.make_subplots(rows=1, cols=1, shared_xaxes=True,
+                                subplot_titles=('ichimoku Chart, kijun : '+str(format(round(df['kijun'].iloc[-1],2),',')),""))       # row : 행 , col : 열
+
     # HA 차트 + 20ma 8ema
     fig2 = subplots.make_subplots(rows=1, cols=1, shared_xaxes=True,
                                 subplot_titles=('Heiken Ashi, close : '+str(format(round(df['close'].iloc[-1],2),',')),""))       # row : 행 , col : 열
-    # OHLC,일목 차트
-    fig3 = subplots.make_subplots(rows=1, cols=1, shared_xaxes=True,
-                                subplot_titles=('ichimoku Chart, kijun : '+str(format(round(df['kijun'].iloc[-1],2),',')),""))       # row : 행 , col : 열
 
+    # OHLC,볼밴 + RSI + MACD 차트
+    fig3 = subplots.make_subplots(rows=2, cols=1, vertical_spacing=0.05,
+                                row_width=[1,1], shared_xaxes=True, 
+                                subplot_titles=('RSI : '+str(round(df['rsi'].iloc[-1],2)), 'MACD' ))       # row : 행 , col : 열
+    
 
-    # fig1 
-    setOhlc = [ohlc, bolUp, bolLow, ma20]
-    for ohlc in setOhlc: 
-        fig1.add_trace(ohlc, 1,1) 
+    # fig3 
+    # setOhlc = [ohlc, bolUp, bolLow, ma20]
+    # for ohlc_ in setOhlc: 
+    #     fig1.add_trace(ohlc_, 1,1) 
+
+    
     
     setRsi = [rsi, line30, line70]
     for rsi in setRsi: 
-        fig1.add_trace(rsi, 2,1)
+        fig3.add_trace(rsi, 1,1)
 
     setMacd = [macd, signal, oscillator]
     for macd in setMacd: 
-        fig1.add_trace(macd, 3,1) 
+        fig3.add_trace(macd, 2,1) 
 
-    fig1.update_xaxes(rangeslider_thickness = 0)     # 스크롤바 두께
-    fig1.update_layout(title_text=name+ " " + interval +" chart")
-    fig1.update_yaxes(side="right")
-    fig1.update_layout(legend=dict(yanchor="top", y=1, xanchor="left", x=0))
-    fig1.write_image("fig1.png")
+    fig3.update_xaxes(rangeslider_thickness = 0, nticks = 5, type='category')     # 스크롤바 두께
+    fig3.update_layout(title_text=name+ " " + interval +" chart", showlegend=False)
+    fig3.update_yaxes(side="right")
+    # fig3.update_layout(legend=dict(yanchor="top", y=1, xanchor="left", x=0))
+    fig3.write_image("fig3.png")
 
     # fig2
+
     setHa = [ha, ma20, ema]
     for ha in setHa: 
         fig2.add_trace(ha, 1,1)
     
-    fig2.update_xaxes(rangeslider_thickness = 0)     # 스크롤바 두께
-    fig2.update_layout(title_text=name+ " " + interval +" chart")
-    fig2.update_yaxes(side="right")
-    fig2.update_layout(legend=dict(yanchor="top", y=1, xanchor="left", x=0))
+    fig2.update_xaxes(rangeslider_thickness = 0, nticks = 5, type='category')     # 스크롤바 두께
+    fig2.update_layout(title_text=name+ " " + interval +" chart", showlegend=False)
+    fig2.update_yaxes(side="right", nticks =10)
+    # fig2.update_layout(legend=dict(yanchor="top", y=1, xanchor="left", x=0))
     fig2.write_image("fig2.png")
 
-    # fig3
-    setIchimoku = [senkouSpanA, senkouSpanB, kijun, tenkan ]
-    for ichi in setIchimoku: 
-        fig3.add_trace(ichi, 1,1)
+    # fig1
 
-    for ohlc in setOhlc: 
-        fig3.add_trace(ohlc, 1,1)    
+    setIchimoku = [ohlc, senkouSpanA, senkouSpanB, kijun]
+    for ichi in setIchimoku: 
+        fig1.add_trace(ichi, 1,1)
     
-    fig3.update_xaxes(rangeslider_thickness = 0)     # 스크롤바 두께
-    fig3.update_layout(title_text=name+ " " + interval +" chart")
-    fig3.update_yaxes(side="right")
-    fig3.update_layout(legend=dict(yanchor="top", y=1, xanchor="left", x=0))
-    fig3.write_image("fig3.png")
+    fig1.update_xaxes(rangeslider_thickness = 0, nticks = 5, type='category')     # 스크롤바 두께
+    fig1.update_layout(title_text=name+ " " + interval +" chart", showlegend=False)
+    fig1.update_yaxes(side="right", nticks =10)
+    fig1.update_layout(legend=dict(yanchor="top", y=1, xanchor="left", x=0))
+    fig1.write_image("fig1.png")
 
 #  - 지표 -> 모든 봉의 해당 지표 값 표시
 def display_all_interval(dfSet,intervalSet, name ,signal):
@@ -1240,18 +1260,18 @@ async def signal_maker_time():
     naver_news.send_new_links(telbot2, group_id_naver_news)
 
 # 5분에 한번씩 실행
-schedule.every().hour.at("04:45").do(lambda:asyncio.run(signal_maker_time()))
-schedule.every().hour.at("09:45").do(lambda:asyncio.run(signal_maker_time()))
-schedule.every().hour.at("14:45").do(lambda:asyncio.run(signal_maker_time()))
-schedule.every().hour.at("19:45").do(lambda:asyncio.run(signal_maker_time()))
-schedule.every().hour.at("24:45").do(lambda:asyncio.run(signal_maker_time()))
-schedule.every().hour.at("29:45").do(lambda:asyncio.run(signal_maker_time()))
-schedule.every().hour.at("34:45").do(lambda:asyncio.run(signal_maker_time()))
-schedule.every().hour.at("39:45").do(lambda:asyncio.run(signal_maker_time()))
-schedule.every().hour.at("44:45").do(lambda:asyncio.run(signal_maker_time()))
-schedule.every().hour.at("49:45").do(lambda:asyncio.run(signal_maker_time()))
-schedule.every().hour.at("54:45").do(lambda:asyncio.run(signal_maker_time()))
-schedule.every().hour.at("59:45").do(lambda:asyncio.run(signal_maker_time()))
+# schedule.every().hour.at("04:45").do(lambda:asyncio.run(signal_maker_time()))
+# schedule.every().hour.at("09:45").do(lambda:asyncio.run(signal_maker_time()))
+# schedule.every().hour.at("14:45").do(lambda:asyncio.run(signal_maker_time()))
+# schedule.every().hour.at("19:45").do(lambda:asyncio.run(signal_maker_time()))
+# schedule.every().hour.at("24:45").do(lambda:asyncio.run(signal_maker_time()))
+# schedule.every().hour.at("29:45").do(lambda:asyncio.run(signal_maker_time()))
+# schedule.every().hour.at("34:45").do(lambda:asyncio.run(signal_maker_time()))
+# schedule.every().hour.at("39:45").do(lambda:asyncio.run(signal_maker_time()))
+# schedule.every().hour.at("44:45").do(lambda:asyncio.run(signal_maker_time()))
+# schedule.every().hour.at("49:45").do(lambda:asyncio.run(signal_maker_time()))
+# schedule.every().hour.at("54:45").do(lambda:asyncio.run(signal_maker_time()))
+# schedule.every().hour.at("59:45").do(lambda:asyncio.run(signal_maker_time()))
 
 
 def heiken_ashi_coin(country, coin='BTC/USDT', interval='1d', count=60):
@@ -1324,6 +1344,48 @@ def heiken_ashi_jusik(token, region, count):
 
     # df_HA = df_HA.fillna(0) # NA 값을 0으로
     return df_HA       
+
+# rsi반등신호, MACD저점반등신호, HA전환신호, 5일고점돌파신호, 기준선 돌파신호
+def signal_maker2(df):
+    buyCnt = 0
+    txt = []
+    # 1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟
+    
+    # ## macd oscㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    if df['macdOsc'].iloc[-2] < 0 and df['macdOsc'].iloc[-2] < df['macdOsc'].iloc[-1] : # 1봉전 < 0봉전
+        if df['macdOsc'].iloc[-3] > df['macdOsc'].iloc[-2] : # 2봉전 > 1봉전
+            txt.append("❤️. 〰️MACD OSC : 저점반등↘️↗️ ")
+            buyCnt += 1
+
+    # ## rsiㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+    if df['rsi'].iloc[-2] < 31 and df['rsi'].iloc[-2] < df['rsi'].iloc[-1]:
+        txt.append("❤️. 〰️RSI : ↘️30이하↗️ 반등")
+        buyCnt += 1
+    elif df['rsi'].iloc[-1] < 31 :
+        txt.append("❤️. 〰️RSI : 30이하⬇️")
+        buyCnt += 1
+
+    # ## Heiken ashiㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    if df['Open'].iloc[-1] < df['Close'].iloc[-1]:
+        if df['Open'].iloc[-2] > df['Close'].iloc[-2]:
+            txt.append("❤️. 〰️HA : 양봉전환↘️↗️ ")
+            buyCnt += 1
+    
+    # 5일 최고점 돌파ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    if df['high'].iloc[-1] > df['high'].iloc[-2] and df['high'].iloc[-1] > df['high'].iloc[-3] and df['high'].iloc[-1] > df['high'].iloc[-4] and df['high'].iloc[-1] > df['high'].iloc[-5] and df['high'].iloc[-1] > df['high'].iloc[-6]:
+        if df['close'].iloc[-1] > df['open'].iloc[-1]: # 5일 최고점, 양봉일때
+            txt.append("❤️. 〰️5일 최고점 돌파")
+            buyCnt += 1
+            
+    
+    ## 일목기준표
+    if df['close'].iloc[-2] < df['kijun'].iloc[-2] and df['close'].iloc[-1] > df['kijun'].iloc[-1]:
+        txt.append("❤️. 〰️일목 : 기준선 상향돌파⬆️")
+        buyCnt += 1 
+
+    txt.append(buyCnt)
+    return txt
 
 async def buy_signal(token, interval, df_HA, channel_id=None):
     telbot.send_chat_action(chat_id=channel_id, action=telegram.ChatAction.TYPING)
@@ -1470,29 +1532,96 @@ async def sell_signal(token, interval, df_HA, channel_id=None):
 
 count = 120
 async def krx_ha_check():
+    a=1
+    #     jongmok = watchlist.get_querys('korea_watchlist.txt')
+    #     for token in jongmok: # krx
+    #         print(token)
+    #         df_HA = heiken_ashi_jusik(token, "krx", count)
+    #         await buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
+    #         await sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
+        
+    # # 매일 정해진 시간에
+    # schedule.every().day.at("15:00").do(lambda:asyncio.run(krx_ha_check()))
+    # schedule.every().day.at("08:30").do(lambda:asyncio.run(krx_ha_check()))
+    # # asyncio.run(krx_ha_check())
+
+async def us_ha_check():
+    a=2
+    #     jongmok2 = watchlist.get_querys('usa_watchlist.txt')        
+    #     for token in jongmok2: #us
+    #         print(token)
+    #         df_HA = heiken_ashi_jusik(token, "us", count)
+    #         await buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
+    #         await sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
+    # # 매일 정해진 시간에
+    # schedule.every().day.at("10:00").do(lambda:asyncio.run(us_ha_check())) 
+    # schedule.every().day.at("20:00").do(lambda:asyncio.run(us_ha_check()))
+    # # asyncio.run(us_ha_check())
+
+async def krx_bs_check():
     jongmok = watchlist.get_querys('korea_watchlist.txt')
     for token in jongmok: # krx
         print(token)
-        df_HA = heiken_ashi_jusik(token, "krx", count)
-        await buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
-        await sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
-    
-# 매일 정해진 시간에
-schedule.every().day.at("15:00").do(lambda:asyncio.run(krx_ha_check()))
-schedule.every().day.at("08:30").do(lambda:asyncio.run(krx_ha_check()))
-# asyncio.run(krx_ha_check())
+        df = fetch_jusik(token, "krx", 120)
+        df = Macd(df)
+        df = BolingerBand(df)
+        df = Rsi(df)
+        df = Ema(df)
+        df = Heiken_ashi(df)
+        df = ichimoku(df)
+        txt = signal_maker2(df)
 
-async def us_ha_check():
+        temp = ""
+        for t in txt:
+            if str(type(t)) == "<class 'int'>":
+                temp = temp + "\n총점 : ❤️ " + str(t)
+            else:
+                temp = temp + t + "\n"
+
+        if txt[0] == "❤️. 〰️MACD OSC : 저점반등↘️↗️ ":
+            display_all_signal(df, token, "1day")
+            telbot.send_photo(chat_id=channel_id_korea, photo=open('fig1.png', 'rb'))
+            telbot.send_photo(chat_id=channel_id_korea, photo=open('fig2.png', 'rb'))
+            telbot.send_photo(chat_id=channel_id_korea, photo=open('fig3.png', 'rb'), caption="💲💲 "+ token + " 1일봉 💲💲\n" +temp)  
+        
+# 매일 정해진 시간에
+schedule.every().day.at("16:00").do(lambda:asyncio.run(krx_bs_check()))
+# schedule.every().day.at("08:30").do(lambda:asyncio.run(krx_bs_check()))
+# asyncio.run(krx_bs_check())
+
+
+async def us_bs_check():
     jongmok2 = watchlist.get_querys('usa_watchlist.txt')        
     for token in jongmok2: #us
         print(token)
-        df_HA = heiken_ashi_jusik(token, "us", count)
-        await buy_signal(token, "day", df_HA, channel_id=channel_id_korea)
-        await sell_signal(token, "day", df_HA, channel_id=channel_id_korea)
+        df = fetch_jusik(token, "us", 120)
+        df = Macd(df)
+        df = BolingerBand(df)
+        df = Rsi(df)
+        df = Ema(df)
+        df = Heiken_ashi(df)
+        df = ichimoku(df)
+        txt = signal_maker2(df)
+
+        temp = ""
+        for t in txt:
+            if str(type(t)) == "<class 'int'>":
+                temp = temp + "\n총점 : ❤️ " + str(t)
+            else:
+                temp = temp + t + "\n"
+
+        if txt[0] == "❤️. 〰️MACD OSC : 저점반등↘️↗️ ":
+            display_all_signal(df, token, "1day")
+            telbot.send_photo(chat_id=channel_id_korea, photo=open('fig1.png', 'rb'))
+            telbot.send_photo(chat_id=channel_id_korea, photo=open('fig2.png', 'rb'))
+            telbot.send_photo(chat_id=channel_id_korea, photo=open('fig3.png', 'rb'), caption="💲💲 "+ token + " 1일봉 💲💲\n" +temp)  
+
 # 매일 정해진 시간에
-schedule.every().day.at("10:00").do(lambda:asyncio.run(us_ha_check())) 
-schedule.every().day.at("20:00").do(lambda:asyncio.run(us_ha_check()))
-# asyncio.run(us_ha_check())
+schedule.every().day.at("20:30").do(lambda:asyncio.run(us_bs_check())) 
+
+# schedule.every().day.at("21:00").do(lambda:asyncio.run(us_bs_check()))
+# asyncio.run(us_bs_check())
+
 
 ########### upbit ####################
 coin = "KRW-BTC"
@@ -1511,8 +1640,8 @@ async def coin_ha_check_30min():
     await sell_signal(coin2, interval_30, df_HA_h2, channel_id=channel_id_30min_coin)
 
 # 30분봉에 한번씩 실행
-schedule.every().hour.at(":28").do(lambda:asyncio.run(coin_ha_check_30min()))
-schedule.every().hour.at(":58").do(lambda:asyncio.run(coin_ha_check_30min()))
+# schedule.every().hour.at(":28").do(lambda:asyncio.run(coin_ha_check_30min()))
+# schedule.every().hour.at(":58").do(lambda:asyncio.run(coin_ha_check_30min()))
 
 # 60분봉
 async def coin_ha_check_60min():
@@ -1527,7 +1656,7 @@ async def coin_ha_check_60min():
     await sell_signal(coin2, interval_60, df_HA_h2, channel_id=channel_id_1h_coin)
 
 # 60분에 한번씩 실행
-schedule.every().hour.at(":59").do(lambda:asyncio.run(coin_ha_check_60min()))
+# schedule.every().hour.at(":59").do(lambda:asyncio.run(coin_ha_check_60min()))
 
 # 4시간봉
 async def coin_ha_check_240min():
@@ -1541,12 +1670,12 @@ async def coin_ha_check_240min():
     await buy_signal(coin2, interval_240, df_HA_h2, channel_id=channel_id_day_coin)
     await sell_signal(coin2, interval_240, df_HA_h2, channel_id=channel_id_day_coin)
 # 4시간에 한번씩 실행
-schedule.every().day.at("23:57").do(lambda:asyncio.run(coin_ha_check_240min()))
-schedule.every().day.at("03:57").do(lambda:asyncio.run(coin_ha_check_240min()))
-schedule.every().day.at("07:57").do(lambda:asyncio.run(coin_ha_check_240min()))
-schedule.every().day.at("11:57").do(lambda:asyncio.run(coin_ha_check_240min()))
-schedule.every().day.at("15:57").do(lambda:asyncio.run(coin_ha_check_240min()))
-schedule.every().day.at("19:57").do(lambda:asyncio.run(coin_ha_check_240min()))
+# schedule.every().day.at("23:57").do(lambda:asyncio.run(coin_ha_check_240min()))
+# schedule.every().day.at("03:57").do(lambda:asyncio.run(coin_ha_check_240min()))
+# schedule.every().day.at("07:57").do(lambda:asyncio.run(coin_ha_check_240min()))
+# schedule.every().day.at("11:57").do(lambda:asyncio.run(coin_ha_check_240min()))
+# schedule.every().day.at("15:57").do(lambda:asyncio.run(coin_ha_check_240min()))
+# schedule.every().day.at("19:57").do(lambda:asyncio.run(coin_ha_check_240min()))
 
  # 1일봉
 async def coin_ha_check_day():
@@ -1561,7 +1690,7 @@ async def coin_ha_check_day():
     await sell_signal(coin2, interval_day, df_HA_h2, channel_id=channel_id_day_coin)
     # 날씨 알림!!
     telbot.sendMessage(text=naver_weather.rainday("순천"), chat_id=channel_id_feedback)    
-schedule.every().day.at("08:50").do(lambda:asyncio.run(coin_ha_check_day()))
+# schedule.every().day.at("08:50").do(lambda:asyncio.run(coin_ha_check_day()))
 
 ############## binance ####################
 
@@ -1581,8 +1710,8 @@ async def binance_ha_check_30min():
     await sell_signal(eth, interval_30, df_HA_h2, channel_id=channel_id_30min_coin)
 
 # 30분봉에 한번씩 실행
-schedule.every().hour.at(":28").do(lambda:asyncio.run(binance_ha_check_30min()))
-schedule.every().hour.at(":58").do(lambda:asyncio.run(binance_ha_check_30min()))
+# schedule.every().hour.at(":28").do(lambda:asyncio.run(binance_ha_check_30min()))
+# schedule.every().hour.at(":58").do(lambda:asyncio.run(binance_ha_check_30min()))
 
 # 60분봉
 async def binance_ha_check_60min():
@@ -1596,7 +1725,7 @@ async def binance_ha_check_60min():
     await buy_signal(eth, interval_60, df_HA_h2, channel_id=channel_id_1h_coin)
     await sell_signal(eth, interval_60, df_HA_h2, channel_id=channel_id_1h_coin)
 # 60분에 한번씩 실행
-schedule.every().hour.at(":57").do(lambda:asyncio.run(binance_ha_check_60min()))
+# schedule.every().hour.at(":57").do(lambda:asyncio.run(binance_ha_check_60min()))
 
 # 4시간봉
 async def binance_ha_check_240min():
@@ -1610,12 +1739,12 @@ async def binance_ha_check_240min():
     await buy_signal(eth, interval_240, df_HA_h2, channel_id=channel_id_day_coin)
     await sell_signal(eth, interval_240, df_HA_h2, channel_id=channel_id_day_coin)
 # 4시간에 한번씩 실행
-schedule.every().day.at("23:55").do(lambda:asyncio.run(binance_ha_check_240min()))
-schedule.every().day.at("03:55").do(lambda:asyncio.run(binance_ha_check_240min()))
-schedule.every().day.at("07:55").do(lambda:asyncio.run(binance_ha_check_240min()))
-schedule.every().day.at("11:55").do(lambda:asyncio.run(binance_ha_check_240min()))
-schedule.every().day.at("15:55").do(lambda:asyncio.run(binance_ha_check_240min()))
-schedule.every().day.at("19:55").do(lambda:asyncio.run(binance_ha_check_240min()))
+# schedule.every().day.at("23:55").do(lambda:asyncio.run(binance_ha_check_240min()))
+# schedule.every().day.at("03:55").do(lambda:asyncio.run(binance_ha_check_240min()))
+# schedule.every().day.at("07:55").do(lambda:asyncio.run(binance_ha_check_240min()))
+# schedule.every().day.at("11:55").do(lambda:asyncio.run(binance_ha_check_240min()))
+# schedule.every().day.at("15:55").do(lambda:asyncio.run(binance_ha_check_240min()))
+# schedule.every().day.at("19:55").do(lambda:asyncio.run(binance_ha_check_240min()))
 
 # 1일봉
 async def binance_ha_check_day():
@@ -1628,84 +1757,86 @@ async def binance_ha_check_day():
     df_HA_h2 = heiken_ashi_coin("binance",eth, interval_day, count)
     await buy_signal(eth, interval_day, df_HA_h2, channel_id=channel_id_day_coin)
     await sell_signal(eth, interval_day, df_HA_h2, channel_id=channel_id_day_coin)
-schedule.every().day.at("23:55").do(lambda:asyncio.run(binance_ha_check_day()))
+# schedule.every().day.at("23:55").do(lambda:asyncio.run(binance_ha_check_day()))
 
 ################## 앤톡새글알리미 #################################
 import antok_alarmi
-schedule.every(2).minutes.do(lambda:asyncio.run(antok_alarmi.send_new()))
+# schedule.every(2).minutes.do(lambda:asyncio.run(antok_alarmi.send_new()))
 
 ##################aklay 비율 체크###########################################
 
 rr = 0
 
-# async def aklay_ration():
-#     global rr
-#     print("rr : " + str(rr))
+async def aklay_ration():
+    c=1
+    #     global rr
+    #     print("rr : " + str(rr))
 
-#     r = await aoaposition.get_aklayRatio()
+    #     r = await aoaposition.get_aklayRatio()
 
-#     if r < 1.009 and (r < rr or rr==0) :  # 1.009 이하로 계속 낮아지면
-#         rr=r
-#         if r < 0.97:
-#             telbot.send_message(text= "1 klay = " + str(r) + " aklay\
-#                                     \n swap aklay -> klay and steak klay and over and over",  chat_id=group_id_kak)
-#         else:
-#             telbot.send_message(text= "1 klay = " + str(r) + " aklay\
-#                                 \n swap aklay -> klay and k-ak pool withdraw",  chat_id=group_id_kak)
-#     elif rr < 1.009 and r > 1.009 and rr != 0 :  # 1.009 이하 찍고 올라갈때.
-#         rr=r
-#         telbot.send_message(text= "1 klay = " + str(r) + " aklay\
-#                                     \n swap aklay -> klay and k-ak pool withdraw @@@@ the end",  chat_id=group_id_kak)
-    
-#     elif r > 1.04 and (r > rr or rr==0):  # 1.04 이상 계속 올라가면
-#         rr=r
-#         telbot.send_message(text= "1 klay = " + str(r) + " aklay\
-#                                    \n swap klay -> aklay and steak aklay",  chat_id=group_id_kak)
-#     elif rr > 1.04 and r < 1.04: # 1.04 이상 찍고 내려갈때.
-#         rr=r
-#         telbot.send_message(text= "1 klay = " + str(r) + " aklay\
-#                                    \n swap klay -> aklay and steak aklay @@@@ the end",  chat_id=group_id_kak)
+    #     if r < 1.009 and (r < rr or rr==0) :  # 1.009 이하로 계속 낮아지면
+    #         rr=r
+    #         if r < 0.97:
+    #             telbot.send_message(text= "1 klay = " + str(r) + " aklay\
+    #                                     \n swap aklay -> klay and steak klay and over and over",  chat_id=group_id_kak)
+    #         else:
+    #             telbot.send_message(text= "1 klay = " + str(r) + " aklay\
+    #                                 \n swap aklay -> klay and k-ak pool withdraw",  chat_id=group_id_kak)
+    #     elif rr < 1.009 and r > 1.009 and rr != 0 :  # 1.009 이하 찍고 올라갈때.
+    #         rr=r
+    #         telbot.send_message(text= "1 klay = " + str(r) + " aklay\
+    #                                     \n swap aklay -> klay and k-ak pool withdraw @@@@ the end",  chat_id=group_id_kak)
+        
+    #     elif r > 1.04 and (r > rr or rr==0):  # 1.04 이상 계속 올라가면
+    #         rr=r
+    #         telbot.send_message(text= "1 klay = " + str(r) + " aklay\
+    #                                    \n swap klay -> aklay and steak aklay",  chat_id=group_id_kak)
+    #     elif rr > 1.04 and r < 1.04: # 1.04 이상 찍고 내려갈때.
+    #         rr=r
+    #         telbot.send_message(text= "1 klay = " + str(r) + " aklay\
+    #                                    \n swap klay -> aklay and steak aklay @@@@ the end",  chat_id=group_id_kak)
 
-    
-# schedule.every(3).minutes.do(lambda:asyncio.run(aklay_ration()))
+        
+    # schedule.every(3).minutes.do(lambda:asyncio.run(aklay_ration()))
 
 ################## 고래 포지션 #################################
 aoaLastTime = ""
 aoaLastPosi = ""
-# async def whales_position():
-#     global aoaLastTime
-#     global aoaLastPosi
+async def whales_position():
+    d=1
+    #     global aoaLastTime
+    #     global aoaLastPosi
 
-#     try :
-#         txtList = await aoaposition.Whales_Position()
+    #     try :
+    #         txtList = await aoaposition.Whales_Position()
 
-#         if  txtList[1] != aoaLastPosi and txtList[3] != aoaLastTime: 
-#             aoaLastPosi = txtList[1]
-#             aoaLastTime = txtList[3]
-            
-#             for i in range(len(txtList)):
-#                 if txtList[i] == "LONG" : txtList[i] = "Long🔴"
-#                 elif txtList[i] == "SHORT" : txtList[i] = "Short🔵"
-#                 elif txtList[i] == "-" : txtList[i] = "없음😴"
+    #         if  txtList[1] != aoaLastPosi and txtList[3] != aoaLastTime: 
+    #             aoaLastPosi = txtList[1]
+    #             aoaLastTime = txtList[3]
+                
+    #             for i in range(len(txtList)):
+    #                 if txtList[i] == "LONG" : txtList[i] = "Long🔴"
+    #                 elif txtList[i] == "SHORT" : txtList[i] = "Short🔵"
+    #                 elif txtList[i] == "-" : txtList[i] = "없음😴"
 
-#             txt = "[고래 포지션 알림]\
-#                     \n\n1️⃣ " + txtList[0] + " : " + txtList[1] + "\n24시간 변동 : " + txtList[2] +" BTC\n" + txtList[3] +\
-#                     "\n\n2️⃣ " + txtList[4] + " : " + txtList[5] + "\n24시간 변동 : " + txtList[6] +" BTC\n" + txtList[7] +\
-#                     "\n\n3️⃣ " + txtList[8] + " : " + txtList[9] + "\n24시간 변동 : " + txtList[10] +" BTC\n" + txtList[11] +\
-#                     "\n\nhttps://sigbtc.pro/\
-#                     \nhttps://kimpya.site/apps/leaderboard.php"
-            
-#             telbot.send_message(text= txt,  chat_id=channel_id_feedback, disable_web_page_preview=True)
-#     except Exception:
-#         pass
-# schedule.every().hours.at(":30").do(lambda:asyncio.run(whales_position()))
+    #             txt = "[고래 포지션 알림]\
+    #                     \n\n1️⃣ " + txtList[0] + " : " + txtList[1] + "\n24시간 변동 : " + txtList[2] +" BTC\n" + txtList[3] +\
+    #                     "\n\n2️⃣ " + txtList[4] + " : " + txtList[5] + "\n24시간 변동 : " + txtList[6] +" BTC\n" + txtList[7] +\
+    #                     "\n\n3️⃣ " + txtList[8] + " : " + txtList[9] + "\n24시간 변동 : " + txtList[10] +" BTC\n" + txtList[11] +\
+    #                     "\n\nhttps://sigbtc.pro/\
+    #                     \nhttps://kimpya.site/apps/leaderboard.php"
+                
+    #             telbot.send_message(text= txt,  chat_id=channel_id_feedback, disable_web_page_preview=True)
+    #     except Exception:
+    #         pass
+    # schedule.every().hours.at(":30").do(lambda:asyncio.run(whales_position()))
 
 
 
 
 # 업데이트 내역 알림
 # telbot.send_chat_action(chat_id=channel_id_feedback, action=telegram.ChatAction.TYPING)
-# telbot.sendMessage(chat_id=channel_id_feedback, text=updateText,parse_mode='Markdown',disable_web_page_preview=True) # 메세지 보내기
+# telbot.sendMessage(chat_id=channel_id_feedback, text="Bot is alive",parse_mode='Markdown',disable_web_page_preview=True) # 메세지 보내기
 
 def alarmi():
     print("쓰레딩이이잉")
