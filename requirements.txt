@@ -262,7 +262,7 @@ PyDispatcher==2.0.5
 # pyflakes @ file:///tmp/build/80754af9/pyflakes_1617200973297/work
 # Pygments @ file:///opt/conda/conda-bld/pygments_1644249106324/work
 # PyHamcrest @ file:///tmp/build/80754af9/pyhamcrest_1615748656804/work
-PyJWT==1.7.1
+PyJWT==2.0.0
 # pylint @ file:///C:/ci/pylint_1627536881874/work
 pyls-spyder==0.4.0
 # PyNaCl @ file:///C:/ci/pynacl_1595000047588/work
