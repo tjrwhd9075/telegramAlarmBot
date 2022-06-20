@@ -118,6 +118,7 @@ h11==0.9.0
 h2==3.2.0
 h5py==2.10.0
 HeapDict @ file:///Users/ktietz/demo/mc3/conda-bld/heapdict_1630598515714/work
+heroku==0.1.4
 holoviews @ file:///opt/conda/conda-bld/holoviews_1645454331194/work
 hpack==3.0.0
 hstspreload==2021.12.1
@@ -276,7 +277,7 @@ pyreadline==2.1
 pyrsistent @ file:///C:/ci/pyrsistent_1636111468851/work
 PySocks @ file:///C:/ci/pysocks_1605287845585/work
 pytest==7.1.1
-python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
+python-dateutil==1.5
 python-dotenv==0.20.0
 python-lsp-black @ file:///tmp/build/80754af9/python-lsp-black_1634232156041/work
 python-lsp-jsonrpc==1.0.0
