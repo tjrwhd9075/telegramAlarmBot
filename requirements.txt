@@ -314,7 +314,7 @@ ruamel_yaml==0.15.87
 schedule==1.1.0
 # scikit-image @ file:///C:/ci/scikit-image_1648214310498/work
 # scikit-learn @ file:///C:/ci/scikit-learn_1642599125707/work
-scikit-learn-intelex==2021.20220215.153006
+scikit-learn-intelex==2021.6.3
 # scipy @ file:///C:/ci/scipy_1641555198988/work
 # Scrapy @ file:///C:/ci/scrapy_1646837955381/work
 # seaborn @ file:///tmp/build/80754af9/seaborn_1629307859561/work
