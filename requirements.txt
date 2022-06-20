@@ -4,7 +4,7 @@ aiodns==3.0.0
 # aiosignal @ file:///tmp/build/80754af9/aiosignal_1637843061372/work
 # alabaster @ file:///home/ktietz/src/ci/alabaster_1611921544520/work
 # anaconda-client @ file:///C:/ci/anaconda-client_1635342752200/work
-anaconda-navigator==2.0.4
+# anaconda-navigator==2.0.4
 # anaconda-project @ file:///tmp/build/80754af9/anaconda-project_1637161053845/work
 # anyio @ file:///C:/ci/anyio_1644463701441/work/dist
 appdirs==1.4.4
