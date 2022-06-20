@@ -53,7 +53,7 @@ chardet==3.0.4
 chromedriver-autoinstaller==0.3.1
 # click @ file:///C:/ci/click_1646056799533/work
 # cloudpickle @ file:///tmp/build/80754af9/cloudpickle_1632508026186/work
-clyent==1.2.2
+# clyent==1.2.2
 # colorama @ file:///tmp/build/80754af9/colorama_1607707115595/work
 # colorcet @ file:///tmp/build/80754af9/colorcet_1611168489822/work
 comtypes==1.1.10
